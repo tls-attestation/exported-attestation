@@ -1,6 +1,6 @@
-# TODO - Your title
+# Remote Attestation with Exported Authenticators
 
-This is the working area for the individual Internet-Draft, "TODO - Your title".
+This is the working area for the individual Internet-Draft, "Remote Attestation with Exported Authenticators".
 
 * [Editor's Copy](https://hannestschofenig.github.io/exported-attestation/#go.draft-fossati-rats-exported-attestation.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-fossati-rats-exported-attestation)
