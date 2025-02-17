@@ -45,51 +45,12 @@ normative:
   RFC2119:
   RFC8174:
   RFC9261:
-  RFC6268:
-  RFC5912:
-  RFC4211:
-  RFC2986:
-  ASN1-2002:
-    author:
-      org: ITU-T
-    title: "ITU-T Recommendation X.680, X.681, X.682, and X.683"
-    date: 2002
 
 informative:
   I-D.ietf-lamps-csr-attestation:
   I-D.ietf-lamps-attestation-freshness:
-  RFC8126:
   I-D.ietf-rats-msg-wrap:
   I-D.bft-rats-kat:
-  RFC7030:
-  RFC8141:
-  I-D.tschofenig-rats-psa-token:
-  TPM20:
-    author:
-      org: Trusted Computing Group
-    title: Trusted Platform Module Library Specification, Family 2.0
-    target: https://trustedcomputinggroup.org/resource/tpm-library-specification/
-  CSBR:
-    author:
-      org: CA/Browser Forum
-    title: Baseline Requirements for Code-Signing Certificates, v.3.7
-    date: February 28, 2024
-    target: https://cabforum.org/uploads/Baseline-Requirements-for-the-Issuance-and-Management-of-Code-Signing.v3.7.pdf
-  TCGDICE1.1:
-    author:
-      org: "Trusted Computing Group"
-    title: "DICE Attestation Architecture"
-    target: https://trustedcomputinggroup.org/wp-content/uploads/DICE-Attestation-Architecture-Version-1.1-Revision-18_pub.pdf
-    date: January, 2024
-  PKCS11:
-    author:
-      org: OASIS
-    title: "PKCS #11 Cryptographic Token Interface Base Specification Version 2.40"
-    date: 14 April 2015
-    target: http://docs.oasis-open.org/pkcs11/pkcs11-base/v2.40/os/pkcs11-base-v2.40-os.html
-  SampleData:
-    title: "CSR Attestation Sample Data"
-    target: https://github.com/lamps-wg/csr-attestation-examples
 
 --- abstract
 
