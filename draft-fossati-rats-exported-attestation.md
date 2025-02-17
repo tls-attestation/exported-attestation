@@ -107,7 +107,7 @@ Client                   Server                  CA/Verifier
   | (ClientCertificateReq) |                         |
   |------------------------|                         |
   |                        |                         |
-  |<------------------------------------------------>| 
+  |<------------------------------------------------>|
   |      Certificate Management Protocol (CSR)       |
   |       (Attestation evidence requested)           |
   |                        |                         |
@@ -159,7 +159,7 @@ This document inherits the security considerations of RFC 9261 and RFC 9334. The
 # IANA Considerations
 
 TBD: IANA registration for registering new certificate formats.
- 
+
 --- back
 
 # Acknowledgements
