@@ -49,8 +49,6 @@ normative:
 informative:
   I-D.ietf-lamps-csr-attestation:
   I-D.ietf-lamps-attestation-freshness:
-  I-D.ietf-rats-msg-wrap:
-  I-D.bft-rats-kat:
 
 --- abstract
 
