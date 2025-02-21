@@ -21,8 +21,8 @@ venue:
   type: Working Group
   mail: tls@ietf.org
   arch: https://datatracker.ietf.org/wg/tls/about/
-#  github: "ietf-rats-wg/app-layer-attestation"
-#  latest: "https://ietf-rats-wg.github.io/draft-fossati-rats-app-layer-attestation/draft-fossati-rats-app-layer-attestation.html"
+#  github: "ietf-tls-wg/app-layer-attestation"
+#  latest: "https://ietf-tls-wg.github.io/draft-fossati-tls-app-layer-attestation/draft-fossati-tls-app-layer-attestation.html"
 
 author:
   -
@@ -52,7 +52,7 @@ informative:
 
 --- abstract
 
-This specification defines a method for two parties in a communication interaction to exchange Attestation Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture.
+This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture with TLS Client as Attester.
 
 --- middle
 
@@ -70,7 +70,7 @@ This document builds upon two foundational specifications:
 
 - TLS Exported Authenticators {{RFC9261}}: The core idea is to allow bi-directional post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from Server and Client uses CertificateRequest and ClientCertificateRequest message, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.
 
-This specification reuses exported authenticators to carry Attestation Evidence and/or Attestation Results. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.
+This specification reuses exported authenticators to carry Evidence and/or Attestation Results. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.
 
 # Terminology
 
@@ -82,7 +82,7 @@ We use the term REMOTE_ATTESTATION payload to refer to the opaque token generate
 
 # Architecture
 
-Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Attestation Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges.
+Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges.
 
 The Exported Authenticator API defined in RFC 9261 accepts a request, a set of certificates, and supporting information as input. The output is an opaque token that serves as the REMOTE_ATTESTATION payload. Upon receipt of a REMOTE_ATTESTATION payload, an endpoint that supports secondary certificates MUST take the following steps to validate the contained token:
 
@@ -109,11 +109,11 @@ Client                   Server                  CA/Verifier
   |                        |                         |
   |<------------------------------------------------>|
   |      Certificate Management Protocol (CSR)       |
-  |       (Attestation evidence requested)           |
+  |       (Evidence requested)                       |
   |                        |                         |
   |<-------------------------------------------------|
   |      Certificate       |                         |
-  | (Attestation Evidence) |                         |
+  | (Evidence)             |                         |
   |                        |                         |
   |------------------------|                         |
   | Exported Authenticator |                         |
@@ -154,7 +154,7 @@ Client              Attester                 Server           Verifier
 
 # Security Considerations
 
-This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Attestation Evidence SHOULD be treated as a fatal error in the communication channel.
+This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel.
 
 # IANA Considerations
 
