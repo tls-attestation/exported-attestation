@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-20T01:11:25.182390+00:00",
+  "timestamp": "2025-02-23T01:16:05.542723+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -49,6 +49,50 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
-  "pulls": []
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDON6zrys6q5hSS",
+      "title": "Questions from initial review of Introduction",
+      "url": "https://github.com/hannestschofenig/exported-attestation/issues/2",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- I didn't find \"Payload\" in RFC9261. Can you refer me to the document which is closest in the sense it is used?\n- I don't seem to understand the following sentence: \n> The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.\n- Not sure about the following sentence: Why not from the client? Are you scoping to a specific scenario, e.g., server/client as Attester or something else? This needs some explanation. \n> The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators.",
+      "createdAt": "2025-02-20T20:31:25Z",
+      "updatedAt": "2025-02-20T20:31:25Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDON6zrys6L9C9e",
+      "title": "Initial review of Introduction",
+      "url": "https://github.com/hannestschofenig/exported-attestation/pull/1",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- I tend to disagree with the following sentence because the role of Verifier is the same in both models. It depends on the order of data flow. \r\n> These interactions can follow different models, such as the passport or background check model, depending on the role of a verifier in the system.\r\n- The text regarding RFC 9261 in the draft was very confusing to me. Particularly, we need to distinguish between Exported Authenticator and Authenticator Request. I made some initial changes. Please check. ",
+      "createdAt": "2025-02-20T20:28:31Z",
+      "updatedAt": "2025-02-21T19:51:42Z",
+      "baseRepository": "hannestschofenig/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "c85e856f7c4528d8887fc19135e75319ec815aab",
+      "headRepository": "muhammad-usama-sardar/exported-attestation",
+      "headRefName": "main",
+      "headRefOid": "4b235315b7f5427005bce6c6d22abcc26cbff884",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
