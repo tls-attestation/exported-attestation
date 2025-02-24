@@ -33,6 +33,10 @@ author:
     name: Muhammad Usama Sardar
     organization: TU Dresden
     email: muhammad_usama.sardar@tu-dresden.de
+  -
+    name: Yaron Sheffer
+    organization: Intuit
+    email: yaronf.ietf@gmail.com
   - name: Hannes Tschofenig
     organization: University of Applied Sciences Bonn-Rhein-Sieg
     abbrev: H-BRS
@@ -52,7 +56,7 @@ informative:
 
 --- abstract
 
-This specification defines a method for two parties in a communication interaction to exchange attestation evidence and attestation results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture.
+This specification defines a method for two parties in a communication interaction to exchange attestation evidence and attestation results using TLS exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture.
 
 --- middle
 
@@ -150,11 +154,29 @@ Client              Attester                 Server           Verifier
   |                   |                        | Result           |
   |                   |                        |                  |
 ~~~
-{: #fig-background title="Background Check Model with Client as Attester"}
+{: #fig-background title="Background Check Model with a Separate Client-Side Attester"}
 
 # Security Considerations
 
 This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating attestation evidence SHOULD be treated as a fatal error in the communication channel.
+
+## Using the TLS Connection
+
+Remote attestation in this document takes place in the context of a TLS handshake, and the TLS connection
+remains valid following this process. This TLS connection should be handled with care, since both Client
+and Server must agree that attestation completed successfully before sending data to or receiving data from the
+attested party.
+
+Session resumption presents special challenges since it happens at the TLS level, which is not aware of the
+application-level Authenticator. The application (or the modified TLS library)
+must ensure that a resumed session has already
+completed remote attestation before the session can be used normally, and race conditions are possible.
+
+## Evidence Freshness
+
+The Evidence presented in this protocol is obviously only valid as of the time it is generated and presented.
+To ensure that the attested peer remains in a secure state, remote attestation must be re-initiated
+periodically. With the current protocol, this requires a new handshake to be started.
 
 # IANA Considerations
 
