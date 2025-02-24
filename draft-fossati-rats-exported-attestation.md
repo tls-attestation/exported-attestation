@@ -103,7 +103,7 @@ Client                   Server                  CA/Verifier
   |                        |                         |
   |                        |                         |
   |<-----------------------|                         |
-  | Exported Authenticator |                         |
+  | Authenticator Request  |                         |
   | (ClientCertificateReq) |                         |
   |------------------------|                         |
   |                        |                         |
@@ -133,7 +133,7 @@ Client              Attester                 Server           Verifier
   |   ... time passes ...                      |                  |
   |                   |                        |                  |
   |<-------------------------------------------|                  |
-  | Exported Authenticator (ClientCertReq), Nonce                 |
+  | Authenticator Request (ClientCertReq), Nonce                  |
   |                   |                        |                  |
   |------------------>|                        |                  |
   |   Request Evidence|                        |                  |
