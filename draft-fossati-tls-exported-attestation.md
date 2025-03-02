@@ -88,7 +88,7 @@ We use the term REMOTE_ATTESTATION payload to refer to the opaque token generate
 
 # Architecture
 
-Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges. A future version of this specification will provide more details. 
+Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges. A future version of this specification will provide more details.
 
 The Exported Authenticator API defined in RFC 9261 accepts a request, a set of certificates, and supporting information as input. The output is an opaque token that serves as the REMOTE_ATTESTATION payload. Upon receipt of a REMOTE_ATTESTATION payload, an endpoint that supports "secondary certificates" MUST take the following steps to validate the contained token:
 
