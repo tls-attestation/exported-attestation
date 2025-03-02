@@ -5,37 +5,39 @@
 Network Working Group                                         T. Fossati
 Internet-Draft                                                    Linaro
 Intended status: Standards Track                            M. U. Sardar
-Expires: 21 August 2025                                       TU Dresden
+Expires: 3 September 2025                                     TU Dresden
+                                                              Y. Sheffer
+                                                                  Intuit
                                                            H. Tschofenig
                                                                    H-BRS
-                                                        17 February 2025
+                                                            2 March 2025
 
 
             Remote Attestation with Exported Authenticators
-             draft-fossati-rats-exported-attestation-latest
+             draft-fossati-tls-exported-attestation-latest
 
 Abstract
 
    This specification defines a method for two parties in a
-   communication interaction to exchange attestation evidence and
-   attestation results using exported authenticators, as defined in RFC
-   9261.  This approach falls into the category of post-handshake
-   attestation by exchanging payloads in the application layer protocol
-   while binding the remote attestation to the underlying communication
-   channel.  This document supports both the passport and background
-   check models from the RATS architecture.
+   communication interaction to exchange Evidence and Attestation
+   Results using exported authenticators, as defined in RFC 9261.  This
+   approach falls into the category of post-handshake attestation by
+   exchanging payloads in the application layer protocol while binding
+   the remote attestation to the underlying communication channel.  This
+   document supports both the passport and background check models from
+   the RATS architecture.
 
 About This Document
 
    This note is to be removed before publishing as an RFC.
 
    Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-fossati-rats-exported-
+   https://datatracker.ietf.org/doc/draft-fossati-tls-exported-
    attestation/.
 
-   Discussion of this document takes place on the LAMPS Working Group
+   Discussion of this document takes place on the tls Working Group
    mailing list (mailto:tls@ietf.org), which is archived at
-   https://datatracker.ietf.org/wg/rats/about/.  Subscribe at
+   https://datatracker.ietf.org/wg/tls/about/.  Subscribe at
    https://www.ietf.org/mailman/listinfo/tls/.
 
 Status of This Memo
@@ -53,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 August 2025.
+   This Internet-Draft will expire on 3 September 2025.
 
 Copyright Notice
 
@@ -75,6 +77,8 @@ Table of Contents
    2.  Terminology
    3.  Architecture
    4.  Security Considerations
+     4.1.  Using the TLS Connection
+     4.2.  Evidence Freshness
    5.  IANA Considerations
    6.  References
      6.1.  Normative References
@@ -95,7 +99,7 @@ Table of Contents
    Party may consult an Attestation Result produced by a Verifier that
    has appraised the Evidence to make policy decisions regarding the
    trustworthiness of the Target Environment being assessed.  This is,
-   in essence, what RFC 9334 defines.
+   in essence, what RFC 9334 [RFC9334] defines.
 
    At the time of writing, several standard and proprietary remote
    attestation technologies are in use.  This specification aims to
@@ -111,36 +115,39 @@ Table of Contents
 
    *  RATS Architecture [RFC9334]: The RATS (Remote Attestation
       Procedures) architecture defines how remote attestation systems
-      establish trust between parties by exchanging attestation evidence
-      and results.  These interactions can follow different models, such
-      as the passport or background check model, depending on the role
-      of a verifier in the system.
+      establish trust between parties by exchanging Evidence and
+      Attestation Results.  These interactions can follow different
+      models, such as the passport or background check model, depending
+      on the order of data flow in the system.
 
-   *  TLS Exported Authenticators [RFC9261]: TLS Exported Authenticators
-      are structured messages that can be exported by either party in a
-      TLS connection and validated by the other party.  Once a TLS
-      connection is established, an authenticator message can be
-      constructed to prove possession of a certificate and its
-      corresponding private key.  The mechanisms described in this
-      document focus primarily on the server's ability to generate TLS
-      Exported Authenticators.  Each authenticator is computed using a
-      Handshake Context and Finished MAC Key derived from the TLS
-      session.  The Handshake Context is the same for both parties, but
-      the Finished MAC Key differs depending on whether the
-      authenticator is created by the client or the server.  Verified
-      authenticators result in the validation of certificate chains and
-      confirmed possession of the private key.  These certificates can
-      be integrated into a collection of available certificates, and
-      desired certificates can also be described within these
-      collections.
+   *  TLS Exported Authenticators [RFC9261]: The core idea is to allow
+      bi-directional post-handshake authentication.  Once a TLS
+      connection is established, both peers can send an authenticator
+      request message at any point after the handshake.  This message
+      from Server and Client uses CertificateRequest and
+      ClientCertificateRequest message, respectively.  The peer
+      receiving the authenticator request message can respond with an
+      Authenticator consisting of Certificate, CertificateVerify, and
+      Finished messages.  These messages can then be validated by the
+      other peer.  The mechanisms described in this document focus
+      primarily on the server's ability to generate TLS Exported
+      Authenticators.  Each authenticator is computed using a Handshake
+      Context and Finished MAC Key derived from the TLS session.  The
+      Handshake Context is the same for both parties, but the Finished
+      MAC Key differs depending on whether the authenticator is created
+      by the client or the server.  Verified authenticators result in
+      the validation of certificate chains and confirmed possession of
+      the private key.  These certificates can be integrated into a
+      collection of available certificates, and desired certificates can
+      also be described within these collections.
 
-   This specification reuses exported authenticators to carry
-   attestation evidence and/or attestation results.  While exported
-   authenticators traditionally deal with certificates, in this
-   document, we use them for key attestation.  Consequently, this
-   mechanism applies specifically to remote attestation technologies
-   that offer key attestation, though the encoding format is not
-   restricted to X.509 certificates.
+   This specification reuses exported authenticators to carry Evidence
+   and/or Attestation Results.  While exported authenticators
+   traditionally deal with certificates, in this document, we use them
+   for key attestation.  Consequently, this mechanism applies
+   specifically to remote attestation technologies that offer key
+   attestation, though the encoding format is not restricted to X.509
+   certificates.
 
 2.  Terminology
 
@@ -162,9 +169,9 @@ Table of Contents
 
    Designers of application layer protocols need to define payload
    formats for conveying exported authenticators that contain remote
-   attestation evidence.  They must also provide mechanisms to inform
-   both communication partners of their ability to exchange attestation
-   evidence and results via this specification.  This capability can be
+   Evidence.  They must also provide mechanisms to inform both
+   communication partners of their ability to exchange Evidence and
+   Attestation Results via this specification.  This capability can be
    specified in a profile of this document or dynamically negotiated
    during protocol exchanges.
 
@@ -203,17 +210,17 @@ Table of Contents
      |                        |                         |
      |                        |                         |
      |<-----------------------|                         |
-     | Exported Authenticator |                         |
+     | Authenticator Request  |                         |
      | (ClientCertificateReq) |                         |
      |------------------------|                         |
      |                        |                         |
      |<------------------------------------------------>|
      |      Certificate Management Protocol (CSR)       |
-     |       (Attestation evidence requested)           |
+     |       (Evidence requested)                       |
      |                        |                         |
      |<-------------------------------------------------|
      |      Certificate       |                         |
-     | (Attestation Evidence) |                         |
+     | (Evidence)             |                         |
      |                        |                         |
      |------------------------|                         |
      | Exported Authenticator |                         |
@@ -232,7 +239,7 @@ Table of Contents
     |   ... time passes ...                      |                  |
     |                   |                        |                  |
     |<-------------------------------------------|                  |
-    | Exported Authenticator (ClientCertReq), Nonce                 |
+    | Authenticator Request (ClientCertReq), Nonce                  |
     |                   |                        |                  |
     |------------------>|                        |                  |
     |   Request Evidence|                        |                  |
@@ -249,14 +256,37 @@ Table of Contents
     |                   |                        | Result           |
     |                   |                        |                  |
 
-         Figure 2: Background Check Model with Client as Attester
+  Figure 2: Background Check Model with a Separate Client-Side Attester
 
 4.  Security Considerations
 
    This document inherits the security considerations of RFC 9261 and
    RFC 9334.  The integrity of the exported authenticators must be
-   guaranteed, and any failure in validating attestation evidence SHOULD
-   be treated as a fatal error in the communication channel.
+   guaranteed, and any failure in validating Evidence SHOULD be treated
+   as a fatal error in the communication channel.
+
+4.1.  Using the TLS Connection
+
+   Remote attestation in this document takes place in the context of a
+   TLS handshake, and the TLS connection remains valid following this
+   process.  This TLS connection should be handled with care, since both
+   Client and Server must agree that attestation completed successfully
+   before sending data to or receiving data from the attested party.
+
+   Session resumption presents special challenges since it happens at
+   the TLS level, which is not aware of the application-level
+   Authenticator.  The application (or the modified TLS library) must
+   ensure that a resumed session has already completed remote
+   attestation before the session can be used normally, and race
+   conditions are possible.
+
+4.2.  Evidence Freshness
+
+   The Evidence presented in this protocol is obviously only valid as of
+   the time it is generated and presented.  To ensure that the attested
+   peer remains in a secure state, remote attestation must be re-
+   initiated periodically.  With the current protocol, this requires a
+   new handshake to be started.
 
 5.  IANA Considerations
 
@@ -318,6 +348,11 @@ Authors' Addresses
    Muhammad Usama Sardar
    TU Dresden
    Email: muhammad_usama.sardar@tu-dresden.de
+
+
+   Yaron Sheffer
+   Intuit
+   Email: yaronf.ietf@gmail.com
 
 
    Hannes Tschofenig

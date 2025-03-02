@@ -7,19 +7,20 @@
 <title>Remote Attestation with Exported Authenticators</title>
 <meta content="Thomas Fossati" name="author">
 <meta content="Muhammad Usama Sardar" name="author">
+<meta content="Yaron Sheffer" name="author">
 <meta content="Hannes Tschofenig" name="author">
 <meta content="
-       This specification defines a method for two parties in a communication interaction to exchange attestation evidence and attestation results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture. 
+       This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture. 
     " name="description">
-<meta content="xml2rfc 3.26.0" name="generator">
+<meta content="xml2rfc 3.27.0" name="generator">
 <meta content="Attestation" name="keyword">
 <meta content="TLS" name="keyword">
 <meta content="Key Attestation" name="keyword">
 <meta content="Exported Authenticators" name="keyword">
-<meta content="draft-fossati-rats-exported-attestation-latest" name="ietf.draft">
+<meta content="draft-fossati-tls-exported-attestation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.26.0
-    Python 3.12.8
+  xml2rfc 3.27.0
+    Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -32,7 +33,7 @@
     setuptools 70.3.0
     wcwidth 0.2.13
 -->
-<link href="draft-fossati-rats-exported-attestation.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-fossati-tls-exported-attestation.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1049,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Remote Attestation with Exported Authent</td>
-<td class="right">February 2025</td>
+<td class="right">March 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Fossati, et al.</td>
-<td class="center">Expires 21 August 2025</td>
+<td class="center">Expires 3 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,15 +1064,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-fossati-rats-exported-attestation-latest</dd>
+<dd class="internet-draft">draft-fossati-tls-exported-attestation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-17" class="published">17 February 2025</time>
+<time datetime="2025-03-02" class="published">2 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-21">21 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-03">3 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1083,6 +1084,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div class="org">TU Dresden</div>
 </div>
 <div class="author">
+      <div class="author-name">Y. Sheffer</div>
+<div class="org">Intuit</div>
+</div>
+<div class="author">
       <div class="author-name">H. Tschofenig</div>
 <div class="org">H-BRS</div>
 </div>
@@ -1092,7 +1097,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Remote Attestation with Exported Authenticators</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This specification defines a method for two parties in a communication interaction to exchange attestation evidence and attestation results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1100,11 +1105,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-fossati-rats-exported-attestation/">https://datatracker.ietf.org/doc/draft-fossati-rats-exported-attestation/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-fossati-tls-exported-attestation/">https://datatracker.ietf.org/doc/draft-fossati-tls-exported-attestation/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
-        LAMPS Working Group mailing list (<span><a href="mailto:tls@ietf.org">mailto:tls@ietf.org</a></span>),
-        which is archived at <span><a href="https://datatracker.ietf.org/wg/rats/about/">https://datatracker.ietf.org/wg/rats/about/</a></span>.
+        tls Working Group mailing list (<span><a href="mailto:tls@ietf.org">mailto:tls@ietf.org</a></span>),
+        which is archived at <span><a href="https://datatracker.ietf.org/wg/tls/about/">https://datatracker.ietf.org/wg/tls/about/</a></span>.
         Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/tls/">https://www.ietf.org/mailman/listinfo/tls/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
@@ -1126,7 +1131,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1166,6 +1171,14 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-using-the-tls-connection" class="internal xref">Using the TLS Connection</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-evidence-freshness" class="internal xref">Evidence Freshness</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
@@ -1197,18 +1210,18 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">There is a growing need to demonstrate to a remote party that cryptographic keys are stored in a secure element, the device is in a known good state, secure boot has been enabled, and that low-level software and firmware have not been tampered with. Remote attestation provides this capability.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">More technically, an Attester produces a signed collection of Claims that constitute Evidence about its running environment(s). A Relying Party may consult an Attestation Result produced by a Verifier that has appraised the Evidence to make policy decisions regarding the trustworthiness of the Target Environment being assessed. This is, in essence, what RFC 9334 defines.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-2">More technically, an Attester produces a signed collection of Claims that constitute Evidence about its running environment(s). A Relying Party may consult an Attestation Result produced by a Verifier that has appraised the Evidence to make policy decisions regarding the trustworthiness of the Target Environment being assessed. This is, in essence, what RFC 9334 <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> defines.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. As a result, this document focuses on the conveyance of Evidence and Attestation Results as part of the payloads defined by Exported Authenticators. The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">This document builds upon two foundational specifications:<a href="#section-1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-5.1">
-          <p id="section-1-5.1.1">RATS Architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>: The RATS (Remote Attestation Procedures) architecture defines how remote attestation systems establish trust between parties by exchanging attestation evidence and results. These interactions can follow different models, such as the passport or background check model, depending on the role of a verifier in the system.<a href="#section-1-5.1.1" class="pilcrow">¶</a></p>
+          <p id="section-1-5.1.1">RATS Architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>: The RATS (Remote Attestation Procedures) architecture defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or background check model, depending on the order of data flow in the system.<a href="#section-1-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-5.2">
-          <p id="section-1-5.2.1">TLS Exported Authenticators <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>: TLS Exported Authenticators are structured messages that can be exported by either party in a TLS connection and validated by the other party. Once a TLS connection is established, an authenticator message can be constructed to prove possession of a certificate and its corresponding private key. The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-5.2.1">TLS Exported Authenticators <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>: The core idea is to allow bi-directional post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from Server and Client uses CertificateRequest and ClientCertificateRequest message, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-6">This specification reuses exported authenticators to carry attestation evidence and/or attestation results. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-6">This specification reuses exported authenticators to carry Evidence and/or Attestation Results. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1226,7 +1239,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-architecture">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
       </h2>
-<p id="section-3-1">Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote attestation evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange attestation evidence and results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The Exported Authenticator API defined in RFC 9261 accepts a request, a set of certificates, and supporting information as input. The output is an opaque token that serves as the REMOTE_ATTESTATION payload. Upon receipt of a REMOTE_ATTESTATION payload, an endpoint that supports secondary certificates MUST take the following steps to validate the contained token:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">Use the get context API to retrieve the certificate_request_context that was used to generate the authenticator (if any). Since the certificate_request_context for spontaneous server certificates is chosen by the server, its usage is implementation-dependent (see Section 5 of <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span> for more details).
 Use the validate API to confirm the authenticator’s validity with respect to the generated request (if any). If validation fails, this SHOULD be treated as a connection error. Upon successful validation, the endpoint can conduct further checks to ensure the certificate’s acceptability.<a href="#section-3-3" class="pilcrow">¶</a></p>
@@ -1265,20 +1278,18 @@ Use the validate API to confirm the authenticator’s validity with respect to t
                 <text x="92" y="148">time</text>
                 <text x="140" y="148">passes</text>
                 <text x="184" y="148">...</text>
-                <text x="68" y="212">Exported</text>
-                <text x="160" y="212">Authenticator</text>
+                <text x="88" y="212">Authenticator</text>
+                <text x="176" y="212">Request</text>
                 <text x="124" y="228">(ClientCertificateReq)</text>
                 <text x="120" y="292">Certificate</text>
                 <text x="212" y="292">Management</text>
                 <text x="292" y="292">Protocol</text>
                 <text x="352" y="292">(CSR)</text>
-                <text x="132" y="308">(Attestation</text>
-                <text x="220" y="308">evidence</text>
-                <text x="300" y="308">requested)</text>
+                <text x="120" y="308">(Evidence</text>
+                <text x="204" y="308">requested)</text>
                 <text x="224" y="324">|</text>
                 <text x="120" y="356">Certificate</text>
-                <text x="84" y="372">(Attestation</text>
-                <text x="176" y="372">Evidence)</text>
+                <text x="76" y="372">(Evidence)</text>
                 <text x="68" y="420">Exported</text>
                 <text x="160" y="420">Authenticator</text>
                 <text x="100" y="436">(Authenticator</text>
@@ -1336,10 +1347,10 @@ Use the validate API to confirm the authenticator’s validity with respect to t
                 <text x="100" y="116">time</text>
                 <text x="148" y="116">passes</text>
                 <text x="196" y="116">..</text>
-                <text x="68" y="164">Exported</text>
-                <text x="160" y="164">Authenticator</text>
-                <text x="284" y="164">(ClientCertReq),</text>
-                <text x="376" y="164">Nonce</text>
+                <text x="88" y="164">Authenticator</text>
+                <text x="176" y="164">Request</text>
+                <text x="276" y="164">(ClientCertReq),</text>
+                <text x="368" y="164">Nonce</text>
                 <text x="80" y="212">Request</text>
                 <text x="148" y="212">Evidence</text>
                 <text x="48" y="244">Key</text>
@@ -1360,7 +1371,7 @@ Use the validate API to confirm the authenticator’s validity with respect to t
 </div>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
-<a href="#name-background-check-model-with" class="selfRef">Background Check Model with Client as Attester</a>
+<a href="#name-background-check-model-with" class="selfRef">Background Check Model with a Separate Client-Side Attester</a>
         </figcaption></figure>
 </div>
 </section>
@@ -1370,7 +1381,32 @@ Use the validate API to confirm the authenticator’s validity with respect to t
       <h2 id="name-security-considerations">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-4-1">This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating attestation evidence SHOULD be treated as a fatal error in the communication channel.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="using-the-tls-connection">
+<section id="section-4.1">
+        <h3 id="name-using-the-tls-connection">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-using-the-tls-connection" class="section-name selfRef">Using the TLS Connection</a>
+        </h3>
+<p id="section-4.1-1">Remote attestation in this document takes place in the context of a TLS handshake, and the TLS connection
+remains valid following this process. This TLS connection should be handled with care, since both Client
+and Server must agree that attestation completed successfully before sending data to or receiving data from the
+attested party.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">Session resumption presents special challenges since it happens at the TLS level, which is not aware of the
+application-level Authenticator. The application (or the modified TLS library)
+must ensure that a resumed session has already
+completed remote attestation before the session can be used normally, and race conditions are possible.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="evidence-freshness">
+<section id="section-4.2">
+        <h3 id="name-evidence-freshness">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-evidence-freshness" class="section-name selfRef">Evidence Freshness</a>
+        </h3>
+<p id="section-4.2-1">The Evidence presented in this protocol is obviously only valid as of the time it is generated and presented.
+To ensure that the attested peer remains in a secure state, remote attestation must be re-initiated
+periodically. With the current protocol, this requires a new handshake to be started.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1457,6 +1493,14 @@ Use the validate API to confirm the authenticator’s validity with respect to t
 <div class="email">
 <span>Email:</span>
 <a href="mailto:muhammad_usama.sardar@tu-dresden.de" class="email">muhammad_usama.sardar@tu-dresden.de</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Yaron Sheffer</span></div>
+<div dir="auto" class="left"><span class="org">Intuit</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:yaronf.ietf@gmail.com" class="email">yaronf.ietf@gmail.com</a>
 </div>
 </address>
 <address class="vcard">
