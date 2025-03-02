@@ -1,6 +1,6 @@
 ---
 title: "Remote Attestation with Exported Authenticators"
-abbrev: "Remote Attestation with Exported Authenticators"
+abbrev: "Application Layer Attestation"
 category: std
 
 docname: draft-fossati-tls-exported-attestation-latest
@@ -37,7 +37,8 @@ author:
     name: Yaron Sheffer
     organization: Intuit
     email: yaronf.ietf@gmail.com
-  - name: Hannes Tschofenig
+  -
+    name: Hannes Tschofenig
     organization: University of Applied Sciences Bonn-Rhein-Sieg
     abbrev: H-BRS
     country: Germany
@@ -49,6 +50,7 @@ normative:
   RFC2119:
   RFC8174:
   RFC9261:
+  I-D.ietf-rats-msg-wrap:
 
 informative:
   I-D.ietf-lamps-csr-attestation:
@@ -68,13 +70,13 @@ More technically, an Attester produces a signed collection of Claims that consti
 
 At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. As a result, this document focuses on the conveyance of Evidence and Attestation Results as part of the payloads defined by Exported Authenticators. The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.
 
-This document builds upon two foundational specifications:
+This document builds upon three foundational specifications:
 
-- RATS Architecture {{RFC9334}}: The RATS (Remote Attestation Procedures) architecture defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or background check model, depending on the order of data flow in the system.
+- RATS (Remote Attestation Procedures) Architecture {{RFC9334}}: RFC 9334 defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or the background check model, depending on the order of data flow in the system.
 
-- TLS Exported Authenticators {{RFC9261}}: The core idea is to allow bi-directional post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from Server and Client uses CertificateRequest and ClientCertificateRequest message, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.
+- TLS Exported Authenticators {{RFC9261}}: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.
 
-This specification reuses exported authenticators to carry Evidence and/or Attestation Results. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.
+- RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a convenient encapsulation of Evidence and Attestation Result payloads thereby provide an abstraction of the utilized attestation technology. This specification reuses exported authenticators to carry Evidence and/or Attestation Results wrapped via the CMW. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.
 
 # Terminology
 
@@ -86,44 +88,43 @@ We use the term REMOTE_ATTESTATION payload to refer to the opaque token generate
 
 # Architecture
 
-Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges.
+Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges. A future version of this specification will provide more details. 
 
-The Exported Authenticator API defined in RFC 9261 accepts a request, a set of certificates, and supporting information as input. The output is an opaque token that serves as the REMOTE_ATTESTATION payload. Upon receipt of a REMOTE_ATTESTATION payload, an endpoint that supports secondary certificates MUST take the following steps to validate the contained token:
+The Exported Authenticator API defined in RFC 9261 accepts a request, a set of certificates, and supporting information as input. The output is an opaque token that serves as the REMOTE_ATTESTATION payload. Upon receipt of a REMOTE_ATTESTATION payload, an endpoint that supports "secondary certificates" MUST take the following steps to validate the contained token:
 
-Use the get context API to retrieve the certificate_request_context that was used to generate the authenticator (if any). Since the certificate_request_context for spontaneous server certificates is chosen by the server, its usage is implementation-dependent (see Section 5 of {{RFC9261}} for more details).
-Use the validate API to confirm the authenticator’s validity with respect to the generated request (if any). If validation fails, this SHOULD be treated as a connection error. Upon successful validation, the endpoint can conduct further checks to ensure the certificate’s acceptability.
+- Use the get context API to retrieve the certificate_request_context that was used to generate the authenticator (if any). Since the certificate_request_context for spontaneous server certificates is chosen by the server, its usage is implementation-dependent (see {{Section 5 of RFC9261}} for more details).
 
-In this example, the server possesses an identity certificate, while the client is not authenticated during the initial TLS exchange. For readability purposes the CA and the Verifier are combined into a single entity. For a specific instantiation of the example exchange consider the integration of {{I-D.ietf-lamps-csr-attestation}} and {{I-D.ietf-lamps-attestation-freshness}}.
+- Use the validate API to confirm the authenticator's validity with respect to the generated request (if any). If validation fails, this SHOULD be treated as a connection error. Upon successful validation, the endpoint can conduct further checks to ensure the certificate's acceptability.
+
+In the following examples, the server possesses an identity certificate, while the client is not authenticated during the initial TLS exchange.
+
+{{fig-passport}} shows the passport model while {{fig-background}} illustrates the background-check model.
+For a specific instantiation of the passport model see the integration of attested CSR {{I-D.ietf-lamps-csr-attestation}} into the CMP protocol {{I-D.ietf-lamps-attestation-freshness}}.
 
 ~~~aasvg
 Client                   Server                  CA/Verifier
   |                        |                         |
-  |------------------------|                         |
+  |<---------------------->|                         |
   |  Regular TLS Handshake |                         |
   |    (Server-only auth)  |                         |
-  |------------------------|                         |
   |                        |                         |
   |  ... time passes ...   |                         |
-  |                        |                         |
   |                        |                         |
   |<-----------------------|                         |
   | Authenticator Request  |                         |
   | (ClientCertificateReq) |                         |
-  |------------------------|                         |
   |                        |                         |
   |<------------------------------------------------>|
-  |      Certificate Management Protocol (CSR)       |
+  |      Certificate Management Protocol (+CSR)      |
   |       (Evidence requested)                       |
   |                        |                         |
   |<-------------------------------------------------|
-  |      Certificate       |                         |
-  | (Evidence)             |                         |
+  |      Certificate (with Attestation Result)       |
   |                        |                         |
-  |------------------------|                         |
+  |----------------------->|                         |
   | Exported Authenticator |                         |
   |  (Authenticator with   |                         |
   |   Attestation Result)  |                         |
-  |------------------------|                         |
   |                        |                         |
 ~~~
 {: #fig-passport title="Passport Model with Client as Attester"}
@@ -140,7 +141,7 @@ Client              Attester                 Server           Verifier
   | Authenticator Request (ClientCertReq), Nonce                  |
   |                   |                        |                  |
   |------------------>|                        |                  |
-  |   Request Evidence|                        |                  |
+  | Request Evidence  |                        |                  |
   |<------------------|                        |                  |
   | Key Attestation   |                        |                  |
   | as Evidence       |                        |                  |
@@ -162,28 +163,27 @@ This document inherits the security considerations of RFC 9261 and RFC 9334. The
 
 ## Using the TLS Connection
 
-Remote attestation in this document takes place in the context of a TLS handshake, and the TLS connection
-remains valid following this process. This TLS connection should be handled with care, since both Client
-and Server must agree that attestation completed successfully before sending data to or receiving data from the
+Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection
+remains valid after this process. Care must be taken when handling this TLS connection, as both the client
+and server must agree that remote attestation was successfully completed before exchanging data with the
 attested party.
 
 Session resumption presents special challenges since it happens at the TLS level, which is not aware of the
-application-level Authenticator. The application (or the modified TLS library)
-must ensure that a resumed session has already
-completed remote attestation before the session can be used normally, and race conditions are possible.
+application-level Authenticator. The application (or the modified TLS library) must ensure that a resumed
+session has already completed remote attestation before the session can be used normally, and race conditions are possible.
 
 ## Evidence Freshness
 
-The Evidence presented in this protocol is obviously only valid as of the time it is generated and presented.
-To ensure that the attested peer remains in a secure state, remote attestation must be re-initiated
-periodically. With the current protocol, this requires a new handshake to be started.
+The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that
+the attested peer remains in a secure state, remote attestation must be re-initiated
+periodically. With the current protocol, this requires a new post-handshake authentication protocol run to be started.
 
 # IANA Considerations
 
-TBD: IANA registration for registering new certificate formats.
+TBD: Request a new entry in the "TLS Certificate Types" to carry a CMW.
 
 --- back
 
 # Acknowledgements
 
-Add your name here.
+We would like to thank Paul Howard, Ionut Mihalcea, and Yogesh Deshpande for their input.
