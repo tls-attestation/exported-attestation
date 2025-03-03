@@ -1223,7 +1223,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <p id="section-1-5.1.1">RATS (Remote Attestation Procedures) Architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>: RFC 9334 defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or the background check model, depending on the order of data flow in the system.<a href="#section-1-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-5.2">
-          <p id="section-1-5.2.1">TLS Exported Authenticators <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-5.2.1">TLS Exported Authenticators <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer.<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-5.3">
           <p id="section-1-5.3.1">RATS Conceptual Messages Wrapper (CMW) <span>[<a href="#I-D.ietf-rats-msg-wrap" class="cite xref">I-D.ietf-rats-msg-wrap</a>]</span>: CMW provides a convenient encapsulation of Evidence and Attestation Result payloads thereby provide an abstraction of the utilized attestation technology. This specification reuses exported authenticators to carry Evidence and/or Attestation Results wrapped via the CMW. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.<a href="#section-1-5.3.1" class="pilcrow">¶</a></p>
@@ -1258,7 +1258,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </ul>
 <p id="section-3-4">In the following examples, the server possesses an identity certificate, while the client is not authenticated during the initial TLS exchange.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5"><a href="#fig-passport" class="auto internal xref">Figure 1</a> shows the passport model while <a href="#fig-background" class="auto internal xref">Figure 2</a> illustrates the background-check model.
-For a specific instantiation of the passport model see the integration of attested CSR <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span> into the CMP protocol <span>[<a href="#I-D.ietf-lamps-attestation-freshness" class="cite xref">I-D.ietf-lamps-attestation-freshness</a>]</span>.<a href="#section-3-5" class="pilcrow">¶</a></p>
+For a specific instantiation of this passport model see the integration of the attested CSR <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span> into the CMP protocol <span>[<a href="#I-D.ietf-lamps-attestation-freshness" class="cite xref">I-D.ietf-lamps-attestation-freshness</a>]</span>.<a href="#section-3-5" class="pilcrow">¶</a></p>
 <span id="name-passport-model-with-client-"></span><div id="fig-passport">
 <figure id="figure-1">
         <div id="section-3-6.1">
@@ -1321,10 +1321,11 @@ For a specific instantiation of the passport model see the integration of attest
 <a href="#name-passport-model-with-client-" class="selfRef">Passport Model with Client as Attester</a>
         </figcaption></figure>
 </div>
+<p id="section-3-7"><a href="#fig-background" class="auto internal xref">Figure 2</a> shows an example using the background-check model.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <span id="name-background-check-model-with"></span><div id="fig-background">
 <figure id="figure-2">
-        <div id="section-3-7.1">
-          <div class="alignLeft art-svg artwork" id="section-3-7.1.1">
+        <div id="section-3-8.1">
+          <div class="alignLeft art-svg artwork" id="section-3-8.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="416" width="568" viewBox="0 0 568 416" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 24,48 L 24,400" fill="none" stroke="black"></path>
               <path d="M 184,112 L 184,128" fill="none" stroke="black"></path>
@@ -1384,7 +1385,7 @@ For a specific instantiation of the passport model see the integration of attest
                 <text x="440" y="356">Attestation</text>
                 <text x="420" y="372">Result</text>
               </g>
-            </svg><a href="#section-3-7.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-3-8.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:

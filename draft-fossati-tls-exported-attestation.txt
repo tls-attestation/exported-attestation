@@ -131,15 +131,7 @@ Table of Contents
       receiving the authenticator request message can respond with an
       Authenticator consisting of Certificate, CertificateVerify, and
       Finished messages.  These messages can then be validated by the
-      other peer.  Each authenticator is computed using a Handshake
-      Context and Finished MAC Key derived from the TLS session.  The
-      Handshake Context is the same for both parties, but the Finished
-      MAC Key differs depending on whether the authenticator is created
-      by the client or the server.  Verified authenticators result in
-      the validation of certificate chains and confirmed possession of
-      the private key.  These certificates can be integrated into a
-      collection of available certificates, and desired certificates can
-      also be described within these collections.
+      other peer.
 
    *  RATS Conceptual Messages Wrapper (CMW) [I-D.ietf-rats-msg-wrap]:
       CMW provides a convenient encapsulation of Evidence and
@@ -205,8 +197,8 @@ Table of Contents
    TLS exchange.
 
    Figure 1 shows the passport model while Figure 2 illustrates the
-   background-check model.  For a specific instantiation of the passport
-   model see the integration of attested CSR
+   background-check model.  For a specific instantiation of this
+   passport model see the integration of the attested CSR
    [I-D.ietf-lamps-csr-attestation] into the CMP protocol
    [I-D.ietf-lamps-attestation-freshness].
 
@@ -236,6 +228,8 @@ Table of Contents
      |                        |                         |
 
               Figure 1: Passport Model with Client as Attester
+
+   Figure 2 shows an example using the background-check model.
 
   Client              Attester                 Server           Verifier
     |                   |                        |                  |
