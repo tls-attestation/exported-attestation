@@ -2,10 +2,10 @@
 
 This is the working area for the individual Internet-Draft, "Remote Attestation with Exported Authenticators".
 
-* [Editor's Copy](https://hannestschofenig.github.io/exported-attestation/#go.draft-fossati-rats-exported-attestation.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-fossati-rats-exported-attestation)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-fossati-rats-exported-attestation)
-* [Compare Editor's Copy to Individual Draft](https://hannestschofenig.github.io/exported-attestation/#go.draft-fossati-rats-exported-attestation.diff)
+* [Editor's Copy](https://hannestschofenig.github.io/exported-attestation/#go.draft-fossati-tls-exported-attestation.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-fossati-tls-exported-attestation)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-fossati-tls-exported-attestation)
+* [Compare Editor's Copy to Individual Draft](https://hannestschofenig.github.io/exported-attestation/#go.draft-fossati-tls-exported-attestation.diff)
 
 
 ## Contributing
