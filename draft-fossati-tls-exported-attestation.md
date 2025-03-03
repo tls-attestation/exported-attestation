@@ -43,6 +43,10 @@ author:
     abbrev: H-BRS
     country: Germany
     email: Hannes.Tschofenig@gmx.net
+  -
+    name: Ionut Mihalcea
+    organization: Arm Limited
+    email: ionut.mihalcea@arm.com
 
 normative:
   RFC9334:
