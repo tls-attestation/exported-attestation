@@ -165,7 +165,7 @@ Client              Attester                 Server           Verifier
 
 # Security Considerations
 
-This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, it is recommended that Evidence MUST be protected using dedicated attestation keys chaining back to the root of trust.
+This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, it is recommended that Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.
 
 ## Using the TLS Connection
 
