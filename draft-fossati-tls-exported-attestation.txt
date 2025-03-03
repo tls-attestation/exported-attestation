@@ -210,54 +210,54 @@ Table of Contents
 
    Client                   Server                  CA/Verifier
      |                        |                         |
-     |<---------------------->|                         |
      |  Regular TLS Handshake |                         |
      |    (Server-only auth)  |                         |
+     |<---------------------->|                         |
      |                        |                         |
      |  ... time passes ...   |                         |
      |                        |                         |
-     |<-----------------------|                         |
      | Authenticator Request  |                         |
      | (ClientCertificateReq) |                         |
+     |<-----------------------|                         |
      |                        |                         |
-     |<------------------------------------------------>|
      |      Certificate Management Protocol (+CSR)      |
      |       (Evidence requested)                       |
+     |<------------------------------------------------>|
      |                        |                         |
-     |<-------------------------------------------------|
      |      Certificate (with Attestation Result)       |
+     |<-------------------------------------------------|
      |                        |                         |
-     |----------------------->|                         |
      | Exported Authenticator |                         |
      |  (Authenticator with   |                         |
      |   Attestation Result)  |                         |
+     |----------------------->|                         |
      |                        |                         |
 
               Figure 1: Passport Model with Client as Attester
 
   Client              Attester                 Server           Verifier
     |                   |                        |                  |
-    |<------------------------------------------>|                  |
     |  Regular TLS Handshake (Server-only auth)  |                  |
+    |<------------------------------------------>|                  |
     |                   |                        |                  |
     |   ... time passes ...                      |                  |
     |                   |                        |                  |
-    |<-------------------------------------------|                  |
     | Authenticator Request (ClientCertReq), Nonce                  |
+    |<-------------------------------------------|                  |
     |                   |                        |                  |
-    |------------------>|                        |                  |
     | Request Evidence  |                        |                  |
-    |<------------------|                        |                  |
+    |------------------>|                        |                  |
     | Key Attestation   |                        |                  |
     | as Evidence       |                        |                  |
-    |------------------------------------------->|                  |
+    |<------------------|                        |                  |
     |  Exported Authenticator                    |                  |
     |  (Authenticator with Evidence)             |                  |
-    |                   |                        |----------------->|
+    |------------------------------------------->|                  |
     |                   |                        | Send Evidence    |
-    |                   |                        |<-----------------|
+    |                   |                        |----------------->|
     |                   |                        | Attestation      |
     |                   |                        | Result           |
+    |                   |                        |<-----------------|
     |                   |                        |                  |
 
   Figure 2: Background Check Model with a Separate Client-Side Attester
