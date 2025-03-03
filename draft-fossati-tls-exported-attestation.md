@@ -104,27 +104,27 @@ For a specific instantiation of the passport model see the integration of attest
 ~~~aasvg
 Client                   Server                  CA/Verifier
   |                        |                         |
-  |<---------------------->|                         |
   |  Regular TLS Handshake |                         |
   |    (Server-only auth)  |                         |
+  |<---------------------->|                         |
   |                        |                         |
   |  ... time passes ...   |                         |
   |                        |                         |
-  |<-----------------------|                         |
   | Authenticator Request  |                         |
   | (ClientCertificateReq) |                         |
+  |<-----------------------|                         |
   |                        |                         |
-  |<------------------------------------------------>|
   |      Certificate Management Protocol (+CSR)      |
   |       (Evidence requested)                       |
+  |<------------------------------------------------>|
   |                        |                         |
-  |<-------------------------------------------------|
   |      Certificate (with Attestation Result)       |
+  |<-------------------------------------------------|
   |                        |                         |
-  |----------------------->|                         |
   | Exported Authenticator |                         |
   |  (Authenticator with   |                         |
   |   Attestation Result)  |                         |
+  |----------------------->|                         |
   |                        |                         |
 ~~~
 {: #fig-passport title="Passport Model with Client as Attester"}
@@ -132,27 +132,27 @@ Client                   Server                  CA/Verifier
 ~~~aasvg
 Client              Attester                 Server           Verifier
   |                   |                        |                  |
-  |<------------------------------------------>|                  |
   |  Regular TLS Handshake (Server-only auth)  |                  |
+  |<------------------------------------------>|                  |
   |                   |                        |                  |
   |   ... time passes ...                      |                  |
   |                   |                        |                  |
-  |<-------------------------------------------|                  |
   | Authenticator Request (ClientCertReq), Nonce                  |
+  |<-------------------------------------------|                  |
   |                   |                        |                  |
-  |------------------>|                        |                  |
   | Request Evidence  |                        |                  |
-  |<------------------|                        |                  |
+  |------------------>|                        |                  |
   | Key Attestation   |                        |                  |
   | as Evidence       |                        |                  |
-  |------------------------------------------->|                  |
+  |<------------------|                        |                  |
   |  Exported Authenticator                    |                  |
   |  (Authenticator with Evidence)             |                  |
-  |                   |                        |----------------->|
+  |------------------------------------------->|                  |
   |                   |                        | Send Evidence    |
-  |                   |                        |<-----------------|
+  |                   |                        |----------------->|
   |                   |                        | Attestation      |
   |                   |                        | Result           |
+  |                   |                        |<-----------------|
   |                   |                        |                  |
 ~~~
 {: #fig-background title="Background Check Model with a Separate Client-Side Attester"}
