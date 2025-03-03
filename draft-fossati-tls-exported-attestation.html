@@ -12,14 +12,14 @@
 <meta content="
        This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. This approach falls into the category of post-handshake attestation by exchanging payloads in the application layer protocol while binding the remote attestation to the underlying communication channel. This document supports both the passport and background check models from the RATS architecture. 
     " name="description">
-<meta content="xml2rfc 3.27.0" name="generator">
+<meta content="xml2rfc 3.28.0" name="generator">
 <meta content="Attestation" name="keyword">
 <meta content="TLS" name="keyword">
 <meta content="Key Attestation" name="keyword">
 <meta content="Exported Authenticators" name="keyword">
 <meta content="draft-fossati-tls-exported-attestation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.27.0
+  xml2rfc 3.28.0
     Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1049,12 +1049,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">Remote Attestation with Exported Authent</td>
+<td class="center">Application Layer Attestation</td>
 <td class="right">March 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Fossati, et al.</td>
-<td class="center">Expires 3 September 2025</td>
+<td class="center">Expires 4 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-fossati-tls-exported-attestation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-02" class="published">2 March 2025</time>
+<time datetime="2025-03-03" class="published">3 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-03">3 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-04">4 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1131,7 +1131,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1212,16 +1212,18 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-1-1">There is a growing need to demonstrate to a remote party that cryptographic keys are stored in a secure element, the device is in a known good state, secure boot has been enabled, and that low-level software and firmware have not been tampered with. Remote attestation provides this capability.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">More technically, an Attester produces a signed collection of Claims that constitute Evidence about its running environment(s). A Relying Party may consult an Attestation Result produced by a Verifier that has appraised the Evidence to make policy decisions regarding the trustworthiness of the Target Environment being assessed. This is, in essence, what RFC 9334 <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> defines.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. As a result, this document focuses on the conveyance of Evidence and Attestation Results as part of the payloads defined by Exported Authenticators. The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This document builds upon two foundational specifications:<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-4">This document builds upon three foundational specifications:<a href="#section-1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-5.1">
-          <p id="section-1-5.1.1">RATS Architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>: The RATS (Remote Attestation Procedures) architecture defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or background check model, depending on the order of data flow in the system.<a href="#section-1-5.1.1" class="pilcrow">¶</a></p>
+          <p id="section-1-5.1.1">RATS (Remote Attestation Procedures) Architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>: RFC 9334 defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or the background check model, depending on the order of data flow in the system.<a href="#section-1-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-5.2">
-          <p id="section-1-5.2.1">TLS Exported Authenticators <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>: The core idea is to allow bi-directional post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from Server and Client uses CertificateRequest and ClientCertificateRequest message, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-5.2.1">TLS Exported Authenticators <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-5.3">
+          <p id="section-1-5.3.1">RATS Conceptual Messages Wrapper (CMW) <span>[<a href="#I-D.ietf-rats-msg-wrap" class="cite xref">I-D.ietf-rats-msg-wrap</a>]</span>: CMW provides a convenient encapsulation of Evidence and Attestation Result payloads thereby provide an abstraction of the utilized attestation technology. This specification reuses exported authenticators to carry Evidence and/or Attestation Results wrapped via the CMW. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.<a href="#section-1-5.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-6">This specification reuses exported authenticators to carry Evidence and/or Attestation Results. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1239,32 +1241,40 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-architecture">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
       </h2>
-<p id="section-3-1">Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The Exported Authenticator API defined in RFC 9261 accepts a request, a set of certificates, and supporting information as input. The output is an opaque token that serves as the REMOTE_ATTESTATION payload. Upon receipt of a REMOTE_ATTESTATION payload, an endpoint that supports secondary certificates MUST take the following steps to validate the contained token:<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">Use the get context API to retrieve the certificate_request_context that was used to generate the authenticator (if any). Since the certificate_request_context for spontaneous server certificates is chosen by the server, its usage is implementation-dependent (see Section 5 of <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span> for more details).
-Use the validate API to confirm the authenticator’s validity with respect to the generated request (if any). If validation fails, this SHOULD be treated as a connection error. Upon successful validation, the endpoint can conduct further checks to ensure the certificate’s acceptability.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">In this example, the server possesses an identity certificate, while the client is not authenticated during the initial TLS exchange. For readability purposes the CA and the Verifier are combined into a single entity. For a specific instantiation of the example exchange consider the integration of <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span> and <span>[<a href="#I-D.ietf-lamps-attestation-freshness" class="cite xref">I-D.ietf-lamps-attestation-freshness</a>]</span>.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-1">Designers of application layer protocols need to define payload formats for conveying exported authenticators that contain remote Evidence. They must also provide mechanisms to inform both communication partners of their ability to exchange Evidence and Attestation Results via this specification. This capability can be specified in a profile of this document or dynamically negotiated during protocol exchanges. A future version of this specification will provide more details.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The Exported Authenticator API defined in RFC 9261 accepts a request, a set of certificates, and supporting information as input. The output is an opaque token that serves as the REMOTE_ATTESTATION payload. Upon receipt of a REMOTE_ATTESTATION payload, an endpoint that supports "secondary certificates" MUST take the following steps to validate the contained token:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-3.1">
+          <p id="section-3-3.1.1">Use the get context API to retrieve the certificate_request_context that was used to generate the authenticator (if any). Since the certificate_request_context for spontaneous server certificates is chosen by the server, its usage is implementation-dependent (see <span><a href="https://rfc-editor.org/rfc/rfc9261#section-5" class="relref">Section 5</a> of [<a href="#RFC9261" class="cite xref">RFC9261</a>]</span> for more details).<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-3.2">
+          <p id="section-3-3.2.1">Use the validate API to confirm the authenticator's validity with respect to the generated request (if any). If validation fails, this SHOULD be treated as a connection error. Upon successful validation, the endpoint can conduct further checks to ensure the certificate's acceptability.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-4">In the following examples, the server possesses an identity certificate, while the client is not authenticated during the initial TLS exchange.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5"><a href="#fig-passport" class="auto internal xref">Figure 1</a> shows the passport model while <a href="#fig-background" class="auto internal xref">Figure 2</a> illustrates the background-check model.
+For a specific instantiation of the passport model see the integration of attested CSR <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span> into the CMP protocol <span>[<a href="#I-D.ietf-lamps-attestation-freshness" class="cite xref">I-D.ietf-lamps-attestation-freshness</a>]</span>.<a href="#section-3-5" class="pilcrow">¶</a></p>
 <span id="name-passport-model-with-client-"></span><div id="fig-passport">
 <figure id="figure-1">
-        <div id="section-3-5.1">
-          <div class="alignLeft art-svg artwork" id="section-3-5.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="496" width="488" viewBox="0 0 488 496" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-              <path d="M 24,48 L 24,480" fill="none" stroke="black"></path>
-              <path d="M 224,48 L 224,264" fill="none" stroke="black"></path>
-              <path d="M 224,344 L 224,480" fill="none" stroke="black"></path>
-              <path d="M 432,48 L 432,480" fill="none" stroke="black"></path>
+        <div id="section-3-6.1">
+          <div class="alignLeft art-svg artwork" id="section-3-6.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="416" width="488" viewBox="0 0 488 416" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 24,48 L 24,400" fill="none" stroke="black"></path>
+              <path d="M 224,48 L 224,216" fill="none" stroke="black"></path>
+              <path d="M 224,320 L 224,400" fill="none" stroke="black"></path>
+              <path d="M 432,48 L 432,400" fill="none" stroke="black"></path>
               <path d="M 32,64 L 216,64" fill="none" stroke="black"></path>
-              <path d="M 32,112 L 216,112" fill="none" stroke="black"></path>
-              <path d="M 32,192 L 216,192" fill="none" stroke="black"></path>
-              <path d="M 32,240 L 216,240" fill="none" stroke="black"></path>
-              <path d="M 32,272 L 424,272" fill="none" stroke="black"></path>
-              <path d="M 32,336 L 424,336" fill="none" stroke="black"></path>
-              <path d="M 32,400 L 216,400" fill="none" stroke="black"></path>
-              <path d="M 32,464 L 216,464" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="432,272 420,266.4 420,277.6" fill="black" transform="rotate(0,424,272)"></polygon>
-              <polygon class="arrowhead" points="40,336 28,330.4 28,341.6" fill="black" transform="rotate(180,32,336)"></polygon>
-              <polygon class="arrowhead" points="40,272 28,266.4 28,277.6" fill="black" transform="rotate(180,32,272)"></polygon>
-              <polygon class="arrowhead" points="40,192 28,186.4 28,197.6" fill="black" transform="rotate(180,32,192)"></polygon>
+              <path d="M 32,160 L 216,160" fill="none" stroke="black"></path>
+              <path d="M 32,224 L 424,224" fill="none" stroke="black"></path>
+              <path d="M 32,288 L 424,288" fill="none" stroke="black"></path>
+              <path d="M 32,336 L 216,336" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="432,224 420,218.4 420,229.6" fill="black" transform="rotate(0,424,224)"></polygon>
+              <polygon class="arrowhead" points="224,336 212,330.4 212,341.6" fill="black" transform="rotate(0,216,336)"></polygon>
+              <polygon class="arrowhead" points="224,64 212,58.4 212,69.6" fill="black" transform="rotate(0,216,64)"></polygon>
+              <polygon class="arrowhead" points="40,288 28,282.4 28,293.6" fill="black" transform="rotate(180,32,288)"></polygon>
+              <polygon class="arrowhead" points="40,224 28,218.4 28,229.6" fill="black" transform="rotate(180,32,224)"></polygon>
+              <polygon class="arrowhead" points="40,160 28,154.4 28,165.6" fill="black" transform="rotate(180,32,160)"></polygon>
+              <polygon class="arrowhead" points="40,64 28,58.4 28,69.6" fill="black" transform="rotate(180,32,64)"></polygon>
               <g class="text">
                 <text x="28" y="36">Client</text>
                 <text x="228" y="36">Server</text>
@@ -1274,30 +1284,32 @@ Use the validate API to confirm the authenticator’s validity with respect to t
                 <text x="176" y="84">Handshake</text>
                 <text x="108" y="100">(Server-only</text>
                 <text x="184" y="100">auth)</text>
-                <text x="56" y="148">...</text>
-                <text x="92" y="148">time</text>
-                <text x="140" y="148">passes</text>
-                <text x="184" y="148">...</text>
-                <text x="88" y="212">Authenticator</text>
-                <text x="176" y="212">Request</text>
-                <text x="124" y="228">(ClientCertificateReq)</text>
-                <text x="120" y="292">Certificate</text>
-                <text x="212" y="292">Management</text>
-                <text x="292" y="292">Protocol</text>
-                <text x="352" y="292">(CSR)</text>
-                <text x="120" y="308">(Evidence</text>
-                <text x="204" y="308">requested)</text>
-                <text x="224" y="324">|</text>
-                <text x="120" y="356">Certificate</text>
-                <text x="76" y="372">(Evidence)</text>
-                <text x="68" y="420">Exported</text>
-                <text x="160" y="420">Authenticator</text>
-                <text x="100" y="436">(Authenticator</text>
-                <text x="180" y="436">with</text>
-                <text x="96" y="452">Attestation</text>
-                <text x="176" y="452">Result)</text>
+                <text x="56" y="132">...</text>
+                <text x="92" y="132">time</text>
+                <text x="140" y="132">passes</text>
+                <text x="184" y="132">...</text>
+                <text x="88" y="180">Authenticator</text>
+                <text x="176" y="180">Request</text>
+                <text x="124" y="196">(ClientCertificateReq)</text>
+                <text x="120" y="244">Certificate</text>
+                <text x="212" y="244">Management</text>
+                <text x="292" y="244">Protocol</text>
+                <text x="356" y="244">(+CSR)</text>
+                <text x="120" y="260">(Evidence</text>
+                <text x="204" y="260">requested)</text>
+                <text x="224" y="276">|</text>
+                <text x="120" y="308">Certificate</text>
+                <text x="192" y="308">(with</text>
+                <text x="264" y="308">Attestation</text>
+                <text x="344" y="308">Result)</text>
+                <text x="68" y="356">Exported</text>
+                <text x="160" y="356">Authenticator</text>
+                <text x="100" y="372">(Authenticator</text>
+                <text x="180" y="372">with</text>
+                <text x="96" y="388">Attestation</text>
+                <text x="176" y="388">Result)</text>
               </g>
-            </svg><a href="#section-3-5.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-3-6.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
@@ -1306,8 +1318,8 @@ Use the validate API to confirm the authenticator’s validity with respect to t
 </div>
 <span id="name-background-check-model-with"></span><div id="fig-background">
 <figure id="figure-2">
-        <div id="section-3-6.1">
-          <div class="alignLeft art-svg artwork" id="section-3-6.1.1">
+        <div id="section-3-7.1">
+          <div class="alignLeft art-svg artwork" id="section-3-7.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="416" width="568" viewBox="0 0 568 416" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 24,48 L 24,400" fill="none" stroke="black"></path>
               <path d="M 184,112 L 184,136" fill="none" stroke="black"></path>
@@ -1351,8 +1363,8 @@ Use the validate API to confirm the authenticator’s validity with respect to t
                 <text x="176" y="164">Request</text>
                 <text x="276" y="164">(ClientCertReq),</text>
                 <text x="368" y="164">Nonce</text>
-                <text x="80" y="212">Request</text>
-                <text x="148" y="212">Evidence</text>
+                <text x="64" y="212">Request</text>
+                <text x="132" y="212">Evidence</text>
                 <text x="48" y="244">Key</text>
                 <text x="112" y="244">Attestation</text>
                 <text x="44" y="260">as</text>
@@ -1367,7 +1379,7 @@ Use the validate API to confirm the authenticator’s validity with respect to t
                 <text x="440" y="372">Attestation</text>
                 <text x="420" y="388">Result</text>
               </g>
-            </svg><a href="#section-3-6.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-3-7.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
@@ -1387,14 +1399,13 @@ Use the validate API to confirm the authenticator’s validity with respect to t
         <h3 id="name-using-the-tls-connection">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-using-the-tls-connection" class="section-name selfRef">Using the TLS Connection</a>
         </h3>
-<p id="section-4.1-1">Remote attestation in this document takes place in the context of a TLS handshake, and the TLS connection
-remains valid following this process. This TLS connection should be handled with care, since both Client
-and Server must agree that attestation completed successfully before sending data to or receiving data from the
+<p id="section-4.1-1">Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection
+remains valid after this process. Care must be taken when handling this TLS connection, as both the client
+and server must agree that remote attestation was successfully completed before exchanging data with the
 attested party.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">Session resumption presents special challenges since it happens at the TLS level, which is not aware of the
-application-level Authenticator. The application (or the modified TLS library)
-must ensure that a resumed session has already
-completed remote attestation before the session can be used normally, and race conditions are possible.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+application-level Authenticator. The application (or the modified TLS library) must ensure that a resumed
+session has already completed remote attestation before the session can be used normally, and race conditions are possible.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="evidence-freshness">
@@ -1402,9 +1413,9 @@ completed remote attestation before the session can be used normally, and race c
         <h3 id="name-evidence-freshness">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-evidence-freshness" class="section-name selfRef">Evidence Freshness</a>
         </h3>
-<p id="section-4.2-1">The Evidence presented in this protocol is obviously only valid as of the time it is generated and presented.
-To ensure that the attested peer remains in a secure state, remote attestation must be re-initiated
-periodically. With the current protocol, this requires a new handshake to be started.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that
+the attested peer remains in a secure state, remote attestation must be re-initiated
+periodically. With the current protocol, this requires a new post-handshake authentication protocol run to be started.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1414,7 +1425,7 @@ periodically. With the current protocol, this requires a new handshake to be sta
       <h2 id="name-iana-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-5-1">TBD: IANA registration for registering new certificate formats.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">TBD: Request a new entry in the "TLS Certificate Types" to carry a CMW.<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-combined-references">
@@ -1428,6 +1439,10 @@ periodically. With the current protocol, this requires a new handshake to be sta
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-rats-msg-wrap">[I-D.ietf-rats-msg-wrap]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Smith, N.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">D. Glaze</span>, <span class="refTitle">"RATS Conceptual Messages Wrapper (CMW)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-msg-wrap-12</span>, <time datetime="2025-02-28" class="refDate">28 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-12">https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-12</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
@@ -1459,7 +1474,7 @@ periodically. With the current protocol, this requires a new handshake to be sta
 <dd class="break"></dd>
 <dt id="I-D.ietf-lamps-csr-attestation">[I-D.ietf-lamps-csr-attestation]</dt>
       <dd>
-<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Wiseman, M.</span>, and <span class="refAuthor">N. Smith</span>, <span class="refTitle">"Use of Remote Attestation with Certification Signing Requests"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-csr-attestation-16</span>, <time datetime="2025-02-01" class="refDate">1 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-16">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-16</a>&gt;</span>. </dd>
+<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Wiseman, M.</span>, and <span class="refAuthor">N. Smith</span>, <span class="refTitle">"Use of Remote Attestation with Certification Signing Requests"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-csr-attestation-17</span>, <time datetime="2025-03-02" class="refDate">2 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-17">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-17</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1471,7 +1486,7 @@ periodically. With the current protocol, this requires a new handshake to be sta
       <h2 id="name-acknowledgements">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
-<p id="appendix-A-1">Add your name here.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">We would like to thank Paul Howard, Ionut Mihalcea, and Yogesh Deshpande for their input.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
