@@ -21,8 +21,8 @@ venue:
   type: Working Group
   mail: tls@ietf.org
   arch: https://datatracker.ietf.org/wg/tls/about/
-#  github: "ietf-tls-wg/app-layer-attestation"
-#  latest: "https://ietf-tls-wg.github.io/draft-fossati-tls-app-layer-attestation/draft-fossati-tls-app-layer-attestation.html"
+  github: "https://github.com/hannestschofenig/exported-attestation"
+  latest: "https://hannestschofenig.github.io/exported-attestation/draft-fossati-tls-exported-attestation.html"
 
 author:
   -
@@ -165,7 +165,7 @@ Client              Attester                 Server           Verifier
 
 # Security Considerations
 
-This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel.
+This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, it is recommended that Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.
 
 ## Using the TLS Connection
 
@@ -191,5 +191,5 @@ TBD: Request a new entry in the "TLS Certificate Types" to carry a CMW.
 --- back
 
 # Acknowledgements
-
-We would like to thank Paul Howard, Ionut Mihalcea, and Yogesh Deshpande for their input.
+We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
+We would also like to thank Paul Howard and Yogesh Deshpande for their input.
