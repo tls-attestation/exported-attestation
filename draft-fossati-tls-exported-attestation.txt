@@ -33,14 +33,20 @@ About This Document
 
    This note is to be removed before publishing as an RFC.
 
-   Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-fossati-tls-exported-
-   attestation/.
+   The latest revision of this draft can be found at
+   https://hannestschofenig.github.io/exported-attestation/draft-
+   fossati-tls-exported-attestation.html.  Status information for this
+   document may be found at https://datatracker.ietf.org/doc/draft-
+   fossati-tls-exported-attestation/.
 
    Discussion of this document takes place on the tls Working Group
    mailing list (mailto:tls@ietf.org), which is archived at
    https://datatracker.ietf.org/wg/tls/about/.  Subscribe at
    https://www.ietf.org/mailman/listinfo/tls/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/https://github.com/hannestschofenig/exported-
+   attestation.
 
 Status of This Memo
 
@@ -263,7 +269,11 @@ Table of Contents
    This document inherits the security considerations of RFC 9261 and
    RFC 9334.  The integrity of the exported authenticators must be
    guaranteed, and any failure in validating Evidence SHOULD be treated
-   as a fatal error in the communication channel.
+   as a fatal error in the communication channel.  Additionally, in
+   order to benefit from remote attestation, it is recommended that
+   Evidence MUST be protected using dedicated attestation keys chaining
+   back to a trust anchor.  This trust anchor will typically be provided
+   by the hardware manufacturer.
 
 4.1.  Using the TLS Connection
 
@@ -345,8 +355,9 @@ Table of Contents
 
 Appendix A.  Acknowledgements
 
-   We would like to thank Paul Howard, Ionut Mihalcea, and Yogesh
-   Deshpande for their input.
+   We would like to thank Chris Patton for his proposal to explore RFC
+   9261 for attested TLS.  We would also like to thank Paul Howard and
+   Yogesh Deshpande for their input.
 
 Authors' Addresses
 
