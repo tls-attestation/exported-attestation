@@ -10,6 +10,8 @@ Expires: 4 September 2025                                     TU Dresden
                                                                   Intuit
                                                            H. Tschofenig
                                                                    H-BRS
+                                                             I. Mihalcea
+                                                             Arm Limited
                                                             3 March 2025
 
 
@@ -373,3 +375,8 @@ Authors' Addresses
    University of Applied Sciences Bonn-Rhein-Sieg
    Germany
    Email: Hannes.Tschofenig@gmx.net
+
+
+   Ionut Mihalcea
+   Arm Limited
+   Email: ionut.mihalcea@arm.com
