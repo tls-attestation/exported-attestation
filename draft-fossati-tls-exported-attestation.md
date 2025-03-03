@@ -78,7 +78,7 @@ This document builds upon three foundational specifications:
 
 - RATS (Remote Attestation Procedures) Architecture {{RFC9334}}: RFC 9334 defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or the background check model, depending on the order of data flow in the system.
 
-- TLS Exported Authenticators {{RFC9261}}: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer. Each authenticator is computed using a Handshake Context and Finished MAC Key derived from the TLS session. The Handshake Context is the same for both parties, but the Finished MAC Key differs depending on whether the authenticator is created by the client or the server. Verified authenticators result in the validation of certificate chains and confirmed possession of the private key. These certificates can be integrated into a collection of available certificates, and desired certificates can also be described within these collections.
+- TLS Exported Authenticators {{RFC9261}}: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer.
 
 - RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a convenient encapsulation of Evidence and Attestation Result payloads thereby provide an abstraction of the utilized attestation technology. This specification reuses exported authenticators to carry Evidence and/or Attestation Results wrapped via the CMW. While exported authenticators traditionally deal with certificates, in this document, we use them for key attestation. Consequently, this mechanism applies specifically to remote attestation technologies that offer key attestation, though the encoding format is not restricted to X.509 certificates.
 
@@ -103,7 +103,7 @@ The Exported Authenticator API defined in RFC 9261 accepts a request, a set of c
 In the following examples, the server possesses an identity certificate, while the client is not authenticated during the initial TLS exchange.
 
 {{fig-passport}} shows the passport model while {{fig-background}} illustrates the background-check model.
-For a specific instantiation of the passport model see the integration of attested CSR {{I-D.ietf-lamps-csr-attestation}} into the CMP protocol {{I-D.ietf-lamps-attestation-freshness}}.
+For a specific instantiation of this passport model see the integration of the attested CSR {{I-D.ietf-lamps-csr-attestation}} into the CMP protocol {{I-D.ietf-lamps-attestation-freshness}}.
 
 ~~~aasvg
 Client                   Server                  CA/Verifier
@@ -132,6 +132,8 @@ Client                   Server                  CA/Verifier
   |                        |                         |
 ~~~
 {: #fig-passport title="Passport Model with Client as Attester"}
+
+{{fig-background}} shows an example using the background-check model.
 
 ~~~aasvg
 Client              Attester                 Server           Verifier
