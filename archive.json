@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-02T01:16:58.741522+00:00",
+  "timestamp": "2025-03-04T01:13:45.051752+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -65,6 +65,38 @@
       "updatedAt": "2025-02-20T20:31:25Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDON6zrys6sVywR",
+      "title": "Define Key Attestation in terminology",
+      "url": "https://github.com/hannestschofenig/exported-attestation/issues/7",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I am not yet sure in what sense key attestation is used in the draft. I think you mean workload attestation instead? Particularly the key in Confidential Computing does not exist at initial measurement time (load-time measurement), and hence I think the key -- per se -- cannot be \"attested\". ",
+      "createdAt": "2025-03-03T14:22:35Z",
+      "updatedAt": "2025-03-03T14:22:35Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDON6zrys6sV_CY",
+      "title": "Separate Client-Side Attester?",
+      "url": "https://github.com/hannestschofenig/exported-attestation/issues/8",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
+      "createdAt": "2025-03-03T14:40:46Z",
+      "updatedAt": "2025-03-03T14:40:46Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -73,24 +105,26 @@
       "id": "PR_kwDON6zrys6L9C9e",
       "title": "Initial review of Introduction",
       "url": "https://github.com/hannestschofenig/exported-attestation/pull/1",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- I tend to disagree with the following sentence because the role of Verifier is the same in both models. It depends on the order of data flow. \r\n> These interactions can follow different models, such as the passport or background check model, depending on the role of a verifier in the system.\r\n- The text regarding RFC 9261 in the draft was very confusing to me. Particularly, we need to distinguish between Exported Authenticator and Authenticator Request. I made some initial changes. Please check. ",
       "createdAt": "2025-02-20T20:28:31Z",
-      "updatedAt": "2025-02-24T13:16:59Z",
+      "updatedAt": "2025-03-02T11:02:11Z",
       "baseRepository": "hannestschofenig/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "c85e856f7c4528d8887fc19135e75319ec815aab",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
       "headRefOid": "c53cb2e20d491607b5e9f64a130d504db6961046",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-03-02T11:02:11Z",
+      "mergedAt": "2025-03-02T11:02:11Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "34f9d098a9b9f7f820712f14af99da84faf01da7"
+      },
       "comments": [],
       "reviews": []
     },
@@ -99,26 +133,275 @@
       "id": "PR_kwDON6zrys6MXV3r",
       "title": "More security considerations",
       "url": "https://github.com/hannestschofenig/exported-attestation/pull/3",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "yaronf",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This is not very polished, but there are security considerations to do with attestation at the application level.",
       "createdAt": "2025-02-24T23:10:22Z",
-      "updatedAt": "2025-02-24T23:10:23Z",
+      "updatedAt": "2025-03-02T11:04:06Z",
       "baseRepository": "hannestschofenig/exported-attestation",
       "baseRefName": "main",
-      "baseRefOid": "c85e856f7c4528d8887fc19135e75319ec815aab",
+      "baseRefOid": "34f9d098a9b9f7f820712f14af99da84faf01da7",
       "headRepository": "yaronf/exported-attestation",
       "headRefName": "main",
-      "headRefOid": "4e5c3d85f93e4547a48e62a4fa0645b0904fa519",
+      "headRefOid": "f79c3646ec5cb47c7b0cc43e37d2b0041d4f7ca4",
+      "closedAt": "2025-03-02T11:04:06Z",
+      "mergedAt": "2025-03-02T11:04:06Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "d7a5d1b9dfd46450ce450b163cb0a1a010d4759d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDON6zrys6NE1Is",
+      "title": "Remove trailing space - get lint to pass",
+      "url": "https://github.com/hannestschofenig/exported-attestation/pull/4",
+      "state": "MERGED",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-02T21:19:59Z",
+      "updatedAt": "2025-03-03T05:55:25Z",
+      "baseRepository": "hannestschofenig/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "06b1e23863495f4ac8561b7c7f29f3365a5c4ff9",
+      "headRepository": "yaronf/exported-attestation",
+      "headRefName": "main",
+      "headRefOid": "5fea5c51b03dec5b76117f05cf32540557c0b1ea",
+      "closedAt": "2025-03-03T05:55:24Z",
+      "mergedAt": "2025-03-03T05:55:24Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "d27d58bffe9dbb2e84c8ded55fd28bb850cc9875"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDON6zrys6NHMCk",
+      "title": "Rename draft in README",
+      "url": "https://github.com/hannestschofenig/exported-attestation/pull/5",
+      "state": "MERGED",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-03T08:21:09Z",
+      "updatedAt": "2025-03-03T08:47:11Z",
+      "baseRepository": "hannestschofenig/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "d27d58bffe9dbb2e84c8ded55fd28bb850cc9875",
+      "headRepository": "yaronf/exported-attestation",
+      "headRefName": "patch-1",
+      "headRefOid": "e662a46b5defdfbb1c8537b08a11502727ccc9c9",
+      "closedAt": "2025-03-03T08:47:11Z",
+      "mergedAt": "2025-03-03T08:47:11Z",
+      "mergedBy": "thomas-fossati",
+      "mergeCommit": {
+        "oid": "5137378f477ec04f4904665bc0690a87f2591723"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6eKBuL",
+          "commit": {
+            "abbreviatedOid": "e662a46"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-03T08:47:02Z",
+          "updatedAt": "2025-03-03T08:47:02Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDON6zrys6NISGC",
+      "title": "Authors++",
+      "url": "https://github.com/hannestschofenig/exported-attestation/pull/6",
+      "state": "MERGED",
+      "author": "ionut-arm",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Adding myself as author",
+      "createdAt": "2025-03-03T10:27:34Z",
+      "updatedAt": "2025-03-03T11:00:52Z",
+      "baseRepository": "hannestschofenig/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "71506d5b1d35d14cc616a3e7558156d3d24a2d0e",
+      "headRepository": "ionut-arm/exported-attestation",
+      "headRefName": "patch-1",
+      "headRefOid": "cac90e93b04f3cd599924c6de966439e9ed5219c",
+      "closedAt": "2025-03-03T11:00:52Z",
+      "mergedAt": "2025-03-03T11:00:52Z",
+      "mergedBy": "thomas-fossati",
+      "mergeCommit": {
+        "oid": "6baae779c9a8fd780586bcbd5b754326830d3658"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDON6zrys6NKmCe",
+      "title": "Dedicated attestation keys",
+      "url": "https://github.com/hannestschofenig/exported-attestation/pull/9",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Dedicated attestation keys\r\n- -Ionut +Chris in ACK",
+      "createdAt": "2025-03-03T14:57:25Z",
+      "updatedAt": "2025-03-03T15:22:04Z",
+      "baseRepository": "hannestschofenig/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "99d462ef8c37b3021a1cb06fd55c07228f612b9c",
+      "headRepository": "muhammad-usama-sardar/exported-attestation",
+      "headRefName": "main",
+      "headRefOid": "2e3d49cb5b799e39e0d7784829fa67b60b55dd64",
+      "closedAt": "2025-03-03T15:01:10Z",
+      "mergedAt": "2025-03-03T15:01:10Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6eNsjy",
+          "commit": {
+            "abbreviatedOid": "1259945"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-03T15:00:48Z",
+          "updatedAt": "2025-03-03T15:00:48Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "```suggestion\r\nThis document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, it is recommended that Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.\r\n```",
+              "createdAt": "2025-03-03T15:00:48Z",
+              "updatedAt": "2025-03-03T15:00:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6eNxy7",
+          "commit": {
+            "abbreviatedOid": "2e3d49c"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-03T15:08:28Z",
+          "updatedAt": "2025-03-03T15:08:29Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "we either recommend or require.  doing both is confusing.",
+              "createdAt": "2025-03-03T15:08:28Z",
+              "updatedAt": "2025-03-03T15:08:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6eN7dy",
+          "commit": {
+            "abbreviatedOid": "2e3d49c"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-03T15:19:59Z",
+          "updatedAt": "2025-03-03T15:19:59Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "I will go for the latter. In my analysis, once the TIK is lost, an unprotected (e.g., unsigned) evidence is available to the adversary. Hence, remote attestation does not bring any security benefit in this case. One might argue it is even worse than standard TLS because using ephemeral key breaks the authentication property as well (something still to be argued more formally).",
+              "createdAt": "2025-03-03T15:19:59Z",
+              "updatedAt": "2025-03-03T15:19:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6eN841",
+          "commit": {
+            "abbreviatedOid": "2e3d49c"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-03T15:22:04Z",
+          "updatedAt": "2025-03-03T15:22:04Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "makes sense to require.",
+              "createdAt": "2025-03-03T15:22:04Z",
+              "updatedAt": "2025-03-03T15:22:04Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDON6zrys6NK4Ao",
+      "title": "Require rather than recommend",
+      "url": "https://github.com/hannestschofenig/exported-attestation/pull/10",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- based on Thomas review",
+      "createdAt": "2025-03-03T15:28:58Z",
+      "updatedAt": "2025-03-03T15:33:10Z",
+      "baseRepository": "hannestschofenig/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
+      "headRepository": "muhammad-usama-sardar/exported-attestation",
+      "headRefName": "main",
+      "headRefOid": "f54b98a60cddb350afedd2b8c7ec640f184b5be9",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6eODNc",
+          "commit": {
+            "abbreviatedOid": "c79759b"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-03T15:31:11Z",
+          "updatedAt": "2025-03-03T15:31:11Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
