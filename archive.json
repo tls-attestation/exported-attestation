@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-18T01:14:45.642272+00:00",
+  "timestamp": "2025-03-20T01:14:18.913641+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -95,6 +95,22 @@
       "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
       "createdAt": "2025-03-03T14:40:46Z",
       "updatedAt": "2025-03-03T14:40:46Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDON6zrys6utZmq",
+      "title": "Coverage of the measurements/evidence",
+      "url": "https://github.com/hannestschofenig/exported-attestation/issues/11",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft (maybe in Sec Considerations) should say that not only does the TLS stack need to be covered by measurements, but also:\n\n1. The code that performs the post-handshake phase must be measured, and...\n2. There must be no other way to initiate generation of evidence except from signed code.",
+      "createdAt": "2025-03-19T09:49:04Z",
+      "updatedAt": "2025-03-19T09:49:04Z",
       "closedAt": null,
       "comments": []
     }
