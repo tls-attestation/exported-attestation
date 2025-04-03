@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-01T01:24:54.699729+00:00",
+  "timestamp": "2025-04-03T01:16:13.483816+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -418,6 +418,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDON6zrys6REkpO",
+      "title": "Updates to the draft",
+      "url": "https://github.com/hannestschofenig/exported-attestation/pull/12",
+      "state": "OPEN",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-04-02T11:12:21Z",
+      "updatedAt": "2025-04-02T11:12:21Z",
+      "baseRepository": "hannestschofenig/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
+      "headRepository": "tireddy2/exported-attestation",
+      "headRefName": "tireddy2-patch-1",
+      "headRefOid": "e53528cfa0175e3fd7b64072abeb693e76eb83e8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
