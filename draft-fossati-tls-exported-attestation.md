@@ -34,6 +34,13 @@ author:
     organization: TU Dresden
     email: muhammad_usama.sardar@tu-dresden.de
   -
+    fullname: Tirumaleswar Reddy
+    organization: Nokia
+    city: Bangalore
+    region: Karnataka
+    country: India
+    email: "kondtir@gmail.com"
+  -   
     name: Yaron Sheffer
     organization: Intuit
     email: yaronf.ietf@gmail.com
@@ -47,13 +54,7 @@ author:
     name: Ionut Mihalcea
     organization: Arm Limited
     email: ionut.mihalcea@arm.com
-  -
-    fullname: Tirumaleswar Reddy
-    organization: Nokia
-    city: Bangalore
-    region: Karnataka
-    country: India
-    email: "kondtir@gmail.com"
+
 
 normative:
   RFC9334:
@@ -65,8 +66,6 @@ normative:
   I-D.ietf-tls-tlsflags:
 
 informative:
-  I-D.ietf-lamps-csr-attestation:
-  I-D.ietf-lamps-attestation-freshness:
   TLS-Ext-Registry:
      author:
         org: IANA
@@ -95,7 +94,10 @@ This document builds upon three foundational specifications:
 
 - TLS Exported Authenticators {{RFC9261}}: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer.
 
-- RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology. This specification introduces the cmw_attestation extension, enabling attestation evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}. This approach enhances flexibility and efficiency, supporting key attestation mechanisms without being restricted to X.509 certificate encoding formats.
+- RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology. 
+
+
+This specification introduces the cmw_attestation extension, enabling attestation evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}. This approach enhances flexibility and efficiency, supporting key attestation mechanisms without being restricted to X.509 certificate encoding formats.
 
 # Terminology
 
