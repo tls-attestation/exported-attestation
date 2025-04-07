@@ -216,12 +216,13 @@ Client                   Server                  CA/Verifier
   |                 Gets Attestation result          |
   |<-------------------------------------------------|
   |                        |                         |
-  |                        |                         |
-  | Exported Authenticator |                         |
-  |  (Authenticator with   |                         |
-  |   Attestation Result)  |                         |
+  |  Certificate with      |                         |
+  |  cmw_attestation,      |                         |
+  |  CertificateVerify,    |                         |   
+  |  Finished              |                         |
   |----------------------->|                         |
-  |                        |                         |
+  |                        |      Finished           |
+  |                        |<------------------------|
 ~~~
 {: #fig-passport title="Passport Model with Client as Attester"}
 
@@ -243,7 +244,9 @@ Client              Attester                 Server           Verifier
   | Key Attestation   |                        |                  |
   | as Evidence       |                        |                  |
   |<------------------|                        |                  |
-  | Certificate Message with cmw_attestation  |                   |
+  | Certificate with cmw_attestation           |                  |
+  | CertificateVerify,                         |                  |
+  | Finished                                   |                  |
   |------------------------------------------->|                  |
   |                   |                        | Send Evidence    |
   |                   |                        |----------------->|
