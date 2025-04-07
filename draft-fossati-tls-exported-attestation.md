@@ -218,7 +218,7 @@ Client                   Server                  CA/Verifier
   |                        |                         |
   |  Certificate with      |                         |
   |  cmw_attestation,      |                         |
-  |  CertificateVerify,    |                         |   
+  |  CertificateVerify,    |                         |
   |  Finished              |                         |
   |----------------------->|                         |
   |                        |      Finished           |
