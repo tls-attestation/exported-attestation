@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-03T01:16:13.483816+00:00",
+  "timestamp": "2025-04-08T01:16:40.894377+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -391,7 +391,7 @@
       "labels": [],
       "body": "- based on Thomas review",
       "createdAt": "2025-03-03T15:28:58Z",
-      "updatedAt": "2025-03-03T15:33:10Z",
+      "updatedAt": "2025-04-07T07:11:29Z",
       "baseRepository": "hannestschofenig/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
@@ -431,19 +431,120 @@
       "labels": [],
       "body": "",
       "createdAt": "2025-04-02T11:12:21Z",
-      "updatedAt": "2025-04-02T11:12:21Z",
+      "updatedAt": "2025-04-07T13:01:29Z",
       "baseRepository": "hannestschofenig/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
       "headRepository": "tireddy2/exported-attestation",
       "headRefName": "tireddy2-patch-1",
-      "headRefOid": "e53528cfa0175e3fd7b64072abeb693e76eb83e8",
+      "headRefOid": "90030c5df0563522d8402ecc77f932e694dc9aa0",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6jqTHe",
+          "commit": {
+            "abbreviatedOid": "e53528c"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-07T07:29:06Z",
+          "updatedAt": "2025-04-07T07:29:06Z",
+          "comments": [
+            {
+              "originalPosition": 207,
+              "body": "In my reading of RFC 9261, Authenticator consists of Certificate, CertificateVerify, and Finished messages and not Certificate message alone. Please correct me if I am wrong. ",
+              "createdAt": "2025-04-07T07:29:06Z",
+              "updatedAt": "2025-04-07T07:29:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6jqbbU",
+          "commit": {
+            "abbreviatedOid": "e53528c"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-07T07:41:07Z",
+          "updatedAt": "2025-04-07T07:41:07Z",
+          "comments": [
+            {
+              "originalPosition": 207,
+              "body": "[Sec 5.2](https://datatracker.ietf.org/doc/html/rfc9261#section-5.2)\r\n> An authenticator is formed from the concatenation of TLS 1.3 Certificate, CertificateVerify, and Finished messages [[RFC8446](https://datatracker.ietf.org/doc/html/rfc8446)].\r\n\r\nand [5.2.4](https://datatracker.ietf.org/doc/html/rfc9261#section-5.2.4)\r\n> Certificate || CertificateVerify || Finished",
+              "createdAt": "2025-04-07T07:41:07Z",
+              "updatedAt": "2025-04-07T07:41:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6jqn2R",
+          "commit": {
+            "abbreviatedOid": "e53528c"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-07T07:59:43Z",
+          "updatedAt": "2025-04-07T07:59:44Z",
+          "comments": [
+            {
+              "originalPosition": 207,
+              "body": "Fixed",
+              "createdAt": "2025-04-07T07:59:43Z",
+              "updatedAt": "2025-04-07T07:59:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6jtmwa",
+          "commit": {
+            "abbreviatedOid": "baa5899"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-07T12:27:41Z",
+          "updatedAt": "2025-04-07T12:27:41Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "An editorial note: Ideally, RATS CMW should only introduce what it is. It should not mention RFC9261 or try to do any combination of specifications, since the text above says: \r\n> This document builds upon three foundational specifications:",
+              "createdAt": "2025-04-07T12:27:41Z",
+              "updatedAt": "2025-04-07T12:27:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6jt-jB",
+          "commit": {
+            "abbreviatedOid": "baa5899"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-07T13:01:00Z",
+          "updatedAt": "2025-04-07T13:01:00Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "The last two lines are supposed to be in a separate paragraph, fixed it. ",
+              "createdAt": "2025-04-07T13:01:00Z",
+              "updatedAt": "2025-04-07T13:01:00Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
