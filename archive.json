@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-08T01:16:40.894377+00:00",
+  "timestamp": "2025-04-15T01:19:13.623997+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -111,6 +111,22 @@
       "body": "The draft (maybe in Sec Considerations) should say that not only does the TLS stack need to be covered by measurements, but also:\n\n1. The code that performs the post-handshake phase must be measured, and...\n2. There must be no other way to initiate generation of evidence except from signed code.",
       "createdAt": "2025-03-19T09:49:04Z",
       "updatedAt": "2025-03-19T09:49:04Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDON6zrys6yXhwb",
+      "title": "Security Considerations: session resumption",
+      "url": "https://github.com/hannestschofenig/exported-attestation/issues/13",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Discussion with @yaronf, @thomas-fossati , @ionut-arm and Carsten: \n\nFor Sec. 4.1. in draft-00 (Using the TLS Connection): \n\n**Background**: If the session drops due to some reason, one can do session resumption rather than complete handshake. \n**Problem**: There can be problems in session resumption if remote attestation has not already been done for that session. \n**Solution**:\nFirst remote attestation MUST be done right after the initial handshake. This reduces the problem to essentially 1 round-trip time (for sending Authenticator Request and getting Authenticator) plus time for generation of Evidence and appraisal of Evidence. \n\nThe next rounds of remote attestation can be done on need basis. ",
+      "createdAt": "2025-04-14T09:47:31Z",
+      "updatedAt": "2025-04-14T09:47:31Z",
       "closedAt": null,
       "comments": []
     }
@@ -431,7 +447,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2025-04-02T11:12:21Z",
-      "updatedAt": "2025-04-07T13:01:29Z",
+      "updatedAt": "2025-04-14T14:23:50Z",
       "baseRepository": "hannestschofenig/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
@@ -541,6 +557,46 @@
               "body": "The last two lines are supposed to be in a separate paragraph, fixed it. ",
               "createdAt": "2025-04-07T13:01:00Z",
               "updatedAt": "2025-04-07T13:01:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6kuVU-",
+          "commit": {
+            "abbreviatedOid": "90030c5"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-14T08:51:39Z",
+          "updatedAt": "2025-04-14T08:51:39Z",
+          "comments": [
+            {
+              "originalPosition": 218,
+              "body": "I think Authenticator Request does not have any freshness. Why is the nonce removed? How is evidence freshness ensured?",
+              "createdAt": "2025-04-14T08:51:39Z",
+              "updatedAt": "2025-04-14T08:51:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6kx2DZ",
+          "commit": {
+            "abbreviatedOid": "90030c5"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-14T14:23:50Z",
+          "updatedAt": "2025-04-14T14:23:50Z",
+          "comments": [
+            {
+              "originalPosition": 218,
+              "body": "In this case, freshness is inherently provided by the certificate_request_context in the authenticator request.  A certificate_request_context value MUST be unique for each authenticator request within the scope of a connection.",
+              "createdAt": "2025-04-14T14:23:50Z",
+              "updatedAt": "2025-04-14T14:23:50Z"
             }
           ]
         }
