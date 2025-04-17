@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-15T01:19:13.623997+00:00",
+  "timestamp": "2025-04-17T01:17:43.082768+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -447,7 +447,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2025-04-02T11:12:21Z",
-      "updatedAt": "2025-04-14T14:23:50Z",
+      "updatedAt": "2025-04-16T21:16:06Z",
       "baseRepository": "hannestschofenig/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
@@ -597,6 +597,46 @@
               "body": "In this case, freshness is inherently provided by the certificate_request_context in the authenticator request.  A certificate_request_context value MUST be unique for each authenticator request within the scope of a connection.",
               "createdAt": "2025-04-14T14:23:50Z",
               "updatedAt": "2025-04-14T14:23:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6lVe3y",
+          "commit": {
+            "abbreviatedOid": "90030c5"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-16T21:13:26Z",
+          "updatedAt": "2025-04-16T21:13:26Z",
+          "comments": [
+            {
+              "originalPosition": 218,
+              "body": "okay, that sounds fine to me. ",
+              "createdAt": "2025-04-16T21:13:26Z",
+              "updatedAt": "2025-04-16T21:13:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6lVf-H",
+          "commit": {
+            "abbreviatedOid": "90030c5"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-16T21:16:05Z",
+          "updatedAt": "2025-04-16T21:16:06Z",
+          "comments": [
+            {
+              "originalPosition": 230,
+              "body": "Minor editorial: to be consistent with `Authenticator Request (ClientCertReq)`, I'll propose \r\n`Exported Authenticator (Certificate with cmw_attestation, CertificateVerify, Finished)`",
+              "createdAt": "2025-04-16T21:16:06Z",
+              "updatedAt": "2025-04-16T21:16:06Z"
             }
           ]
         }
