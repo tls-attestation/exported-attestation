@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-20T01:23:06.043299+00:00",
+  "timestamp": "2025-04-22T01:18:12.888334+00:00",
   "repo": "hannestschofenig/exported-attestation",
   "labels": [
     {
@@ -126,9 +126,17 @@
       "labels": [],
       "body": "Discussion with @yaronf, @thomas-fossati , @ionut-arm and Carsten: \n\nFor Sec. 4.1. in draft-00 (Using the TLS Connection): \n\n**Background**: If the session drops due to some reason, one can do session resumption rather than complete handshake. \n**Problem**: There can be problems in session resumption if remote attestation has not already been done for that session. \n**Solution**:\nFirst remote attestation MUST be done right after the initial handshake. This reduces the problem to essentially 1 round-trip time (for sending Authenticator Request and getting Authenticator) plus time for generation of Evidence and appraisal of Evidence. \n\nThe next rounds of remote attestation can be done on need basis. ",
       "createdAt": "2025-04-14T09:47:31Z",
-      "updatedAt": "2025-04-14T09:47:31Z",
+      "updatedAt": "2025-04-21T08:25:20Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Possible solution to avoid the race condition:\n* Establish the handshake with explicit flags that prevent session resumption. (From the client side this can simply mean: delete the ticket.)\n* Do remote attestation.\n* Then enable session resumption. (Send a new `NewSessionTicket`.)\n\nFrom a TLS handshake perspective this is possible. The question is whether APIs (specifically the OpenSSL API) support these operations and/or can be extended to do so.",
+          "createdAt": "2025-04-21T08:25:19Z",
+          "updatedAt": "2025-04-21T08:25:19Z"
+        }
+      ]
     }
   ],
   "pulls": [
