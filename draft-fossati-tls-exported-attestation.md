@@ -21,7 +21,7 @@ venue:
   type: Working Group
   mail: tls@ietf.org
   arch: https://datatracker.ietf.org/wg/tls/about/
-  github: "hannestschofenig/exported-attestation"
+  github: "tls-attestation/exported-attestation"
   latest: "https://hannestschofenig.github.io/exported-attestation/draft-fossati-tls-exported-attestation.html"
 
 author:
