@@ -5,14 +5,14 @@
 Network Working Group                                         T. Fossati
 Internet-Draft                                                    Linaro
 Intended status: Standards Track                            M. U. Sardar
-Expires: 4 September 2025                                     TU Dresden
+Expires: 2 November 2025                                      TU Dresden
                                                               Y. Sheffer
                                                                   Intuit
                                                            H. Tschofenig
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                            3 March 2025
+                                                              1 May 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -45,8 +45,7 @@ About This Document
    https://www.ietf.org/mailman/listinfo/tls/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/https://github.com/hannestschofenig/exported-
-   attestation.
+   https://github.com/tls-attestation/exported-attestation.
 
 Status of This Memo
 
@@ -63,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 2 November 2025.
 
 Copyright Notice
 
@@ -270,10 +269,10 @@ Table of Contents
    RFC 9334.  The integrity of the exported authenticators must be
    guaranteed, and any failure in validating Evidence SHOULD be treated
    as a fatal error in the communication channel.  Additionally, in
-   order to benefit from remote attestation, it is recommended that
-   Evidence MUST be protected using dedicated attestation keys chaining
-   back to a trust anchor.  This trust anchor will typically be provided
-   by the hardware manufacturer.
+   order to benefit from remote attestation, Evidence MUST be protected
+   using dedicated attestation keys chaining back to a trust anchor.
+   This trust anchor will typically be provided by the hardware
+   manufacturer.
 
 4.1.  Using the TLS Connection
 
@@ -311,9 +310,9 @@ Table of Contents
    [I-D.ietf-rats-msg-wrap]
               Birkholz, H., Smith, N., Fossati, T., Tschofenig, H., and
               D. Glaze, "RATS Conceptual Messages Wrapper (CMW)", Work
-              in Progress, Internet-Draft, draft-ietf-rats-msg-wrap-12,
-              28 February 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-rats-msg-wrap-12>.
+              in Progress, Internet-Draft, draft-ietf-rats-msg-wrap-13,
+              15 April 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-rats-msg-wrap-13>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -349,9 +348,9 @@ Table of Contents
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
               and N. Smith, "Use of Remote Attestation with
               Certification Signing Requests", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-csr-attestation-17, 2
+              Internet-Draft, draft-ietf-lamps-csr-attestation-18, 19
               March 2025, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-lamps-csr-attestation-17>.
+              ietf-lamps-csr-attestation-18>.
 
 Appendix A.  Acknowledgements
 
