@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-01T01:26:05.291501+00:00",
+  "timestamp": "2025-05-04T01:26:56.290265+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -78,9 +78,17 @@
       "labels": [],
       "body": "I am not yet sure in what sense key attestation is used in the draft. I think you mean workload attestation instead? Particularly the key in Confidential Computing does not exist at initial measurement time (load-time measurement), and hence I think the key -- per se -- cannot be \"attested\". ",
       "createdAt": "2025-03-03T14:22:35Z",
-      "updatedAt": "2025-03-03T14:22:35Z",
+      "updatedAt": "2025-05-01T10:15:09Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Alternatively copy the definition of \"key attestation\" from draft-bft-rats-kat:\n\n> Evidence containing properties of the environment(s) in which the\n      private keys are stored.  For example, a Relying Party may want to\n      know whether a private key is stored in a hardware security module\n      and cannot be exported in unencrypted fashion.",
+          "createdAt": "2025-05-01T10:15:08Z",
+          "updatedAt": "2025-05-01T10:15:08Z"
+        }
+      ]
     },
     {
       "number": 8,
@@ -126,17 +134,57 @@
       "labels": [],
       "body": "Discussion with @yaronf, @thomas-fossati , @ionut-arm and Carsten: \n\nFor Sec. 4.1. in draft-00 (Using the TLS Connection): \n\n**Background**: If the session drops due to some reason, one can do session resumption rather than complete handshake. \n**Problem**: There can be problems in session resumption if remote attestation has not already been done for that session. \n**Solution**:\nFirst remote attestation MUST be done right after the initial handshake. This reduces the problem to essentially 1 round-trip time (for sending Authenticator Request and getting Authenticator) plus time for generation of Evidence and appraisal of Evidence. \n\nThe next rounds of remote attestation can be done on need basis. ",
       "createdAt": "2025-04-14T09:47:31Z",
-      "updatedAt": "2025-04-21T08:25:20Z",
+      "updatedAt": "2025-05-01T10:17:04Z",
       "closedAt": null,
       "comments": [
         {
           "author": "yaronf",
           "authorAssociation": "CONTRIBUTOR",
-          "body": "Possible solution to avoid the race condition:\n* Establish the handshake with explicit flags that prevent session resumption. (From the client side this can simply mean: delete the ticket.)\n* Do remote attestation.\n* Then enable session resumption. (Send a new `NewSessionTicket`.)\n\nFrom a TLS handshake perspective this is possible. The question is whether APIs (specifically the OpenSSL API) support these operations and/or can be extended to do so.",
+          "body": "Possible solution to avoid the race condition:\n* Establish the handshake with explicit flags that prevent session resumption. (From the client side this can simply mean: delete the ticket before the handshake is complete.)\n* Do remote attestation.\n* Then enable session resumption. (Send a new `NewSessionTicket`.)\n\nFrom a TLS handshake perspective this is possible. The question is whether APIs (specifically the OpenSSL API) support these operations and/or can be extended to do so.",
           "createdAt": "2025-04-21T08:25:19Z",
-          "updatedAt": "2025-04-21T08:25:19Z"
+          "updatedAt": "2025-05-01T10:17:03Z"
         }
       ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDON6zrys61AAtI",
+      "title": "Terminology: EK in CertificateVerify",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/14",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In RATS interim, Deb mentioned that ephemeral key in CertificateVerify for Authenticator is confusing. \nClarify the terminology such that it does not contradict TLS.\n\nMore context: [interim notes](https://notes.ietf.org/notes-ietf-interim-2025-rats-01-rats#740---755-Identity-Crisis-in-Attested-TLS-for-Confidential-Computing)\n\nWe should define EK upfront in the terminology section. ",
+      "createdAt": "2025-05-02T19:21:32Z",
+      "updatedAt": "2025-05-03T13:14:47Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I like Deb's proposal of defining EK as \"self-asserted\" and saying the proof of possession is typically provided by self-signed cert. \n\nSo define it like: \n\n- LTK = CA-certified Long-Term Key (used for server \"authentication\")\n- EK = self-asserted Ephemeral Key (used for remote attestation)",
+          "createdAt": "2025-05-03T13:14:45Z",
+          "updatedAt": "2025-05-03T13:14:45Z"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "I_kwDON6zrys61CX4z",
+      "title": "Security consideration: Relay attack",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/15",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "What prevents a malicious Attester from relaying the `certificate_request_context` to a genuine TEE and presenting the Evidence of that genuine TEE?\nThis question is not specific to `certificate_request_context` but applies in general to the draft (i.e., also to nonce, timestamp, epoch markers etc.).\n\nTiru's proposal: (discussed [here](https://github.com/tls-attestation/exported-attestation/pull/12#issuecomment-2844582521))\n> one possible technique could be that the verifier will have to enforce policies that ensure the TEE producing the evidence is the one it expects, not just any valid TEE.",
+      "createdAt": "2025-05-03T09:25:45Z",
+      "updatedAt": "2025-05-03T09:25:45Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -408,24 +456,26 @@
       "id": "PR_kwDON6zrys6NK4Ao",
       "title": "Require rather than recommend",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/10",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- based on Thomas review",
       "createdAt": "2025-03-03T15:28:58Z",
-      "updatedAt": "2025-04-30T18:13:44Z",
+      "updatedAt": "2025-05-01T17:54:55Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
-      "headRefOid": "f54b98a60cddb350afedd2b8c7ec640f184b5be9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "7b4b19bbfdbedbf0fd27d1c59935ec8d931354fd",
+      "closedAt": "2025-05-01T17:54:55Z",
+      "mergedAt": "2025-05-01T17:54:55Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "f0306e88c312f36e4426a398f23b1e90f8d775a1"
+      },
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -448,6 +498,59 @@
           "createdAt": "2025-03-03T15:31:11Z",
           "updatedAt": "2025-03-03T15:31:11Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys6nc3fH",
+          "commit": {
+            "abbreviatedOid": "f54b98a"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-01T08:35:33Z",
+          "updatedAt": "2025-05-01T08:36:04Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "This is incorrect now \ud83d\ude1b In case you're willing to make this change too",
+              "createdAt": "2025-05-01T08:35:33Z",
+              "updatedAt": "2025-05-01T08:36:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6ndpKK",
+          "commit": {
+            "abbreviatedOid": "f54b98a"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-01T10:12:38Z",
+          "updatedAt": "2025-05-01T10:12:38Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys6ngmiG",
+          "commit": {
+            "abbreviatedOid": "f54b98a"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-01T17:54:10Z",
+          "updatedAt": "2025-05-01T17:54:11Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Fixed, thanks. ",
+              "createdAt": "2025-05-01T17:54:11Z",
+              "updatedAt": "2025-05-01T17:54:11Z"
+            }
+          ]
         }
       ]
     },
@@ -456,24 +559,26 @@
       "id": "PR_kwDON6zrys6REkpO",
       "title": "Updates to the draft",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/12",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tireddy2",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-04-02T11:12:21Z",
-      "updatedAt": "2025-04-30T18:37:04Z",
+      "updatedAt": "2025-05-02T06:54:26Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "2b4d72caf562e705ee7ccc89725bcdd9230e3f6b",
       "headRepository": "tireddy2/exported-attestation",
       "headRefName": "tireddy2-patch-1",
       "headRefOid": "aa8170be4d7f81b25aae6bd454f1941bd2636399",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-05-02T06:54:25Z",
+      "mergedAt": "2025-05-02T06:54:25Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "ab99fa3a701f43041317bbab38106905449562ab"
+      },
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -481,6 +586,27 @@
           "body": "What prevents a malicious Attester from relaying the `certificate_request_context` to a genuine TEE and presenting the Evidence of that genuine TEE?\r\nThis question is not specific to `certificate_request_context` but applies in general to the draft (i.e., also to nonce, timestamp, epoch markers etc.).",
           "createdAt": "2025-04-30T18:37:03Z",
           "updatedAt": "2025-04-30T18:37:03Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> What prevents a malicious Attester from relaying the `certificate_request_context` to a genuine TEE and presenting the Evidence of that genuine TEE?\r\n> This question is not specific to `certificate_request_context` but applies in general to the draft (i.e., also to nonce, timestamp, epoch markers etc.).\r\n\r\nGood question, one possible technique could be that the verifier will have to enforce policies that ensure the TEE producing the evidence is the one it expects, not just any valid TEE.",
+          "createdAt": "2025-05-01T10:06:08Z",
+          "updatedAt": "2025-05-01T10:06:08Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Good question, one possible technique could be that the verifier will have to enforce policies that ensure the TEE producing the evidence is the one it expects, not just any valid TEE.\r\n\r\nI am very skeptical of putting things into policies. Such policies are likely to be forgotten. So if we have no good answer, we should maybe put it in security considerations. But I can open a separate issue on this as it is not specific to this PR (and applies to older draft with nonce as well). \r\n\r\nIn general, this PR looks good to me. Would like to have a short discussion to understand a couple of things in the next meeting, otherwise it's good to merge. ",
+          "createdAt": "2025-05-01T18:04:46Z",
+          "updatedAt": "2025-05-01T18:04:46Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> > Good question, one possible technique could be that the verifier will have to enforce policies that ensure the TEE producing the evidence is the one it expects, not just any valid TEE.\r\n> \r\n> I am very skeptical of putting things into policies. Such policies are likely to be forgotten. So if we have no good answer, we should maybe put it in security considerations. But I can open a separate issue on this as it is not specific to this PR (and applies to older draft with nonce as well).\r\n\r\nplease raise a PR for this issue, it needs to be discussed.\r\n\r\n> \r\n> In general, this PR looks good to me. Would like to have a short discussion to understand a couple of things in the next meeting, otherwise it's good to merge.\r\n\r\nThanks, I will merge the PR.\r\n",
+          "createdAt": "2025-05-02T06:53:18Z",
+          "updatedAt": "2025-05-02T06:53:18Z"
         }
       ],
       "reviews": [
