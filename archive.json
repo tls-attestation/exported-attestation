@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-04T01:26:56.290265+00:00",
+  "timestamp": "2025-05-06T01:20:02.689254+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -158,7 +158,7 @@
       "labels": [],
       "body": "In RATS interim, Deb mentioned that ephemeral key in CertificateVerify for Authenticator is confusing. \nClarify the terminology such that it does not contradict TLS.\n\nMore context: [interim notes](https://notes.ietf.org/notes-ietf-interim-2025-rats-01-rats#740---755-Identity-Crisis-in-Attested-TLS-for-Confidential-Computing)\n\nWe should define EK upfront in the terminology section. ",
       "createdAt": "2025-05-02T19:21:32Z",
-      "updatedAt": "2025-05-03T13:14:47Z",
+      "updatedAt": "2025-05-05T10:48:10Z",
       "closedAt": null,
       "comments": [
         {
@@ -167,6 +167,13 @@
           "body": "I like Deb's proposal of defining EK as \"self-asserted\" and saying the proof of possession is typically provided by self-signed cert. \n\nSo define it like: \n\n- LTK = CA-certified Long-Term Key (used for server \"authentication\")\n- EK = self-asserted Ephemeral Key (used for remote attestation)",
           "createdAt": "2025-05-03T13:14:45Z",
           "updatedAt": "2025-05-03T13:14:45Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Summary of discussion with @thomas-fossati, @ionut-arm and @tireddy2 (Please correct if I get something wrong and add if I missed something)\n\nWith Realm Personalization Value (RPV), it may be possible to identify the Realm. Hence, it may be possible to get rid of `EK` altogether. Post-handshake CertificateVerify message will then use the `LTK` as usual. \n\nAll of this is under the assumption that `LTK` has been provisioned to the TEE. ",
+          "createdAt": "2025-05-05T10:48:08Z",
+          "updatedAt": "2025-05-05T10:48:08Z"
         }
       ]
     },
