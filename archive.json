@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-06T01:20:02.689254+00:00",
+  "timestamp": "2025-05-08T01:21:10.014658+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -936,6 +936,34 @@
           ]
         }
       ]
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDON6zrys6VEQ6L",
+      "title": "Update links in README.md",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/16",
+      "state": "MERGED",
+      "author": "ionut-arm",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-05-06T09:01:26Z",
+      "updatedAt": "2025-05-06T09:05:20Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "ab99fa3a701f43041317bbab38106905449562ab",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "editors-draft-link",
+      "headRefOid": "07dd7e4cb59e772527b9fb2af2ec0bc82b200620",
+      "closedAt": "2025-05-06T09:05:20Z",
+      "mergedAt": "2025-05-06T09:05:20Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "040018b940bcc6dcd98c926db74e6fbbed325516"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
