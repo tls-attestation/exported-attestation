@@ -5,7 +5,7 @@
 TLS                                                           T. Fossati
 Internet-Draft                                                    Linaro
 Intended status: Standards Track                            M. U. Sardar
-Expires: 3 November 2025                                      TU Dresden
+Expires: 13 November 2025                                     TU Dresden
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 3 November 2025                                      TU Dresden
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                              2 May 2025
+                                                             12 May 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -66,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 November 2025.
+   This Internet-Draft will expire on 13 November 2025.
 
 Copyright Notice
 
@@ -459,6 +459,10 @@ Table of Contents
    using dedicated attestation keys chaining back to a trust anchor.
    This trust anchor will typically be provided by the hardware
    manufacturer.
+
+   This specification assumes that the Trusted Execution Environment
+   (TEE) is securely provisioned with the CA-certified long-term key
+   (LTK).
 
 6.1.  Using the TLS Connection
 
