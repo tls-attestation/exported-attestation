@@ -199,7 +199,7 @@ In the following examples, the server possesses an identity certificate, while t
 {{fig-passport}} shows the passport model while {{fig-background}} illustrates the background-check model.
 
 ~~~aasvg
-Client                   Server                  CA/Verifier
+Client                   Server                   Verifier
   |                        |                         |
   |  Regular TLS Handshake |                         |
   |    (Server-only auth)  |                         |
