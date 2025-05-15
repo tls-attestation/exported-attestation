@@ -375,7 +375,7 @@ Table of Contents
    Figure 1 shows the passport model while Figure 2 illustrates the
    background-check model.
 
-   Client                   Server                  CA/Verifier
+   Client                   Server                   Verifier
      |                        |                         |
      |  Regular TLS Handshake |                         |
      |    (Server-only auth)  |                         |
