@@ -5,7 +5,7 @@
 TLS                                                           T. Fossati
 Internet-Draft                                                    Linaro
 Intended status: Standards Track                            M. U. Sardar
-Expires: 16 November 2025                                     TU Dresden
+Expires: 19 November 2025                                     TU Dresden
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 16 November 2025                                     TU Dresden
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                             15 May 2025
+                                                             18 May 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -66,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 November 2025.
+   This Internet-Draft will expire on 19 November 2025.
 
 Copyright Notice
 
@@ -185,21 +185,12 @@ Table of Contents
 3.  cmw_attestation Extension
 
    It introduces a new TLS extension, cmw_attestation, which enables the
-   inclusion of attestation information in the extensions field
-   associated with the end-entity certificate in the TLS Certificate
-   message.  This approach eliminates the need for real-time certificate
-   issuance from a Certificate Authority (CA) and minimizes handshake
-   delays.  Typically, CAs require several seconds to minutes to issue a
-   certificate due to verification steps such as validating subject
-   identity, signing the certificate, and distributing it.  These delays
-   introduce latency into the TLS handshake, making real-time
-   certificate generation impractical.  The cmw_attestation extension
-   circumvents this issue by embedding attestation data within the
-   Certificate message itself, removing reliance on external certificate
-   issuance processes.
+   inclusion of either Attestation Evidence or Attestation Results in
+   the extensions field associated with the end-entity certificate in
+   the TLS Certificate message.
 
    As defined in Section 4.4.2 of [RFC8446], the TLS Certificate message
-   consists of a certificate_list, which is an sequence of
+   consists of a certificate_list, which is a sequence of
    CertificateEntry structures.  Each CertificateEntry contains a
    certificate and a set of associated extensions.  The cmw_attestation
    extension MUST appear only in the first CertificateEntry of the
@@ -222,6 +213,17 @@ Table of Contents
    cmw_data: Encapsulates the attestation credentials in a format
    compatible with CMW.  The cmw_data field MUST be encoded using CBOR
    or JSON (as per [I-D.ietf-rats-msg-wrap]).
+
+   This approach eliminates the need for real-time certificate issuance
+   from a Certificate Authority (CA) and minimizes handshake delays.
+   Typically, CAs require several seconds to minutes to issue a
+   certificate due to verification steps such as validating subject
+   identity, signing the certificate, and distributing it.  These delays
+   introduce latency into the TLS handshake, making real-time
+   certificate generation impractical.  The cmw_attestation extension
+   circumvents this issue by embedding attestation data within the
+   Certificate message itself, removing reliance on external certificate
+   issuance processes.
 
 3.1.  Negotiation of CMWAttestationExtension
 
@@ -474,11 +476,12 @@ Table of Contents
 
    This specification assumes that the Hardware Security Module (HSM) or
    Trusted Execution Environment (TEE) is responsible for generating the
-   key pair and producing attestation evidence, which is included in the
-   Certificate Signing Request (CSR) as defined in
-   [I-D.ietf-lamps-csr-attestation].  This attestation enables the CA to
-   verify that the private key is securely stored and that the platform
-   meets the required security standards before issuing a certificate.
+   key pair and producing either attestation evidence or attestation
+   results, which is included in the Certificate Signing Request (CSR)
+   as defined in [I-D.ietf-lamps-csr-attestation].  This attestation
+   enables the CA to verify that the private key is securely stored and
+   that the platform meets the required security standards before
+   issuing a certificate.
 
 6.1.  Using the TLS Connection
 
