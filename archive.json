@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-08T01:21:10.014658+00:00",
+  "timestamp": "2025-05-18T01:26:30.717961+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -964,6 +964,71 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDON6zrys6WURLv",
+      "title": "Updated draft for clarity on the new extension",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/17",
+      "state": "OPEN",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-05-15T12:02:21Z",
+      "updatedAt": "2025-05-17T19:44:20Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "95b0210cae0ebc4f9ea15dd8871b9d749c239571",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "tireddy2-patch-1",
+      "headRefOid": "e4be943fcf04b88e8e8e908f7f28c0ad38536079",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6pxsOR",
+          "commit": {
+            "abbreviatedOid": "e4be943"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "needs some clarity on attested CSR",
+          "createdAt": "2025-05-17T19:02:47Z",
+          "updatedAt": "2025-05-17T19:44:20Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "Which \"attestation information\": Evidence or Attestation Results?",
+              "createdAt": "2025-05-17T19:02:47Z",
+              "updatedAt": "2025-05-17T19:44:20Z"
+            },
+            {
+              "originalPosition": 27,
+              "body": "s/an sequence/a sequence",
+              "createdAt": "2025-05-17T19:08:41Z",
+              "updatedAt": "2025-05-17T19:44:20Z"
+            },
+            {
+              "originalPosition": 25,
+              "body": "Editorial: This paragraph breaks the flow. Preferably move this paragraph to the end of this section. ",
+              "createdAt": "2025-05-17T19:10:06Z",
+              "updatedAt": "2025-05-17T19:44:20Z"
+            },
+            {
+              "originalPosition": 45,
+              "body": "While the older statement was meant to be for both background check and passport model, I think the new text on CSR attestation is applicable only for passport model. ",
+              "createdAt": "2025-05-17T19:31:08Z",
+              "updatedAt": "2025-05-17T19:44:20Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
