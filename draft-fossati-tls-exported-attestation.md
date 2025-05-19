@@ -39,7 +39,7 @@ author:
     city: Bangalore
     region: Karnataka
     country: India
-    email: "kondtir@gmail.com"
+    email: "k.tirumaleswar_reddy@nokia.com"
   -
     name: Yaron Sheffer
     organization: Intuit
@@ -65,7 +65,9 @@ normative:
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags:
 
+
 informative:
+  I-D.ietf-lamps-csr-attestation:
   TLS-Ext-Registry:
      author:
         org: IANA
@@ -109,7 +111,9 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 
 # cmw_attestation Extension
 
-It introduces a new TLS extension, cmw_attestation, which enables the inclusion of attestation information directly in the Certificate message. This approach eliminates the need for real-time certificate issuance from a Certificate Authority (CA) and minimizes handshake delays. Typically, CAs require several seconds to minutes to issue a certificate due to verification steps such as validating subject identity, signing the certificate, and distributing it. These delays introduce latency into the TLS handshake, making real-time certificate generation impractical. The cmw_attestation extension circumvents this issue by embedding attestation data within the Certificate message itself, removing reliance on external certificate issuance processes.
+It introduces a new TLS extension, cmw_attestation, which enables the inclusion of either Attestation Evidence or Attestation Results in the extensions field associated with the end-entity certificate in the TLS Certificate message.
+
+As defined in Section 4.4.2 of {{!RFC8446}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.
 
 The `cmw_attestation` extension is defined to be included only in the Certificate message during the Exported Authenticator-based post-handshake authentication. This ensures that attestation credentials is conveyed within the Certificate message without requiring modifications to the X.509 certificate structure.
 
@@ -121,6 +125,7 @@ struct {
 
 cmw_data: Encapsulates the attestation credentials in a format compatible with CMW. The cmw_data field MUST be encoded using CBOR or JSON (as per {{I-D.ietf-rats-msg-wrap}}).
 
+This approach eliminates the need for real-time certificate issuance from a Certificate Authority (CA) and minimizes handshake delays. Typically, CAs require several seconds to minutes to issue a certificate due to verification steps such as validating subject identity, signing the certificate, and distributing it. These delays introduce latency into the TLS handshake, making real-time certificate generation impractical. The cmw_attestation extension circumvents this issue by embedding attestation data within the Certificate message itself, removing reliance on external certificate issuance processes.
 
 ## Negotiation of CMWAttestationExtension
 
@@ -194,7 +199,7 @@ In the following examples, the server possesses an identity certificate, while t
 {{fig-passport}} shows the passport model while {{fig-background}} illustrates the background-check model.
 
 ~~~aasvg
-Client                   Server                  CA/Verifier
+Client                   Server                   Verifier
   |                        |                         |
   |  Regular TLS Handshake |                         |
   |    (Server-only auth)  |                         |
@@ -272,7 +277,7 @@ To enable attestation workflows, implementations of the Exported Authenticator A
 
 This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.
 
-This specification assumes that the Trusted Execution Environment (TEE) is securely provisioned with the CA-certified long-term key (LTK).
+This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either attestation evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in {{I-D.ietf-lamps-csr-attestation}}. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.
 
 ## Using the TLS Connection
 
