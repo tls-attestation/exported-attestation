@@ -176,8 +176,6 @@ By allowing both Evidence and Attestation Results to be conveyed within `cmw_att
 
 # Architecture
 
-# Architecture
-
 The `cmw_attestation` extension enables attestation credentials to be included in the Certificate message during Exported Authenticator-based post-handshake authentication, ensuring that attestation remains bound to the TLS session.
 
 However, applications using this mechanism still need to negotiate the encoding format (e.g., JOSE or COSE) and specify how attestation credentials are processed. This negotiation can be done via application-layer signaling or predefined profiles. Future specifications may define mechanisms to streamline this negotiation.
