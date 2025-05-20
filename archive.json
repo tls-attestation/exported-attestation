@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-18T01:26:30.717961+00:00",
+  "timestamp": "2025-05-20T01:22:34.863732+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -970,24 +970,26 @@
       "id": "PR_kwDON6zrys6WURLv",
       "title": "Updated draft for clarity on the new extension",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/17",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tireddy2",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-05-15T12:02:21Z",
-      "updatedAt": "2025-05-17T19:44:20Z",
+      "updatedAt": "2025-05-19T12:24:04Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "95b0210cae0ebc4f9ea15dd8871b9d749c239571",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-1",
-      "headRefOid": "e4be943fcf04b88e8e8e908f7f28c0ad38536079",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "4d3cfbb4d4f531122e9c3c4d28a13e1888785387",
+      "closedAt": "2025-05-19T12:24:04Z",
+      "mergedAt": "2025-05-19T12:24:04Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "ca1d70e1a38059e8171803fb59136ed906e1e13d"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1025,6 +1027,86 @@
               "body": "While the older statement was meant to be for both background check and passport model, I think the new text on CSR attestation is applicable only for passport model. ",
               "createdAt": "2025-05-17T19:31:08Z",
               "updatedAt": "2025-05-17T19:44:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6pzqNQ",
+          "commit": {
+            "abbreviatedOid": "e4be943"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-18T10:50:34Z",
+          "updatedAt": "2025-05-18T10:50:34Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "Evidence or Attestation Results, updated text. ",
+              "createdAt": "2025-05-18T10:50:34Z",
+              "updatedAt": "2025-05-18T10:50:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6pzqN5",
+          "commit": {
+            "abbreviatedOid": "e4be943"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-18T10:50:43Z",
+          "updatedAt": "2025-05-18T10:50:44Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "Fixed.",
+              "createdAt": "2025-05-18T10:50:44Z",
+              "updatedAt": "2025-05-18T10:50:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6pzqPF",
+          "commit": {
+            "abbreviatedOid": "e4be943"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-18T10:51:02Z",
+          "updatedAt": "2025-05-18T10:51:03Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "Agreed, moved paragraph. ",
+              "createdAt": "2025-05-18T10:51:03Z",
+              "updatedAt": "2025-05-18T10:51:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6pzqP1",
+          "commit": {
+            "abbreviatedOid": "e4be943"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-18T10:51:14Z",
+          "updatedAt": "2025-05-18T10:51:14Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "Good catch, fixed. ",
+              "createdAt": "2025-05-18T10:51:14Z",
+              "updatedAt": "2025-05-18T10:51:15Z"
             }
           ]
         }
