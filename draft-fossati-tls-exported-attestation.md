@@ -111,7 +111,8 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 
 # cmw_attestation TLS Certificate Message Extension
 
-This document introduces the cmw_attestation TLS Certificate message extension, which allows Attestation Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.
+This document introduces a new TLS certificate message extension called cmw_attestation.
+This extension allows Attestation Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.
 
 As defined in {{Section 4.4.2 of !RFC8446}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.
 
