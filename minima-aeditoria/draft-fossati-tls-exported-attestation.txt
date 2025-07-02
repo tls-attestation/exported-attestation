@@ -5,7 +5,7 @@
 TLS                                                           T. Fossati
 Internet-Draft                                                    Linaro
 Intended status: Standards Track                            M. U. Sardar
-Expires: 19 November 2025                                     TU Dresden
+Expires: 3 January 2026                                       TU Dresden
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 19 November 2025                                     TU Dresden
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                             18 May 2025
+                                                             2 July 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -66,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 November 2025.
+   This Internet-Draft will expire on 3 January 2026.
 
 Copyright Notice
 
@@ -86,23 +86,22 @@ Table of Contents
 
    1.  Introduction
    2.  Terminology
-   3.  cmw_attestation Extension
-     3.1.  Negotiation of CMWAttestationExtension
+   3.  cmw_attestation TLS Certificate Message Extension
+     3.1.  Negotiation of cmw_attestation Extension
      3.2.  Usage in Post-Handshake Authentication
      3.3.  Ensuring Compatibility with X.509 Certificate Validation
      3.4.  Applicability to Client and Server Authentication
    4.  Architecture
-   5.  Architecture
-     5.1.  API Requirements for Attestation Support
-   6.  Security Considerations
-     6.1.  Using the TLS Connection
-     6.2.  Evidence Freshness
-   7.  IANA Considerations
-     7.1.  Updates to IANA Considerations
-       7.1.1.  TLS Extension Type Registration
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+     4.1.  API Requirements for Attestation Support
+   5.  Security Considerations
+     5.1.  Using the TLS Connection
+     5.2.  Evidence Freshness
+   6.  IANA Considerations
+     6.1.  TLS Extension Type Registration
+     6.2.  TLS Flags Extension Registry
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Appendix A.  Acknowledgements
    Authors' Addresses
 
@@ -182,12 +181,12 @@ Table of Contents
    used to refer to both attestation evidence and attestation results,
    when no distinction needs to be made between them.
 
-3.  cmw_attestation Extension
+3.  cmw_attestation TLS Certificate Message Extension
 
-   It introduces a new TLS extension, cmw_attestation, which enables the
-   inclusion of either Attestation Evidence or Attestation Results in
-   the extensions field associated with the end-entity certificate in
-   the TLS Certificate message.
+   This document introduces the cmw_attestation TLS Certificate message
+   extension, which allows Attestation Evidence or Attestation Results
+   to be included in the extensions field of the end-entity certificate
+   in the TLS Certificate message.
 
    As defined in Section 4.4.2 of [RFC8446], the TLS Certificate message
    consists of a certificate_list, which is a sequence of
@@ -200,19 +199,19 @@ Table of Contents
    attestation information is tightly bound to the entity being
    authenticated.
 
-   The cmw_attestation extension is defined to be included only in the
-   Certificate message during the Exported Authenticator-based post-
-   handshake authentication.  This ensures that attestation credentials
-   is conveyed within the Certificate message without requiring
+   The cmw_attestation extension is only included in the Certificate
+   message during Exported Authenticator-based post-handshake
+   authentication.  This ensures that the attestation credentials are
+   conveyed within the Certificate message, eliminating the need for
    modifications to the X.509 certificate structure.
 
    struct {
        opaque cmw_data<1..2^16-1>;
-   } CMWAttestationExtension;
+   } CMWAttestation;
 
-   cmw_data: Encapsulates the attestation credentials in a format
-   compatible with CMW.  The cmw_data field MUST be encoded using CBOR
-   or JSON (as per [I-D.ietf-rats-msg-wrap]).
+   cmw_data: Encapsulates the attestation credentials in CMW format
+   [I-D.ietf-rats-msg-wrap].  The cmw_data field is encoded using CBOR
+   or JSON.
 
    This approach eliminates the need for real-time certificate issuance
    from a Certificate Authority (CA) and minimizes handshake delays.
@@ -225,7 +224,7 @@ Table of Contents
    Certificate message itself, removing reliance on external certificate
    issuance processes.
 
-3.1.  Negotiation of CMWAttestationExtension
+3.1.  Negotiation of cmw_attestation Extension
 
    Clients and servers use the TLS flags extension defined in
    [I-D.ietf-tls-tlsflags] to indicate support for the functionality
@@ -324,8 +323,6 @@ Table of Contents
    workflows depending on the chosen trust model.
 
 4.  Architecture
-
-5.  Architecture
 
    The cmw_attestation extension enables attestation credentials to be
    included in the Certificate message during Exported Authenticator-
@@ -435,7 +432,7 @@ Table of Contents
 
   Figure 2: Background Check Model with a Separate Client-Side Attester
 
-5.1.  API Requirements for Attestation Support
+4.1.  API Requirements for Attestation Support
 
    To enable attestation workflows, implementations of the Exported
    Authenticator API MUST support the following:
@@ -463,7 +460,7 @@ Table of Contents
           Certificate message is cryptographically valid and bound to
           the certificate_request_context.
 
-6.  Security Considerations
+5.  Security Considerations
 
    This document inherits the security considerations of RFC 9261 and
    RFC 9334.  The integrity of the exported authenticators must be
@@ -483,7 +480,7 @@ Table of Contents
    that the platform meets the required security standards before
    issuing a certificate.
 
-6.1.  Using the TLS Connection
+5.1.  Using the TLS Connection
 
    Remote attestation in this document occurs within the context of a
    TLS handshake, and the TLS connection remains valid after this
@@ -499,7 +496,7 @@ Table of Contents
    attestation before the session can be used normally, and race
    conditions are possible.
 
-6.2.  Evidence Freshness
+5.2.  Evidence Freshness
 
    The attestation evidence carried in cmw_attestation does not require
    an additional freshness mechanism, such as a nonce or timestamp,
@@ -514,15 +511,9 @@ Table of Contents
    authentication exchange, which will generate a new
    certificate_request_context to maintain freshness.
 
-7.  IANA Considerations
+6.  IANA Considerations
 
-7.1.  Updates to IANA Considerations
-
-   This section defines the necessary updates to the IANA "TLS
-   ExtensionType Values" registry to include the newly introduced
-   cmw_attestation extension.
-
-7.1.1.  TLS Extension Type Registration
+6.1.  TLS Extension Type Registration
 
    IANA is requested to register the following new extension type in the
    "TLS ExtensionType Values" registry:
@@ -531,13 +522,13 @@ Table of Contents
     | Value | Extension Name  | TLS | DTLS | Recommended | Reference |
     |       |                 | 1.3 | 1.3  |             |           |
     +=======+=================+=====+======+=============+===========+
-    | TBD   | cmw_attestation | Y   | Y    | Yes         | This      |
+    | TBD   | cmw_attestation | CT  | Y    | Yes         | This      |
     |       |                 |     |      |             | Document  |
     +-------+-----------------+-----+------+-------------+-----------+
 
                                  Table 1
 
-7.1.1.1.  TLS Flags Extension Registry
+6.2.  TLS Flags Extension Registry
 
    IANA is requested to add the following entry to the "TLS Flags"
    extension registry [TLS-Ext-Registry]:
@@ -552,16 +543,16 @@ Table of Contents
 
    *  Reference: [This document]
 
-8.  References
+7.  References
 
-8.1.  Normative References
+7.1.  Normative References
 
    [I-D.ietf-rats-msg-wrap]
               Birkholz, H., Smith, N., Fossati, T., Tschofenig, H., and
               D. Glaze, "RATS Conceptual Messages Wrapper (CMW)", Work
-              in Progress, Internet-Draft, draft-ietf-rats-msg-wrap-13,
-              15 April 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-rats-msg-wrap-13>.
+              in Progress, Internet-Draft, draft-ietf-rats-msg-wrap-15,
+              30 May 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-rats-msg-wrap-15>.
 
    [I-D.ietf-tls-tlsflags]
               Nir, Y., "A Flags Extension for TLS 1.3", Work in
@@ -597,15 +588,15 @@ Table of Contents
               Architecture", RFC 9334, DOI 10.17487/RFC9334, January
               2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
-8.2.  Informative References
+7.2.  Informative References
 
    [I-D.ietf-lamps-csr-attestation]
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
               and N. Smith, "Use of Remote Attestation with
               Certification Signing Requests", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-csr-attestation-18, 19
-              March 2025, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-lamps-csr-attestation-18>.
+              Internet-Draft, draft-ietf-lamps-csr-attestation-19, 25
+              May 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-lamps-csr-attestation-19>.
 
    [TLS-Ext-Registry]
               IANA, "Transport Layer Security (TLS) Extensions",
