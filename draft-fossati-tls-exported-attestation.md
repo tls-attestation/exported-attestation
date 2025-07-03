@@ -22,7 +22,7 @@ venue:
   mail: tls@ietf.org
   arch: https://datatracker.ietf.org/wg/tls/about/
   github: "tls-attestation/exported-attestation"
-  latest: "https://hannestschofenig.github.io/exported-attestation/draft-fossati-tls-exported-attestation.html"
+  latest: "https://tls-attestation.github.io/exported-attestation/draft-fossati-tls-exported-attestation.html"
 
 author:
   -
