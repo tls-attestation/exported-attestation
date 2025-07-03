@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-20T01:22:34.863732+00:00",
+  "timestamp": "2025-07-03T01:24:27.055612+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -1109,6 +1109,152 @@
               "updatedAt": "2025-05-18T10:51:15Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDON6zrys6dFkwN",
+      "title": "Small editorial changes",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/18",
+      "state": "OPEN",
+      "author": "thomas-fossati",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-02T13:33:59Z",
+      "updatedAt": "2025-07-02T16:23:53Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "ae83822ad14806e01380297e6b65d41ada0a1659",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "minima-aeditoria",
+      "headRefOid": "0982fb3d4656646e6604c50af5223dcc8d50295c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6xlE23",
+          "commit": {
+            "abbreviatedOid": "9121eff"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-02T13:59:11Z",
+          "updatedAt": "2025-07-02T13:59:11Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys6xlWQ_",
+          "commit": {
+            "abbreviatedOid": "9121eff"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-02T14:18:12Z",
+          "updatedAt": "2025-07-02T14:18:13Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "A bit hard to digest. Prefer to simplify the construction: \r\n`This document introduces an extension, namely cmw_attestation, to the TLS Certificate message which ... `",
+              "createdAt": "2025-07-02T14:18:12Z",
+              "updatedAt": "2025-07-02T14:18:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6xleLf",
+          "commit": {
+            "abbreviatedOid": "9121eff"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-02T14:26:11Z",
+          "updatedAt": "2025-07-02T14:26:11Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\r\nThis document introduces a new TLS certificate message extension called cmw_attestation.\r\nThis extension allows Attestation Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.\r\n```",
+              "createdAt": "2025-07-02T14:26:11Z",
+              "updatedAt": "2025-07-02T14:26:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6xlfQR",
+          "commit": {
+            "abbreviatedOid": "9121eff"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-02T14:27:20Z",
+          "updatedAt": "2025-07-02T14:27:21Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Yeah, that\u2019s pretty hefty.  See [0982fb3](https://github.com/tls-attestation/exported-attestation/pull/18/commits/0982fb3d4656646e6604c50af5223dcc8d50295c)",
+              "createdAt": "2025-07-02T14:27:21Z",
+              "updatedAt": "2025-07-02T14:27:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6xlkVy",
+          "commit": {
+            "abbreviatedOid": "9121eff"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-02T14:32:54Z",
+          "updatedAt": "2025-07-02T14:32:54Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "LGTM, thank you! ",
+              "createdAt": "2025-07-02T14:32:54Z",
+              "updatedAt": "2025-07-02T14:32:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6xlqoL",
+          "commit": {
+            "abbreviatedOid": "0982fb3"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2025-07-02T14:39:18Z",
+          "updatedAt": "2025-07-02T14:39:18Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys6xnL74",
+          "commit": {
+            "abbreviatedOid": "0982fb3"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-02T16:23:53Z",
+          "updatedAt": "2025-07-02T16:23:53Z",
+          "comments": []
         }
       ]
     }
