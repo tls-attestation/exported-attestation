@@ -109,25 +109,26 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 
 "Remote attestation credentials", or "attestation credentials", is used to refer to both attestation evidence and attestation results, when no distinction needs to be made between them.
 
-# cmw_attestation Extension
+# cmw_attestation TLS Certificate Message Extension
 
-It introduces a new TLS extension, cmw_attestation, which enables the inclusion of either Attestation Evidence or Attestation Results in the extensions field associated with the end-entity certificate in the TLS Certificate message.
+This document introduces a new TLS certificate message extension called cmw_attestation.
+This extension allows Attestation Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.
 
-As defined in Section 4.4.2 of {{!RFC8446}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.
+As defined in {{Section 4.4.2 of !RFC8446}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.
 
-The `cmw_attestation` extension is defined to be included only in the Certificate message during the Exported Authenticator-based post-handshake authentication. This ensures that attestation credentials is conveyed within the Certificate message without requiring modifications to the X.509 certificate structure.
+The cmw_attestation extension is only included in the Certificate message during Exported Authenticator-based post-handshake authentication. This ensures that the attestation credentials are conveyed within the Certificate message, eliminating the need for modifications to the X.509 certificate structure.
 
-~~~ aasvg
+~~~
 struct {
     opaque cmw_data<1..2^16-1>;
-} CMWAttestationExtension;
+} CMWAttestation;
 ~~~
 
-cmw_data: Encapsulates the attestation credentials in a format compatible with CMW. The cmw_data field MUST be encoded using CBOR or JSON (as per {{I-D.ietf-rats-msg-wrap}}).
+cmw_data: Encapsulates the attestation credentials in CMW format {{I-D.ietf-rats-msg-wrap}}. The cmw_data field is encoded using CBOR or JSON.
 
 This approach eliminates the need for real-time certificate issuance from a Certificate Authority (CA) and minimizes handshake delays. Typically, CAs require several seconds to minutes to issue a certificate due to verification steps such as validating subject identity, signing the certificate, and distributing it. These delays introduce latency into the TLS handshake, making real-time certificate generation impractical. The cmw_attestation extension circumvents this issue by embedding attestation data within the Certificate message itself, removing reliance on external certificate issuance processes.
 
-## Negotiation of CMWAttestationExtension
+## Negotiation of cmw_attestation Extension
 
 Clients and servers use the TLS flags extension defined in {{I-D.ietf-tls-tlsflags}} to indicate support for the functionality defined in this document. We refer to the previously defined "cmw_attestation" extension,
 and the corresponding flag is called the "CMW_Attestation" flag.
@@ -296,20 +297,16 @@ The evidence presented in this protocol is valid only at the time it is generate
 
 # IANA Considerations
 
-## Updates to IANA Considerations
-
-This section defines the necessary updates to the IANA "TLS ExtensionType Values" registry to include the newly introduced `cmw_attestation` extension.
-
-### TLS Extension Type Registration
+## TLS Extension Type Registration
 
 IANA is requested to register the following new extension type in the "TLS ExtensionType Values" registry:
 
 | Value | Extension Name    | TLS 1.3 | DTLS 1.3 | Recommended | Reference      |
 |-------|-------------------|---------|----------|-------------|----------------|
-| TBD   | cmw_attestation   | Y       | Y        | Yes         | This Document  |
+| TBD   | cmw_attestation   | CT      | Y        | Yes         | This Document  |
 
 
-#### TLS Flags Extension Registry
+## TLS Flags Extension Registry
 
 IANA is requested to add the following entry to the "TLS Flags" extension registry
 [TLS-Ext-Registry]:
