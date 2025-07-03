@@ -37,11 +37,11 @@ About This Document
 
    This note is to be removed before publishing as an RFC.
 
-   The latest revision of this draft can be found at
-   https://hannestschofenig.github.io/exported-attestation/draft-
-   fossati-tls-exported-attestation.html.  Status information for this
-   document may be found at https://datatracker.ietf.org/doc/draft-
-   fossati-tls-exported-attestation/.
+   The latest revision of this draft can be found at https://tls-
+   attestation.github.io/exported-attestation/draft-fossati-tls-
+   exported-attestation.html.  Status information for this document may
+   be found at https://datatracker.ietf.org/doc/draft-fossati-tls-
+   exported-attestation/.
 
    Discussion of this document takes place on the tls Working Group
    mailing list (mailto:tls@ietf.org), which is archived at
