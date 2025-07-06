@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-03T01:24:27.055612+00:00",
+  "timestamp": "2025-07-06T01:39:40.708022+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -1117,24 +1117,26 @@
       "id": "PR_kwDON6zrys6dFkwN",
       "title": "Small editorial changes",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/18",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "thomas-fossati",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-07-02T13:33:59Z",
-      "updatedAt": "2025-07-02T16:23:53Z",
+      "updatedAt": "2025-07-03T10:23:54Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "ae83822ad14806e01380297e6b65d41ada0a1659",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "minima-aeditoria",
       "headRefOid": "0982fb3d4656646e6604c50af5223dcc8d50295c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-07-03T10:23:54Z",
+      "mergedAt": "2025-07-03T10:23:54Z",
+      "mergedBy": "ionut-arm",
+      "mergeCommit": {
+        "oid": "58dcfcb6793fd5db33e2e8e11279840ca1ec5174"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1254,6 +1256,61 @@
           "body": "",
           "createdAt": "2025-07-02T16:23:53Z",
           "updatedAt": "2025-07-02T16:23:53Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys6xxiTw",
+          "commit": {
+            "abbreviatedOid": "0982fb3"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-03T10:01:24Z",
+          "updatedAt": "2025-07-03T10:01:24Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDON6zrys6dPkh-",
+      "title": "Update 'latest' link in draft",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/19",
+      "state": "MERGED",
+      "author": "ionut-arm",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-03T10:31:07Z",
+      "updatedAt": "2025-07-03T11:03:15Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "58dcfcb6793fd5db33e2e8e11279840ca1ec5174",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "editors-draft-link-1",
+      "headRefOid": "b098f7b4b0582fd5f40ff738fee90886eed574e0",
+      "closedAt": "2025-07-03T10:47:45Z",
+      "mergedAt": "2025-07-03T10:47:45Z",
+      "mergedBy": "thomas-fossati",
+      "mergeCommit": {
+        "oid": "0bfa1e58095bc2c571b16a3618038a6f1b51df91"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6xyEDN",
+          "commit": {
+            "abbreviatedOid": "b098f7b"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-03T10:47:37Z",
+          "updatedAt": "2025-07-03T10:47:37Z",
           "comments": []
         }
       ]
