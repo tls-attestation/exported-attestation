@@ -62,7 +62,7 @@ normative:
   RFC2119:
   RFC8174:
   RFC9261:
-  I-D.ietf-tls-rfc8446bis:
+  8446: tls13
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags:
 
@@ -110,12 +110,12 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 
 "Remote attestation credentials", or "attestation credentials", is used to refer to both Evidence and attestation results, when no distinction needs to be made between them.
 
-# cmw_attestation Extension to Certificate Message of Authenticator
+# cmw_attestation Extension to the Authenticator's Certificate message
 
-This document introduces a new extension, called `cmw_attestation`, to the post-handshake Certificate message of Authenticator.
+This document introduces a new extension, called `cmw_attestation`, to the Authenticator's Certificate message.
 This extension allows Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.
 
-As defined in {{Section 4.4.2 of !I-D.ietf-tls-rfc8446bis}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.
+As defined in {{Section 4.4.2 of !tls13}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.
 
 The cmw_attestation extension is only included in the Certificate message during Exported Authenticator-based post-handshake authentication. This ensures that the attestation credentials are conveyed within the Certificate message, eliminating the need for modifications to the X.509 certificate structure.
 
@@ -139,7 +139,7 @@ If the "CMW_Attestation" flag is not set, servers ignore any of the functionalit
 
 ## Usage in Post-Handshake Authentication
 
-The `cmw_attestation` extension is designed to be used exclusively in post-handshake authentication as defined in {{RFC9261}}. It allows attestation credentials to be transmitted in the Certificate message of Authenticator only in response to an Authenticator Request. This ensures that attestation credentials are provided on demand rather than being included in the initial TLS handshake.
+The `cmw_attestation` extension is designed to be used exclusively in post-handshake authentication as defined in {{RFC9261}}. It allows attestation credentials to be transmitted in the Authenticator's Certificate message only in response to an Authenticator Request. This ensures that attestation credentials are provided on demand rather than being included in the initial TLS handshake.
 
 To maintain a cryptographic binding between the Evidence and the authentication request, the `cmw_attestation` extension MUST be associated with the `certificate_request_context` of the corresponding CertificateRequest or ClientCertificateRequest message (from the Server or Client, respectively). This binding ensures that:
 
@@ -150,7 +150,7 @@ To maintain a cryptographic binding between the Evidence and the authentication 
 
 The `cmw_attestation` extension does not modify or replace X.509 certificate validation mechanisms. It serves as an additional source of authentication data rather than altering the trust model of PKI-based authentication. Specifically:
 
-- Certificate validation (e.g., signature verification, revocation checks) MUST still be performed according to TLS {{!I-D.ietf-tls-rfc8446bis}} and PKIX {{!RFC5280}}.
+- Certificate validation (e.g., signature verification, revocation checks) MUST still be performed according to TLS {{!tls13}} and PKIX {{!RFC5280}}.
 - The attestation credentials carried in `cmw_attestation` MUST NOT be used as a substitute for X.509 certificate validation but can be used alongside standard certificate validation for additional security assurances.
 - Implementations MAY reject connections where the certificate is valid but the attestation credentials is missing or does not meet security policy.
 
@@ -163,14 +163,14 @@ In TLS, one party acts as the Relying Party, and the other party acts as the Att
 The Attester may respond with either:
 
 - Evidence (Background Check Model):
-  - The Attester generates Evidence and includes it in the `cmw_attestation` extension to Certificate message of Authenticator.
+  - The Attester generates Evidence and includes it in the `cmw_attestation` extension to the Authenticator's Certificate message.
   - The Relying Party forwards the Evidence to an external Verifier for evaluation and waits for an Attestation Result.
   - The Relying Party grants or denies access, or continues or terminates the TLS session, based on the Verifier's Attestation Result.
 
 - Attestation Result (Passport Model):
   - The Attester sends Evidence to a Verifier beforehand.
   - The Verifier issues an Attestation Result to the Attester.
-  - The Attester includes the Attestation Result in the `cmw_attestation` extension to Certificate message of Authenticator and sends it to the Relying Party.
+  - The Attester includes the Attestation Result in the `cmw_attestation` extension to the Authenticator's Certificate message and sends it to the Relying Party.
   - The Relying Party validates the Attestation Result directly without needing to contact an external Verifier.
 
 By allowing both Evidence and Attestation Results to be conveyed within `cmw_attestation`, this mechanism supports flexible attestation workflows depending on the chosen trust model.
