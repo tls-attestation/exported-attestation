@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-06T01:39:40.708022+00:00",
+  "timestamp": "2025-07-15T01:40:29.673167+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -190,6 +190,22 @@
       "body": "What prevents a malicious Attester from relaying the `certificate_request_context` to a genuine TEE and presenting the Evidence of that genuine TEE?\nThis question is not specific to `certificate_request_context` but applies in general to the draft (i.e., also to nonce, timestamp, epoch markers etc.).\n\nTiru's proposal: (discussed [here](https://github.com/tls-attestation/exported-attestation/pull/12#issuecomment-2844582521))\n> one possible technique could be that the verifier will have to enforce policies that ensure the TEE producing the evidence is the one it expects, not just any valid TEE.",
       "createdAt": "2025-05-03T09:25:45Z",
       "updatedAt": "2025-05-03T09:25:45Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 21,
+      "id": "I_kwDON6zrys7Af4J0",
+      "title": "Misleading \"Finished\" Message",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/21",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I am not sure why do we have an arrow from Verifier to Server with \"Finished\" in [Fig. 1](https://www.ietf.org/archive/id/draft-fossati-tls-exported-attestation-02.html#figure-1)? I think it should be removed. ",
+      "createdAt": "2025-07-14T18:04:18Z",
+      "updatedAt": "2025-07-14T18:04:18Z",
       "closedAt": null,
       "comments": []
     }
@@ -1312,6 +1328,59 @@
           "createdAt": "2025-07-03T10:47:37Z",
           "updatedAt": "2025-07-03T10:47:37Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDON6zrys6e2IWr",
+      "title": "CMW Extension and terminology",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/20",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Terminology and Capitalization of terms\r\n- CMW applies only to Certificate message of Authenticator",
+      "createdAt": "2025-07-14T17:58:21Z",
+      "updatedAt": "2025-07-14T21:08:43Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "0bfa1e58095bc2c571b16a3618038a6f1b51df91",
+      "headRepository": "muhammad-usama-sardar/exported-attestation",
+      "headRefName": "main",
+      "headRefOid": "05a9243d2b4a9180898504369a302a1fac492c1d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys6z4KvE",
+          "commit": {
+            "abbreviatedOid": "05a9243"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-07-14T21:05:59Z",
+          "updatedAt": "2025-07-14T21:08:43Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "It's never a good idea to depend on another I-D. Unless \"bis\" adds something important here, let's keep the dependency on the original RFC.",
+              "createdAt": "2025-07-14T21:05:59Z",
+              "updatedAt": "2025-07-14T21:08:43Z"
+            },
+            {
+              "originalPosition": 76,
+              "body": "Same as above, keep 8446.",
+              "createdAt": "2025-07-14T21:08:05Z",
+              "updatedAt": "2025-07-14T21:08:43Z"
+            }
+          ]
         }
       ]
     }
