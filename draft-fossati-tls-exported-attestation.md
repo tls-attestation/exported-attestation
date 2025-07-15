@@ -62,7 +62,7 @@ normative:
   RFC2119:
   RFC8174:
   RFC9261:
-  8446: tls13
+  RFC8446: tls13
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags:
 
