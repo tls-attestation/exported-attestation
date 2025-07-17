@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-15T01:40:29.673167+00:00",
+  "timestamp": "2025-07-17T01:38:05.115934+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -205,9 +205,17 @@
       "labels": [],
       "body": "I am not sure why do we have an arrow from Verifier to Server with \"Finished\" in [Fig. 1](https://www.ietf.org/archive/id/draft-fossati-tls-exported-attestation-02.html#figure-1)? I think it should be removed. ",
       "createdAt": "2025-07-14T18:04:18Z",
-      "updatedAt": "2025-07-14T18:04:18Z",
+      "updatedAt": "2025-07-15T07:58:37Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I agree that the Finished seems completely misplaced.\n\nBTW, that\u2019s not the only weird bit in Figure 1: the passport exchange should be shown before the handshake, rather than interwoven.",
+          "createdAt": "2025-07-15T07:58:37Z",
+          "updatedAt": "2025-07-15T07:58:37Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1343,13 +1351,13 @@
       "labels": [],
       "body": "- Terminology and Capitalization of terms\r\n- CMW applies only to Certificate message of Authenticator",
       "createdAt": "2025-07-14T17:58:21Z",
-      "updatedAt": "2025-07-14T21:08:43Z",
+      "updatedAt": "2025-07-15T14:54:52Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "0bfa1e58095bc2c571b16a3618038a6f1b51df91",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
-      "headRefOid": "05a9243d2b4a9180898504369a302a1fac492c1d",
+      "headRefOid": "c8d227bd8dd844abfba8c837776f182eecaa0060",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1379,6 +1387,112 @@
               "body": "Same as above, keep 8446.",
               "createdAt": "2025-07-14T21:08:05Z",
               "updatedAt": "2025-07-14T21:08:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6z8RmP",
+          "commit": {
+            "abbreviatedOid": "05a9243"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-15T06:50:00Z",
+          "updatedAt": "2025-07-15T06:50:00Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "Not sure about such a strong statement as \"never\". At least I have one recent counterexample [here](https://mailarchive.ietf.org/arch/msg/tls/rUK8UrkREY025QMDuDPOXHma_Ek/) from the AD review of 8773bis: \r\n\r\n> Update all references of RFC8446 to 8446bis \r\n\r\nAlso, 8446bis has had several last calls.",
+              "createdAt": "2025-07-15T06:50:00Z",
+              "updatedAt": "2025-07-15T06:50:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6z8253",
+          "commit": {
+            "abbreviatedOid": "05a9243"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-15T07:33:30Z",
+          "updatedAt": "2025-07-15T07:53:23Z",
+          "comments": [
+            {
+              "originalPosition": 34,
+              "body": "This (and all the other instances of the same phrase) sounds odd.\r\n\r\nI suggest replacing \u201c_to Certificate Message of Authenticator_\u201d with \u201c_to the Authenticator's Certificate message_\"",
+              "createdAt": "2025-07-15T07:33:30Z",
+              "updatedAt": "2025-07-15T07:53:23Z"
+            },
+            {
+              "originalPosition": 42,
+              "body": "I agree with Yaron. Unless the BIS contains information we rely on critically, there is no reason to change the reference until RFC8446 becomes obsolete (which will happen as soon as the BIS gets its RFC number).\r\n\r\nThe typical way to address this in kramdown-rfc is to create an alias, e.g.:\r\n```\r\nRFC8446: tls13\r\n```\r\nand move the concrete reference when obsoletion kicks in:\r\n```\r\nRFCXXXX: tls13\r\n```\r\n",
+              "createdAt": "2025-07-15T07:43:46Z",
+              "updatedAt": "2025-07-15T07:53:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6z_nLL",
+          "commit": {
+            "abbreviatedOid": "05a9243"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-15T11:00:37Z",
+          "updatedAt": "2025-07-15T11:00:38Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "Are you sure? Seems to me this should be:\r\n\r\n`tls13: RFC8446`",
+              "createdAt": "2025-07-15T11:00:37Z",
+              "updatedAt": "2025-07-15T11:00:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys60AMsa",
+          "commit": {
+            "abbreviatedOid": "05a9243"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-15T11:45:56Z",
+          "updatedAt": "2025-07-15T11:45:56Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "I believe it is as I suggested above.  Then, in the markdown, you reference as `{{-tls13}}`.  See, for example, https://github.com/ietf-rats-wg/draft-ietf-rats-reference-interaction-models/pull/71/files",
+              "createdAt": "2025-07-15T11:45:56Z",
+              "updatedAt": "2025-07-15T11:45:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys60BrO1",
+          "commit": {
+            "abbreviatedOid": "8de4729"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-15T13:32:55Z",
+          "updatedAt": "2025-07-15T13:32:56Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "```suggestion\r\nAs defined in {{Section 4.4.2 of -tls13}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.\r\n```",
+              "createdAt": "2025-07-15T13:32:56Z",
+              "updatedAt": "2025-07-15T13:32:56Z"
             }
           ]
         }
