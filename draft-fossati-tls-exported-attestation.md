@@ -150,7 +150,7 @@ To maintain a cryptographic binding between the Evidence and the authentication 
 
 The `cmw_attestation` extension does not modify or replace X.509 certificate validation mechanisms. It serves as an additional source of authentication data rather than altering the trust model of PKI-based authentication. Specifically:
 
-- Certificate validation (e.g., signature verification, revocation checks) MUST still be performed according to TLS {{!tls13}} and PKIX {{!RFC5280}}.
+- Certificate validation (e.g., signature verification, revocation checks) MUST still be performed according to TLS {{-tls13}} and PKIX {{!RFC5280}}.
 - The attestation credentials carried in `cmw_attestation` MUST NOT be used as a substitute for X.509 certificate validation but can be used alongside standard certificate validation for additional security assurances.
 - Implementations MAY reject connections where the certificate is valid but the attestation credentials is missing or does not meet security policy.
 
