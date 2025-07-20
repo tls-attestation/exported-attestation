@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-17T01:38:05.115934+00:00",
+  "timestamp": "2025-07-20T01:45:17.664469+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -216,6 +216,41 @@
           "updatedAt": "2025-07-15T07:58:37Z"
         }
       ]
+    },
+    {
+      "number": 22,
+      "id": "I_kwDON6zrys7BRBSe",
+      "title": "IANA comments to -02",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/22",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Before the IETF meeting, we check working group agendas for documents with IANA-related issues. We have notes about this document:\n\nhttps://datatracker.ietf.org/doc/html/draft-fossati-tls-exported-attestation-02\n\n1) In Table 1, \u201cDTLS 1.3\u201d should be changed to \u201cDTLS-Only\u201d to match the registry:\n\nhttps://www.iana.org/assignments/tls-extensiontype-values\n\n2) The registry \u201cTLS Flags\u201d hasn\u2019t been created yet. Please add a reference to the document that\u2019s going to create it. (The section currently has a link to the registry URL, but the registry isn\u2019t there.)\n\nAmanda Baber\nIANA Operations Sr. Manager",
+      "createdAt": "2025-07-18T08:56:00Z",
+      "updatedAt": "2025-07-18T08:56:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 23,
+      "id": "I_kwDON6zrys7BXSI1",
+      "title": "Ekr feedback on v2",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/23",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "thomas-fossati",
+        "muhammad-usama-sardar"
+      ],
+      "labels": [],
+      "body": "> \n> I've now had a chance to look at this draft.\n> \n> At a high level I have the same concerns I expressed over\n> draft-fossati-tls-attestation, which is to say that it unclear what\n> actual security properties that attestation provides. This draft is\n> even more vague about this question. I appreciate that these\n> properties are dependent on the precise configuration of the peer\n> endpoint, and so there are presumably some specific assertions which\n> need to appear in the attestation that describe that configuration,\n> but I think the responsibility of this kind of draft is to explain\n> what the implications of various choices are.\n> \n> \n> In terms of the integration with TLS, I don't think the negotiation\n> structure is quite right. Specifically, you indicate support for this\n> mechanism with a CMW_Attestation flag in CH, which is then\n> acknowledged in EE, but then you provide the actual data in a\n> different extension (cmw_attestation) in Certificate. There are\n> two problems here:\n> \n> 1. You can't use flags this way.\n> 2. CH is generally not the right place.\n> \n> For point 1, draft-ietf-tls-tlsflags explicitly prohibits the use of a\n> flag to signal an actual extension:\n> \n> >    For a flag that does require a response, the only proper response is\n> >    the same flag in a flags extension.  This extension MUST NOT be used\n> >    to specify extensions where the response is a proper extension with\n> >    content.\n> \n> On point 2, here is what S 5.2 of RFC 9261 says:\n> \n> >    ClientHello extensions are used to determine permissible extensions\n> >    in the server's unsolicited Certificate message in order to follow\n> >    the general model for extensions in (D)TLS in which extensions can\n> >    only be included as part of a Certificate message if they were\n> >    previously sent as part of a CertificateRequest message or\n> >    ClientHello message.  This ensures that the recipient will be able to\n> >    process such extensions.\n> \n> As you are sending CertificateRequest and/or ClientCertificateRequest,\n> that is where the offer has to appear. IOW, the correct design is\n> to define only one extension, \"cmw_attestation\", which appears in\n> CertificateRequest or ClientCertificateRequest respectively.\n> \n> One more editorial point: you repeatedly refer to this as\n> \"post-handshake\", but that's more properly used to refer to the\n> mechanism in S 4.6.2 of RFC 8446. This mechanism isn't in TLS\n> at all, but rather in the application protocol but bound to\n> TLS.\n> \n> -Ekr",
+      "createdAt": "2025-07-18T18:56:32Z",
+      "updatedAt": "2025-07-19T21:08:38Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -1351,18 +1386,26 @@
       "labels": [],
       "body": "- Terminology and Capitalization of terms\r\n- CMW applies only to Certificate message of Authenticator",
       "createdAt": "2025-07-14T17:58:21Z",
-      "updatedAt": "2025-07-15T14:54:52Z",
+      "updatedAt": "2025-07-17T15:29:01Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "0bfa1e58095bc2c571b16a3618038a6f1b51df91",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
-      "headRefOid": "c8d227bd8dd844abfba8c837776f182eecaa0060",
+      "headRefOid": "7fb9d74a4110973c0f52b721b1a1a75698975f9f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@hannestschofenig @ionut-arm could you please have a look? ",
+          "createdAt": "2025-07-17T15:29:01Z",
+          "updatedAt": "2025-07-17T15:29:01Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDON6zrys6z4KvE",
@@ -1495,6 +1538,52 @@
               "updatedAt": "2025-07-15T13:32:56Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDON6zrys60iMrH",
+          "commit": {
+            "abbreviatedOid": "c8d227b"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-17T10:10:02Z",
+          "updatedAt": "2025-07-17T10:10:02Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys60iRHi",
+          "commit": {
+            "abbreviatedOid": "c8d227b"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-07-17T10:14:21Z",
+          "updatedAt": "2025-07-17T10:14:22Z",
+          "comments": [
+            {
+              "originalPosition": 76,
+              "body": "This breaks the build:\r\n\r\n```suggestion\r\n- Certificate validation (e.g., signature verification, revocation checks) MUST still be performed according to TLS {{-tls13}} and PKIX {{!RFC5280}}.\r\n```",
+              "createdAt": "2025-07-17T10:14:21Z",
+              "updatedAt": "2025-07-17T10:14:58Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys60iguU",
+          "commit": {
+            "abbreviatedOid": "7fb9d74"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-17T10:34:39Z",
+          "updatedAt": "2025-07-17T10:34:39Z",
+          "comments": []
         }
       ]
     }
