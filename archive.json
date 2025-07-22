@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-20T01:45:17.664469+00:00",
+  "timestamp": "2025-07-22T01:38:10.457007+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -251,6 +251,30 @@
       "updatedAt": "2025-07-19T21:08:38Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 24,
+      "id": "I_kwDON6zrys7BhVP0",
+      "title": "Comments on draft charter",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/24",
+      "state": "OPEN",
+      "author": "mwiseman32",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "In first paragraph: We are enhancing the existing authentication. So should reverse the order: \n... in addition to conventional authentication (verification of identity), it's crucial to ensure that the peer's state is as expected.\n\n2nd paragraph: In phrase:\nsuch as proving that its software and firmware haven't been tampered with...\nAttestation cannot \"prove\" that software / firmware hasn't been tampered with. It can only provide evidence of its identity. The verifier, using policy and manifests, make the decision about the software's trustworthiness.\n\n2nd paragraph: Remove redundant \"verifiable\" \nRemote attestation ([RFC9334](https://datatracker.ietf.org/doc/rfc9334/)) addresses this by allowing an entity to produce Evidence about its current state.\n\n2nd paragraph: Remove implementation implication. I realized this is stated as an example but this infers a hardware-based implementation.\n...such as proving that its software and firmware haven't been tampered with, that secure boot is enabled, or that cryptographic keys are securely stored within a protected environment.\n\n",
+      "createdAt": "2025-07-20T22:21:43Z",
+      "updatedAt": "2025-07-20T22:56:34Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thank you Monty. \n> In first paragraph: We are enhancing the existing authentication. So should reverse the order: ... in addition to conventional authentication (verification of identity), it's crucial to ensure that the peer's state is as expected.\n> \n\nAgree. \n\n> 2nd paragraph: In phrase: such as proving that its software and firmware haven't been tampered with... Attestation cannot \"prove\" that software / firmware hasn't been tampered with. It can only provide evidence of its identity. The verifier, using policy and manifests, make the decision about the software's trustworthiness.\n> \n\nMostly agree, except that attestation can provide evidence of state. Identity is related to authentication.\n> 2nd paragraph: Remove redundant \"verifiable\" Remote attestation ([RFC9334](https://datatracker.ietf.org/doc/rfc9334/)) addresses this by allowing an entity to produce Evidence about its current state.\n> \n\nWhat is \"verifiable\" redundant with?\n> 2nd paragraph: Remove implementation implication. I realized this is stated as an example but this infers a hardware-based implementation. ...such as proving that its software and firmware haven't been tampered with, that secure boot is enabled, or that cryptographic keys are securely stored within a protected environment.\n\nIndeed we are working with hardware-based attestation. So I think it should be fine. ",
+          "createdAt": "2025-07-20T22:56:34Z",
+          "updatedAt": "2025-07-20T22:56:34Z"
+        }
+      ]
     }
   ],
   "pulls": [
