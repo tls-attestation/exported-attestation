@@ -14,14 +14,14 @@
 <meta content="
        This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. Additionally, it introduces the  cmw_attestation  extension, which allows attestation credentials to be included directly in the Certificate message sent during the Exported Authenticator-based post-handshake authentication. The approach supports both the passport and background check models from the RATS architecture while ensuring that attestation remains bound to the underlying communication channel. 
     " name="description">
-<meta content="xml2rfc 3.29.0" name="generator">
+<meta content="xml2rfc 3.30.0" name="generator">
 <meta content="Attestation" name="keyword">
 <meta content="TLS" name="keyword">
 <meta content="Key Attestation" name="keyword">
 <meta content="Exported Authenticators" name="keyword">
 <meta content="draft-fossati-tls-exported-attestation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.29.0
+  xml2rfc 3.30.0
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1052,11 +1052,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Application Layer Attestation</td>
-<td class="right">July 2025</td>
+<td class="right">August 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Fossati, et al.</td>
-<td class="center">Expires 4 January 2026</td>
+<td class="center">Expires 5 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1069,12 +1069,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-fossati-tls-exported-attestation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-03" class="published">3 July 2025</time>
+<time datetime="2025-08-04" class="published">4 August 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-04">4 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-02-05">5 February 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1180,7 +1180,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-cmw_attestation-tls-certifi" class="internal xref">cmw_attestation TLS Certificate Message Extension</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-cmw_attestation-extension-t" class="internal xref">cmw_attestation Extension to the Authenticator's Certificate message</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-negotiation-of-cmw_attestat" class="internal xref">Negotiation of cmw_attestation Extension</a></p>
@@ -1254,7 +1254,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-1-1">There is a growing need to demonstrate to a remote party that cryptographic keys are stored in a secure element, the device is in a known good state, secure boot has been enabled, and that low-level software and firmware have not been tampered with. Remote attestation provides this capability.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">More technically, an Attester produces a signed collection of Claims that constitute Evidence about its running environment(s). A Relying Party may consult an Attestation Result produced by a Verifier that has appraised the Evidence to make policy decisions regarding the trustworthiness of the Target Environment being assessed. This is, in essence, what RFC 9334 <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> defines.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. To streamline attestation in TLS, this document introduces the cmw_attestation extension, which allows attestation credentials to be conveyed directly in the Certificate message during the Exported Authenticator-based post-handshake authentication. This eliminates reliance on real-time certificate issuance from a Certificate Authority (CA), reducing handshake delays while ensuring attestation evidence remains bound to the TLS session. The extension supports both the passport and background check models from the RATS architecture, enhancing flexibility for different deployment scenarios.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-3">At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. To streamline attestation in TLS, this document introduces the cmw_attestation extension, which allows attestation credentials to be conveyed directly in the Certificate message during the Exported Authenticator-based post-handshake authentication. This eliminates reliance on real-time certificate issuance from a Certificate Authority (CA), reducing handshake delays while ensuring Evidence remains bound to the TLS session. The extension supports both the passport and background check models from the RATS architecture, enhancing flexibility for different deployment scenarios.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">This document builds upon three foundational specifications:<a href="#section-1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-5.1">
@@ -1267,7 +1267,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <p id="section-1-5.3.1">RATS Conceptual Messages Wrapper (CMW) <span>[<a href="#I-D.ietf-rats-msg-wrap" class="cite xref">I-D.ietf-rats-msg-wrap</a>]</span>: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.<a href="#section-1-5.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-6">This specification introduces the cmw_attestation extension, enabling attestation evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>. This approach enhances flexibility and efficiency, supporting key attestation mechanisms without being restricted to X.509 certificate encoding formats.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-6">This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>. This approach enhances flexibility and efficiency, supporting key attestation mechanisms without being restricted to X.509 certificate encoding formats.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1277,16 +1277,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-2-1">The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">The reader is assumed to be familiar with the vocabulary and concepts defined in RFC 9334 and RFC 9261.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<p id="section-2-3">"Remote attestation credentials", or "attestation credentials", is used to refer to both attestation evidence and attestation results, when no distinction needs to be made between them.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-3">"Remote attestation credentials", or "attestation credentials", is used to refer to both Evidence and attestation results, when no distinction needs to be made between them.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="cmwattestation-tls-certificate-message-extension">
+<div id="cmwattestation-extension-to-the-authenticators-certificate-message">
 <section id="section-3">
-      <h2 id="name-cmw_attestation-tls-certifi">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cmw_attestation-tls-certifi" class="section-name selfRef">cmw_attestation TLS Certificate Message Extension</a>
+      <h2 id="name-cmw_attestation-extension-t">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cmw_attestation-extension-t" class="section-name selfRef">cmw_attestation Extension to the Authenticator's Certificate message</a>
       </h2>
-<p id="section-3-1">This document introduces a new TLS certificate message extension called cmw_attestation.
-This extension allows Attestation Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">This document introduces a new extension, called <code>cmw_attestation</code>, to the Authenticator's Certificate message.
+This extension allows Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">As defined in <span><a href="https://rfc-editor.org/rfc/rfc8446#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">The cmw_attestation extension is only included in the Certificate message during Exported Authenticator-based post-handshake authentication. This ensures that the attestation credentials are conveyed within the Certificate message, eliminating the need for modifications to the X.509 certificate structure.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-4">
@@ -1303,8 +1303,7 @@ struct {
         <h3 id="name-negotiation-of-cmw_attestat">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-negotiation-of-cmw_attestat" class="section-name selfRef">Negotiation of cmw_attestation Extension</a>
         </h3>
-<p id="section-3.1-1">Clients and servers use the TLS flags extension defined in <span>[<a href="#I-D.ietf-tls-tlsflags" class="cite xref">I-D.ietf-tls-tlsflags</a>]</span> to indicate support for the functionality defined in this document. We refer to the previously defined "cmw_attestation" extension,
-and the corresponding flag is called the "CMW_Attestation" flag.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">Clients and servers use the TLS flags extension defined in <span>[<a href="#I-D.ietf-tls-tlsflags" class="cite xref">I-D.ietf-tls-tlsflags</a>]</span> to indicate support for the functionality defined in this document. We refer to flag corresponding to the "cmw_attestation" extension as the "CMW_Attestation" flag.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The "CMW_Attestation" flag proposed by the client in the ClientHello MUST be acknowledged in the EncryptedExtensions if the server also  supports the functionality defined in this document and is configured to use it.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">If the "CMW_Attestation" flag is not set, servers ignore any of the functionality specified in this document, and attestation credentials cannot be conveyed using "Exported TLS Authenticators".<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -1314,14 +1313,14 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
         <h3 id="name-usage-in-post-handshake-aut">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-usage-in-post-handshake-aut" class="section-name selfRef">Usage in Post-Handshake Authentication</a>
         </h3>
-<p id="section-3.2-1">The <code>cmw_attestation</code> extension is designed to be used exclusively in post-handshake authentication as defined in <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>. It allows attestation credentials to be transmitted in the authenticator (Certificate) message only in response to an authenticator request. This ensures that attestation credentials are provided on demand rather than being included in the initial TLS handshake.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">To maintain a cryptographic binding between the attestation evidence and the authentication request, the <code>cmw_attestation</code> extension MUST be associated with the certificate_request_context of the corresponding CertificateRequest or ClientCertificateRequest message. This binding ensures that:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">The <code>cmw_attestation</code> extension is designed to be used exclusively in post-handshake authentication as defined in <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>. It allows attestation credentials to be transmitted in the Authenticator's Certificate message only in response to an Authenticator Request. This ensures that attestation credentials are provided on demand rather than being included in the initial TLS handshake.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">To maintain a cryptographic binding between the Evidence and the authentication request, the <code>cmw_attestation</code> extension MUST be associated with the <code>certificate_request_context</code> of the corresponding CertificateRequest or ClientCertificateRequest message (from the Server or Client, respectively). This binding ensures that:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-3.1">
-            <p id="section-3.2-3.1.1">The attestation evidence is specific to the authentication event and cannot be replayed across different TLS sessions.<a href="#section-3.2-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-3.1.1">The Evidence is specific to the authentication event and cannot be replayed across different TLS sessions.<a href="#section-3.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-3.2">
-            <p id="section-3.2-3.2.1">The attestation evidence remains tied to the cryptographic context of the TLS session.<a href="#section-3.2-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-3.2.1">The Evidence remains tied to the cryptographic context of the TLS session.<a href="#section-3.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1351,20 +1350,20 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-applicability-to-client-and" class="section-name selfRef">Applicability to Client and Server Authentication</a>
         </h3>
 <p id="section-3.4-1">The <code>cmw_attestation</code> extension is applicable to both client and server authentication in Exported Authenticator-based post-handshake authentication.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">In TLS, one party acts as the relying party, and the other party acts as the attester. Either the client or the server may fulfill these roles depending on the authentication direction.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3">The attester may respond with either:<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">In TLS, one party acts as the Relying Party, and the other party acts as the Attester. Either the client or the server may fulfill these roles depending on the authentication direction.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">The Attester may respond with either:<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-4.1">
-            <p id="section-3.4-4.1.1">Attestation Evidence (Background Check Model):<a href="#section-3.4-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-4.1.1">Evidence (Background Check Model):<a href="#section-3.4-4.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-4.1.2.1">
-                <p id="section-3.4-4.1.2.1.1">The attester generates Evidence and includes it in the <code>cmw_attestation</code> extension.<a href="#section-3.4-4.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-3.4-4.1.2.1.1">The Attester generates Evidence and includes it in the <code>cmw_attestation</code> extension to the Authenticator's Certificate message.<a href="#section-3.4-4.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.4-4.1.2.2">
-                <p id="section-3.4-4.1.2.2.1">The relying party forwards the Evidence to an external Verifier for evaluation and waits for an Attestation Result.<a href="#section-3.4-4.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.4-4.1.2.2.1">The Relying Party forwards the Evidence to an external Verifier for evaluation and waits for an Attestation Result.<a href="#section-3.4-4.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.4-4.1.2.3">
-                <p id="section-3.4-4.1.2.3.1">The relying party grants or denies access, or continues or terminates the TLS session, based on the Verifier's Attestation Result.<a href="#section-3.4-4.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-3.4-4.1.2.3.1">The Relying Party grants or denies access, or continues or terminates the TLS session, based on the Verifier's Attestation Result.<a href="#section-3.4-4.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1372,16 +1371,16 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
             <p id="section-3.4-4.2.1">Attestation Result (Passport Model):<a href="#section-3.4-4.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-4.2.2.1">
-                <p id="section-3.4-4.2.2.1.1">The attester sends Evidence to a Verifier beforehand.<a href="#section-3.4-4.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-3.4-4.2.2.1.1">The Attester sends Evidence to a Verifier beforehand.<a href="#section-3.4-4.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.4-4.2.2.2">
-                <p id="section-3.4-4.2.2.2.1">The Verifier issues an Attestation Result to the attester.<a href="#section-3.4-4.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.4-4.2.2.2.1">The Verifier issues an Attestation Result to the Attester.<a href="#section-3.4-4.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.4-4.2.2.3">
-                <p id="section-3.4-4.2.2.3.1">The attester includes the Attestation Result in the <code>cmw_attestation</code> extension and sends it to the relying party.<a href="#section-3.4-4.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-3.4-4.2.2.3.1">The Attester includes the Attestation Result in the <code>cmw_attestation</code> extension to the Authenticator's Certificate message and sends it to the Relying Party.<a href="#section-3.4-4.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.4-4.2.2.4">
-                <p id="section-3.4-4.2.2.4.1">The relying party validates the Attestation Result directly without needing to contact an external Verifier.<a href="#section-3.4-4.2.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-3.4-4.2.2.4.1">The Relying Party validates the Attestation Result directly without needing to contact an external Verifier.<a href="#section-3.4-4.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1404,13 +1403,13 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
           <p id="section-4-4.1.1">Background Check Model:<a href="#section-4-4.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-4.1.2.1">
-              <p id="section-4-4.1.2.1.1">Verify Integrity and Authenticity: The attestation evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.<a href="#section-4-4.1.2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.1.1">Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.<a href="#section-4-4.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4-4.1.2.2">
-              <p id="section-4-4.1.2.2.1">Ensure Certificate Binding and Freshness: The attestation evidence must be explicitly associated with the <code>certificate_request_context</code> in the authenticator request to ensure relevance, freshness, and protection against replay.<a href="#section-4-4.1.2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.2.1">Ensure Certificate Binding and Freshness: The Evidence must be explicitly associated with the <code>certificate_request_context</code> in the authenticator request to ensure relevance, freshness, and protection against replay.<a href="#section-4-4.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4-4.1.2.3">
-              <p id="section-4-4.1.2.3.1">Evaluate Security Policy Compliance: The attestation evidence must be evaluated against the relying party's security policies to determine if the attesting device and the private key storage meet the required criteria.<a href="#section-4-4.1.2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.3.1">Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.<a href="#section-4-4.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
@@ -1418,7 +1417,7 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
           <p id="section-4-4.2.1">Passport Model:<a href="#section-4-4.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-4.2.2.1">
-              <p id="section-4-4.2.2.1.1">Verify the Attestation Result: The relying party MUST check that the Attestation Result is correctly signed by the issuing authority and that it meets the relying party’s security requirements.<a href="#section-4-4.2.2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.2.2.1.1">Verify the Attestation Result: The Relying Party MUST check that the Attestation Result is correctly signed by the issuing authority and that it meets the Relying Party’s security requirements.<a href="#section-4-4.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
@@ -1574,10 +1573,10 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
             <p id="section-4.1-2.2.1">Context Retrieval<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.2.2.1">
-                <p id="section-4.1-2.2.2.1.1">The certificate_request_context MUST be provided in all cases to ensure proper validation of attestation evidence.<a href="#section-4.1-2.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.2.2.1.1">The certificate_request_context MUST be provided in all cases to ensure proper validation of Evidence.<a href="#section-4.1-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-2.2.2.2">
-                <p id="section-4.1-2.2.2.2.1">The receiving endpoint MUST use the "get context" API to retrieve the <code>certificate_request_context</code> associated with the exported authenticator as attestation-based authentication requires strict enforcement of the request context. This ensures that the freshness of attestation evidence can be verified.<a href="#section-4.1-2.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.2.2.2.1">The receiving endpoint MUST use the "get context" API to retrieve the <code>certificate_request_context</code> associated with the exported authenticator as attestation-based authentication requires strict enforcement of the request context. This ensures that the freshness of Evidence can be verified.<a href="#section-4.1-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1585,7 +1584,7 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
             <p id="section-4.1-2.3.1">Authenticator Validation<a href="#section-4.1-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.3.2.1">
-                <p id="section-4.1-2.3.2.1.1">The API MUST verify that the attestation evidence within the Certificate message is cryptographically valid and bound to the certificate_request_context.<a href="#section-4.1-2.3.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.3.2.1.1">The API MUST verify that the Evidence within the Certificate message is cryptographically valid and bound to the certificate_request_context.<a href="#section-4.1-2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1600,7 +1599,7 @@ and the corresponding flag is called the "CMW_Attestation" flag.<a href="#sectio
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-5-1">This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either attestation evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span>. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-2">This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span>. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <div id="using-the-tls-connection">
 <section id="section-5.1">
         <h3 id="name-using-the-tls-connection">
@@ -1620,7 +1619,7 @@ session has already completed remote attestation before the session can be used 
         <h3 id="name-evidence-freshness">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-evidence-freshness" class="section-name selfRef">Evidence Freshness</a>
         </h3>
-<p id="section-5.2-1">The attestation evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer remains in a secure state, remote attestation may be re-initiated periodically. In the current protocol, this can be achieved by initiating a new Exported Authenticator-based post-handshake authentication exchange, which will generate a new certificate_request_context to maintain freshness.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1703,7 +1702,7 @@ session has already completed remote attestation before the session can be used 
 <dl class="references">
 <dt id="I-D.ietf-rats-msg-wrap">[I-D.ietf-rats-msg-wrap]</dt>
         <dd>
-<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Smith, N.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">D. Glaze</span>, <span class="refTitle">"RATS Conceptual Messages Wrapper (CMW)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-msg-wrap-15</span>, <time datetime="2025-05-30" class="refDate">30 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-15">https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-15</a>&gt;</span>. </dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Smith, N.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">D. Glaze</span>, <span class="refTitle">"RATS Conceptual Messages Wrapper (CMW)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-msg-wrap-16</span>, <time datetime="2025-07-03" class="refDate">3 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-16">https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-tls-tlsflags">[I-D.ietf-tls-tlsflags]</dt>
         <dd>
@@ -1744,7 +1743,7 @@ session has already completed remote attestation before the session can be used 
 <dl class="references">
 <dt id="I-D.ietf-lamps-csr-attestation">[I-D.ietf-lamps-csr-attestation]</dt>
         <dd>
-<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Wiseman, M.</span>, and <span class="refAuthor">N. Smith</span>, <span class="refTitle">"Use of Remote Attestation with Certification Signing Requests"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-csr-attestation-19</span>, <time datetime="2025-05-25" class="refDate">25 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-19">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-19</a>&gt;</span>. </dd>
+<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Wiseman, M.</span>, and <span class="refAuthor">N. Smith</span>, <span class="refTitle">"Use of Remote Attestation with Certification Signing Requests"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-csr-attestation-20</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-20">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-csr-attestation-20</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TLS-Ext-Registry">[TLS-Ext-Registry]</dt>
       <dd>
