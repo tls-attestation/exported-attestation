@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-22T01:38:10.457007+00:00",
+  "timestamp": "2025-08-05T01:42:39.301819+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -205,7 +205,7 @@
       "labels": [],
       "body": "I am not sure why do we have an arrow from Verifier to Server with \"Finished\" in [Fig. 1](https://www.ietf.org/archive/id/draft-fossati-tls-exported-attestation-02.html#figure-1)? I think it should be removed. ",
       "createdAt": "2025-07-14T18:04:18Z",
-      "updatedAt": "2025-07-15T07:58:37Z",
+      "updatedAt": "2025-08-04T09:29:39Z",
       "closedAt": null,
       "comments": [
         {
@@ -214,6 +214,13 @@
           "body": "I agree that the Finished seems completely misplaced.\n\nBTW, that\u2019s not the only weird bit in Figure 1: the passport exchange should be shown before the handshake, rather than interwoven.",
           "createdAt": "2025-07-15T07:58:37Z",
           "updatedAt": "2025-07-15T07:58:37Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> the passport exchange should be shown before the handshake, rather than interwoven\n\nAs discussed with @ionut-arm, @yaronf and Carsten:\nThe key point is: What binds the attestation results to the handshake? This may be done using exporters as follows:\n\n- Server puts `certificate_request_context` in AuthenticatorRequest (ClientCertificateRequest) \n- Client forwards that as `rdata` in Evidence to the Verifier\n- Verifier puts `rdata` as part of the AR. (It might require changes in the Verifier to also reflect `rdata`)\n- Client sends Exported Authenticator with AR containing the `rdata`\n- Server can then check the AR which includes `certificate_request_context` ",
+          "createdAt": "2025-08-04T09:29:39Z",
+          "updatedAt": "2025-08-04T09:29:39Z"
         }
       ]
     },
@@ -1403,24 +1410,26 @@
       "id": "PR_kwDON6zrys6e2IWr",
       "title": "CMW Extension and terminology",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/20",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- Terminology and Capitalization of terms\r\n- CMW applies only to Certificate message of Authenticator",
       "createdAt": "2025-07-14T17:58:21Z",
-      "updatedAt": "2025-07-17T15:29:01Z",
+      "updatedAt": "2025-08-04T09:33:58Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "0bfa1e58095bc2c571b16a3618038a6f1b51df91",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
       "headRefOid": "7fb9d74a4110973c0f52b721b1a1a75698975f9f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-08-04T09:33:58Z",
+      "mergedAt": "2025-08-04T09:33:58Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "f9b2414fc67577bf053672e3bb9cae6f6e103a4c"
+      },
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -1608,6 +1617,73 @@
           "createdAt": "2025-07-17T10:34:39Z",
           "updatedAt": "2025-07-17T10:34:39Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "PR_kwDON6zrys6h9zUg",
+      "title": "Remove misleading \"Finished\" message (Fixes #21)",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/25",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Remove misleading \"Finished\" message from Verifier to server in passport model",
+      "createdAt": "2025-08-04T09:37:38Z",
+      "updatedAt": "2025-08-04T09:46:52Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "f9b2414fc67577bf053672e3bb9cae6f6e103a4c",
+      "headRepository": "muhammad-usama-sardar/exported-attestation",
+      "headRefName": "main",
+      "headRefOid": "e226ea448efad5b2495169d74beeb6dda019d5a9",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys63yZIb",
+          "commit": {
+            "abbreviatedOid": "e226ea4"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-08-04T09:43:48Z",
+          "updatedAt": "2025-08-04T09:43:53Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "I take it there's no `Finished` from Server to Client?",
+              "createdAt": "2025-08-04T09:43:48Z",
+              "updatedAt": "2025-08-04T09:43:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys63ybXQ",
+          "commit": {
+            "abbreviatedOid": "e226ea4"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-08-04T09:46:52Z",
+          "updatedAt": "2025-08-04T09:46:52Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "> there's no Finished from Server to Client?\r\n\r\nYes, there is no Finished from Server to Client in post-handshake exchange based on RFC9261 (unless Server is the Attester). ",
+              "createdAt": "2025-08-04T09:46:52Z",
+              "updatedAt": "2025-08-04T09:46:52Z"
+            }
+          ]
         }
       ]
     }
