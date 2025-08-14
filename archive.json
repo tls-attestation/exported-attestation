@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-05T01:42:39.301819+00:00",
+  "timestamp": "2025-08-14T01:25:00.019043+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -282,6 +282,22 @@
           "updatedAt": "2025-07-20T22:56:34Z"
         }
       ]
+    },
+    {
+      "number": 26,
+      "id": "I_kwDON6zrys7FujgO",
+      "title": "Ahmed's feedback on -02",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/26",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\n> If we want to support continued trust across session lifetime or regain trust after a state transition then this seems like something we can already express using existing mechanisms since using Exported Authenticators (RFC 9261) with a cmw_attestation extension lets us carry session-bound attestation evidence after the handshake.\n> \n> What\u2019s worth calling out, though, is how standard EAT (RFC 9248) claims help enforce key properties depending on the verifiers policy:\n> \n>     nonce \u2192 binds the evidence to the verifier's challenge and the TLS session,\n>     iat / exp \u2192 allow the verifier to enforce a freshness window or session expiration window,\n>     firmware_id, secboot, or similar \u2192 help the verifier evaluate platform state against known-trusted configuration.\n> \n> \n> This gives the relying party enough structure to say: \u201cI\u2019ll continue trusting this session if the attestation was recent and the platform is still in a known-good state.\u201d\n> \n> If that\u2019s no longer the case, for example, if the evidence has expired or the verifier has learned that the attested state is no longer acceptable then it can simply send a new CertificateRequest message. That triggers the peer to generate a fresh Exported Authenticator with updated attestation (or fail to do so), and the verifier can decide whether to continue the session or terminate it based on that result.\n> \n> It might be helpful to include a concrete EAT-style example in the EXPATdraft, illustrating how claims like nonce, iat, and exp can support verifier-side policy, for example, enforcing evidence freshness, session binding, or attestation expiry. Since these claims are optional in EAT but highly relevant in this context, showing how they apply in the TLS Exported Authenticator setting would make the draft more implementer-friendly. ",
+      "createdAt": "2025-08-13T07:52:53Z",
+      "updatedAt": "2025-08-13T07:52:53Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
