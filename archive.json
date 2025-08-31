@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-28T01:17:19.042294+00:00",
+  "timestamp": "2025-08-31T01:22:06.947204+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -302,18 +302,33 @@
     {
       "number": 27,
       "id": "I_kwDON6zrys7IP96m",
-      "title": "cnf claim",
+      "title": "Ahmed's proposal (cnf claim)",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/27",
       "state": "OPEN",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "> With cnf, the attestation includes the public TLS key. The Verifier can verify that the presented session key matches what\u2019s in the evidence, ensuring that the entity being attested is the one actually controlling the TLS connection.\n>  \n>  \n> Which is what I believe is what you and I are looking for:\n> It is only the platform/TCB that could have produced the evidence given it is the only place where the attestation key exists.\n> This attested evidence was indeed carried out by this specific session and this specific TLS key.\n>  \n> This addresses both conditions you mentioned:\n>  \n> The physical platform is in control of the TCB\n> The TLS session terminates in a target environment/VM with the expected measurements\n> And it avoids the ambiguity about who issued the certificate, since trust is anchored directly in the attestation evidence itself, not in external PKI.\n> This same approach is already used in:\n> OAuth 2.0 DPoP ([RFC 9449]) \u2014 to bind tokens to client-held keys\n> ACE-OAuth ([RFC 9200]) \u2014 to enforce PoP in constrained IoT environments using CWT and cnf\n> I think that the design is clear, secure, and available and would provide the missing link between attestation evidence and session key ownership for TLS EXPAT. I hope this clarifies it better.",
+      "body": "Part of discussion in the [thread](https://mailarchive.ietf.org/arch/msg/attested-tls/IYPz5RGj3WnjruWEVUzkwjH7cmQ/):\n\n> With cnf, the attestation includes the public TLS key. The Verifier can verify that the presented session key matches what\u2019s in the evidence, ensuring that the entity being attested is the one actually controlling the TLS connection.\n>  \n>  \n> Which is what I believe is what you and I are looking for:\n> It is only the platform/TCB that could have produced the evidence given it is the only place where the attestation key exists.\n> This attested evidence was indeed carried out by this specific session and this specific TLS key.\n>  \n> This addresses both conditions you mentioned:\n>  \n> The physical platform is in control of the TCB\n> The TLS session terminates in a target environment/VM with the expected measurements\n> And it avoids the ambiguity about who issued the certificate, since trust is anchored directly in the attestation evidence itself, not in external PKI.\n> This same approach is already used in:\n> OAuth 2.0 DPoP ([RFC 9449]) \u2014 to bind tokens to client-held keys\n> ACE-OAuth ([RFC 9200]) \u2014 to enforce PoP in constrained IoT environments using CWT and cnf\n> I think that the design is clear, secure, and available and would provide the missing link between attestation evidence and session key ownership for TLS EXPAT. I hope this clarifies it better.",
       "createdAt": "2025-08-27T14:38:45Z",
-      "updatedAt": "2025-08-27T14:38:45Z",
+      "updatedAt": "2025-08-29T05:52:40Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is out of context. If this is part of a public mail thread, please include a link.",
+          "createdAt": "2025-08-29T01:09:25Z",
+          "updatedAt": "2025-08-29T01:09:25Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "added link. I aslo don't understand what security goal it achieves, and in what ways it is better than our proposal.",
+          "createdAt": "2025-08-29T05:52:40Z",
+          "updatedAt": "2025-08-29T05:52:40Z"
+        }
+      ]
     }
   ],
   "pulls": [
