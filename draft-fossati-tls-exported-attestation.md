@@ -220,8 +220,6 @@ Client                   Server                   Verifier
   | CertificateVerify,     |                         |
   | Finished)              |                         |
   |----------------------->|                         |
-  |                        |      Finished           |
-  |                        |<------------------------|
 ~~~
 {: #fig-passport title="Passport Model with Client as Attester"}
 
