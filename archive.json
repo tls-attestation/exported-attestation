@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-31T01:22:06.947204+00:00",
+  "timestamp": "2025-09-11T01:16:25.840034+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -198,15 +198,15 @@
       "id": "I_kwDON6zrys7Af4J0",
       "title": "Misleading \"Finished\" Message",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/21",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I am not sure why do we have an arrow from Verifier to Server with \"Finished\" in [Fig. 1](https://www.ietf.org/archive/id/draft-fossati-tls-exported-attestation-02.html#figure-1)? I think it should be removed. ",
       "createdAt": "2025-07-14T18:04:18Z",
-      "updatedAt": "2025-08-04T09:29:39Z",
-      "closedAt": null,
+      "updatedAt": "2025-09-10T15:32:31Z",
+      "closedAt": "2025-09-10T15:32:31Z",
       "comments": [
         {
           "author": "thomas-fossati",
@@ -255,24 +255,32 @@
       "labels": [],
       "body": "> \n> I've now had a chance to look at this draft.\n> \n> At a high level I have the same concerns I expressed over\n> draft-fossati-tls-attestation, which is to say that it unclear what\n> actual security properties that attestation provides. This draft is\n> even more vague about this question. I appreciate that these\n> properties are dependent on the precise configuration of the peer\n> endpoint, and so there are presumably some specific assertions which\n> need to appear in the attestation that describe that configuration,\n> but I think the responsibility of this kind of draft is to explain\n> what the implications of various choices are.\n> \n> \n> In terms of the integration with TLS, I don't think the negotiation\n> structure is quite right. Specifically, you indicate support for this\n> mechanism with a CMW_Attestation flag in CH, which is then\n> acknowledged in EE, but then you provide the actual data in a\n> different extension (cmw_attestation) in Certificate. There are\n> two problems here:\n> \n> 1. You can't use flags this way.\n> 2. CH is generally not the right place.\n> \n> For point 1, draft-ietf-tls-tlsflags explicitly prohibits the use of a\n> flag to signal an actual extension:\n> \n> >    For a flag that does require a response, the only proper response is\n> >    the same flag in a flags extension.  This extension MUST NOT be used\n> >    to specify extensions where the response is a proper extension with\n> >    content.\n> \n> On point 2, here is what S 5.2 of RFC 9261 says:\n> \n> >    ClientHello extensions are used to determine permissible extensions\n> >    in the server's unsolicited Certificate message in order to follow\n> >    the general model for extensions in (D)TLS in which extensions can\n> >    only be included as part of a Certificate message if they were\n> >    previously sent as part of a CertificateRequest message or\n> >    ClientHello message.  This ensures that the recipient will be able to\n> >    process such extensions.\n> \n> As you are sending CertificateRequest and/or ClientCertificateRequest,\n> that is where the offer has to appear. IOW, the correct design is\n> to define only one extension, \"cmw_attestation\", which appears in\n> CertificateRequest or ClientCertificateRequest respectively.\n> \n> One more editorial point: you repeatedly refer to this as\n> \"post-handshake\", but that's more properly used to refer to the\n> mechanism in S 4.6.2 of RFC 8446. This mechanism isn't in TLS\n> at all, but rather in the application protocol but bound to\n> TLS.\n> \n> -Ekr",
       "createdAt": "2025-07-18T18:56:32Z",
-      "updatedAt": "2025-07-19T21:08:38Z",
+      "updatedAt": "2025-09-10T15:31:08Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> At a high level I have the same concerns I expressed over\ndraft-fossati-tls-attestation, which is to say that it unclear what\nactual security properties that attestation provides. \n\nAs a starting point, the security considerations section can add a reference to the [paper](https://ieeexplore.ieee.org/document/10373038), which covers two relevant Confidential Computing technologies in our context: Arm CCA and Intel TDX.",
+          "createdAt": "2025-09-10T15:31:08Z",
+          "updatedAt": "2025-09-10T15:31:08Z"
+        }
+      ]
     },
     {
       "number": 24,
       "id": "I_kwDON6zrys7BhVP0",
       "title": "Comments on draft charter",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/24",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "mwiseman32",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "In first paragraph: We are enhancing the existing authentication. So should reverse the order: \n... in addition to conventional authentication (verification of identity), it's crucial to ensure that the peer's state is as expected.\n\n2nd paragraph: In phrase:\nsuch as proving that its software and firmware haven't been tampered with...\nAttestation cannot \"prove\" that software / firmware hasn't been tampered with. It can only provide evidence of its identity. The verifier, using policy and manifests, make the decision about the software's trustworthiness.\n\n2nd paragraph: Remove redundant \"verifiable\" \nRemote attestation ([RFC9334](https://datatracker.ietf.org/doc/rfc9334/)) addresses this by allowing an entity to produce Evidence about its current state.\n\n2nd paragraph: Remove implementation implication. I realized this is stated as an example but this infers a hardware-based implementation.\n...such as proving that its software and firmware haven't been tampered with, that secure boot is enabled, or that cryptographic keys are securely stored within a protected environment.\n\n",
       "createdAt": "2025-07-20T22:21:43Z",
-      "updatedAt": "2025-07-20T22:56:34Z",
-      "closedAt": null,
+      "updatedAt": "2025-09-10T13:38:46Z",
+      "closedAt": "2025-09-10T13:38:46Z",
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -280,6 +288,13 @@
           "body": "Thank you Monty. \n> In first paragraph: We are enhancing the existing authentication. So should reverse the order: ... in addition to conventional authentication (verification of identity), it's crucial to ensure that the peer's state is as expected.\n> \n\nAgree. \n\n> 2nd paragraph: In phrase: such as proving that its software and firmware haven't been tampered with... Attestation cannot \"prove\" that software / firmware hasn't been tampered with. It can only provide evidence of its identity. The verifier, using policy and manifests, make the decision about the software's trustworthiness.\n> \n\nMostly agree, except that attestation can provide evidence of state. Identity is related to authentication.\n> 2nd paragraph: Remove redundant \"verifiable\" Remote attestation ([RFC9334](https://datatracker.ietf.org/doc/rfc9334/)) addresses this by allowing an entity to produce Evidence about its current state.\n> \n\nWhat is \"verifiable\" redundant with?\n> 2nd paragraph: Remove implementation implication. I realized this is stated as an example but this infers a hardware-based implementation. ...such as proving that its software and firmware haven't been tampered with, that secure boot is enabled, or that cryptographic keys are securely stored within a protected environment.\n\nIndeed we are working with hardware-based attestation. So I think it should be fine. ",
           "createdAt": "2025-07-20T22:56:34Z",
           "updatedAt": "2025-07-20T22:56:34Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing this issue as it has been settled.",
+          "createdAt": "2025-09-10T13:38:46Z",
+          "updatedAt": "2025-09-10T13:38:46Z"
         }
       ]
     },
@@ -1672,24 +1687,26 @@
       "id": "PR_kwDON6zrys6h9zUg",
       "title": "Remove misleading \"Finished\" message (Fixes #21)",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/25",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Remove misleading \"Finished\" message from Verifier to server in passport model",
       "createdAt": "2025-08-04T09:37:38Z",
-      "updatedAt": "2025-08-04T09:46:52Z",
+      "updatedAt": "2025-09-10T15:32:30Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "f9b2414fc67577bf053672e3bb9cae6f6e103a4c",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
       "headRefOid": "e226ea448efad5b2495169d74beeb6dda019d5a9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-09-10T15:32:29Z",
+      "mergedAt": "2025-09-10T15:32:29Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "29a78ed52634255177849b98ccab6df8e76020e8"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1698,7 +1715,7 @@
             "abbreviatedOid": "e226ea4"
           },
           "author": "ionut-arm",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2025-08-04T09:43:48Z",
@@ -1731,6 +1748,19 @@
               "updatedAt": "2025-08-04T09:46:52Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDON6zrys6_HEfc",
+          "commit": {
+            "abbreviatedOid": "e226ea4"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-10T13:58:08Z",
+          "updatedAt": "2025-09-10T13:58:08Z",
+          "comments": []
         }
       ]
     }
