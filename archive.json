@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-11T01:16:25.840034+00:00",
+  "timestamp": "2025-09-25T01:16:15.048177+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -1763,6 +1763,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDON6zrys6qBclc",
+      "title": "Security and privacy considerations",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/28",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From older draft with some updates",
+      "createdAt": "2025-09-23T08:59:29Z",
+      "updatedAt": "2025-09-23T09:00:11Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
+      "headRepository": "muhammad-usama-sardar/exported-attestation",
+      "headRefName": "main",
+      "headRefOid": "189cb33fa7867689f3979417a84c90cb9587727c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
