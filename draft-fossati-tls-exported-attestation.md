@@ -312,7 +312,7 @@ session has already completed remote attestation before the session can be used 
 
 ## Evidence Freshness
 
-The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce [RA-TLS] or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.
+The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce {{RA-TLS}} or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.
 
 The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer remains in a secure state, remote attestation may be re-initiated periodically. In the current protocol, this can be achieved by initiating a new Exported Authenticator-based post-handshake authentication exchange, which will generate a new certificate_request_context to maintain freshness.
 
