@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-25T01:16:15.048177+00:00",
+  "timestamp": "2025-09-30T01:16:57.758979+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -1776,19 +1776,60 @@
       "labels": [],
       "body": "From older draft with some updates",
       "createdAt": "2025-09-23T08:59:29Z",
-      "updatedAt": "2025-09-23T09:00:11Z",
+      "updatedAt": "2025-09-29T12:46:59Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
-      "headRefOid": "189cb33fa7867689f3979417a84c90cb9587727c",
+      "headRefOid": "78e06b8bc1164751bd1935951cec0dfde2217be9",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7DajMr",
+          "commit": {
+            "abbreviatedOid": "189cb33"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-09-29T08:28:42Z",
+          "updatedAt": "2025-09-29T08:28:42Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "ref fix\r\n\r\n```suggestion\r\nThe Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce {{RA-TLS}} or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.\r\n```",
+              "createdAt": "2025-09-29T08:28:42Z",
+              "updatedAt": "2025-09-29T08:28:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Damrv",
+          "commit": {
+            "abbreviatedOid": "189cb33"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-09-29T08:32:33Z",
+          "updatedAt": "2025-09-29T08:32:33Z",
+          "comments": [
+            {
+              "originalPosition": 68,
+              "body": "While this information is good and useful, I don't think it belongs here.  Let's move it to the appendix or another document.",
+              "createdAt": "2025-09-29T08:32:33Z",
+              "updatedAt": "2025-09-29T08:32:33Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
