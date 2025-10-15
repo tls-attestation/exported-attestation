@@ -55,17 +55,14 @@ author:
     organization: Arm Limited
     email: ionut.mihalcea@arm.com
 
-
 normative:
   RFC9334:
-  RFC9261:
   RFC2119:
   RFC8174:
   RFC9261:
   RFC8446: tls13
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags:
-
 
 informative:
   I-D.ietf-lamps-csr-attestation:
@@ -80,14 +77,22 @@ informative:
        date: 13 November 2024,
        target: https://ieeexplore.ieee.org/document/10752524
        author:
-       -
-         ins: M. U. Sardar
-       -
-         ins: A. Niemi
-       -
-         ins: H. Tschofenig
-       -
-         ins: T. Fossati
+       - ins: M. U. Sardar
+       - ins: A. Niemi
+       - ins: H. Tschofenig
+       - ins: T. Fossati
+  RFC9711: rats-eat
+  RFC6969: ocsp
+  FIDO-REQS:
+    target: https://fidoalliance.org/specs/fido-security-requirements/
+    title: "FIDO Authenticator Security and Privacy Requirements"
+    author:
+    - ins: B. Peirani
+    - ins: J. Verrept
+    date: March 2025
+  I-D.ietf-rats-daa: rats-daa
+  I-D.ietf-oauth-selective-disclosure-jwt: sd-jwt
+
 --- abstract
 
 
@@ -330,13 +335,13 @@ Some ways to address this include:
 * Using selective disclosure (e.g., SD-JWT {{-sd-jwt}} with EAT {{-rats-eat}}),
 * Co-locating the Verifier role with the RP,
 * Utilizing privacy-preserving attestation schemes (e.g., DAA {{-rats-daa}}), or
-* Utilizing Attesters manufactured with group identities (e.g., {{FIDO-REQS}}).
+* Utilizing Attesters manufactured with group identities (e.g., Requirement 4.1 of {{FIDO-REQS}}).
 
 The last two also have the property of hiding the peer's identity from the RP.
 
 Note that the equivalent of OCSP "stapling" involves using a passport topology where the Verifier's involvement is unrelated to the TLS session.
 
-For the case of the TLS server as the Attester, the server can ask for client authentication and only send the Evidence after successful client authentication. This limits the exposure of server's hardware-level Claims to be revealed only to authorized clients. 
+For the case of the TLS server as the Attester, the server can ask for client authentication and only send the Evidence after successful client authentication. This limits the exposure of server's hardware-level Claims to be revealed only to authorized clients.
 
 # IANA Considerations
 
@@ -366,6 +371,6 @@ IANA is requested to add the following entry to the "TLS Flags" extension regist
 We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
 We would also like to thank Paul Howard and Yogesh Deshpande for their input.
 
-# Appendix 
+# Appendix
 
 Post-handshake attestation offers better privacy than intra-handshake attestation when the TLS server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
