@@ -336,7 +336,7 @@ The last two also have the property of hiding the peer's identity from the RP.
 
 Note that the equivalent of OCSP "stapling" involves using a passport topology where the Verifier's involvement is unrelated to the TLS session.
 
-Post-handshake attestation offers better privacy than intra-handshake attestation when the TLS server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
+For the case of the TLS server as the Attester, the server can ask for client authentication and only send the Evidence after successful client authentication. This limits the exposure of server's hardware-level Claims to be revealed only to authorized clients. 
 
 # IANA Considerations
 
@@ -365,3 +365,7 @@ IANA is requested to add the following entry to the "TLS Flags" extension regist
 # Acknowledgements
 We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
 We would also like to thank Paul Howard and Yogesh Deshpande for their input.
+
+# Appendix 
+
+Post-handshake attestation offers better privacy than intra-handshake attestation when the TLS server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
