@@ -14,7 +14,6 @@ workgroup: TLS
 keyword:
  - Attestation
  - TLS
- - Key Attestation
  - Exported Authenticators
 venue:
   group: tls
@@ -65,6 +64,7 @@ normative:
   RFC8446: tls13
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags:
+  I-D.bft-rats-kat:
 
 
 informative:
@@ -100,7 +100,7 @@ This document builds upon three foundational specifications:
 - RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.
 
 
-This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}. This approach enhances flexibility and efficiency, supporting key attestation mechanisms without being restricted to X.509 certificate encoding formats.
+This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}.
 
 # Terminology
 
@@ -151,7 +151,7 @@ To maintain a cryptographic binding between the Evidence and the authentication 
 The `cmw_attestation` extension does not modify or replace X.509 certificate validation mechanisms. It serves as an additional source of authentication data rather than altering the trust model of PKI-based authentication. Specifically:
 
 - Certificate validation (e.g., signature verification, revocation checks) MUST still be performed according to TLS {{-tls13}} and PKIX {{!RFC5280}}.
-- The attestation credentials carried in `cmw_attestation` MUST NOT be used as a substitute for X.509 certificate validation but can be used alongside standard certificate validation for additional security assurances.
+- The attestation credentials carried in `cmw_attestation` MUST NOT be used as a substitute for X.509 certificate validation but can be used alongside standard certificate validation for additional security assurances. See {{key-prot}} for more information regarding the assurances linking attestation credentials and X.509 certificates.
 - Implementations MAY reject connections where the certificate is valid but the attestation credentials is missing or does not meet security policy.
 
 ## Applicability to Client and Server Authentication
@@ -238,8 +238,8 @@ Client              Attester                 Server           Verifier
   |                   |                        |                  |
   | Request Evidence  |                        |                  |
   |------------------>|                        |                  |
-  | Key Attestation   |                        |                  |
-  | as Evidence       |                        |                  |
+  | Attestation       |                        |                  |
+  | Evidence          |                        |                  |
   |<------------------|                        |                  |
   | Exported Authenticator(Certificate with    |                  |
   | cmw_attestation                            |                  |
@@ -274,8 +274,6 @@ To enable attestation workflows, implementations of the Exported Authenticator A
 
 This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.
 
-This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in {{I-D.ietf-lamps-csr-attestation}}. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.
-
 ## Using the TLS Connection
 
 Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection
@@ -292,6 +290,14 @@ session has already completed remote attestation before the session can be used 
 The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.
 
 The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer remains in a secure state, remote attestation may be re-initiated periodically. In the current protocol, this can be achieved by initiating a new Exported Authenticator-based post-handshake authentication exchange, which will generate a new certificate_request_context to maintain freshness.
+
+## Protection of handshake signing key {#key-prot}
+
+The use of remote attestation in the context of this document extends to the establishment of trustworthiness for the key in the Certificate message. This can apply to certificate generation for this key, but more importantly to its use in the Exported Authenticator-based authentication.
+
+In certain deployments it is expected that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing attestation credentials, which are included in the Certificate Signing Request (CSR) as defined in {{I-D.ietf-lamps-csr-attestation}}. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.
+
+During the Exported Authenticator-based authentication exchange, the attestation credential MUST convey enough context relating to how the key in the Certificate message is protected. Conveyance can be either explicit (e.g., through the use of the key attestation mechanisms defined in {{I-D.bft-rats-kat}}), or implicit by relying on properties of the code which handles the Exported Authenticator-based exchange.
 
 # IANA Considerations
 
