@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-30T01:16:57.758979+00:00",
+  "timestamp": "2025-10-16T01:17:26.484351+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -58,13 +58,23 @@
       "state": "OPEN",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "ionut-arm"
+      ],
       "labels": [],
-      "body": "- I didn't find \"Payload\" in RFC9261. Can you refer me to the document which is closest in the sense it is used?\n- I don't seem to understand the following sentence: \n> The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.\n- Not sure about the following sentence: Why not from the client? Are you scoping to a specific scenario, e.g., server/client as Attester or something else? This needs some explanation. \n> The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators.",
+      "body": "- [x] I didn't find \"Payload\" in RFC9261. Can you refer me to the document which is closest in the sense it is used?\n- [x] I don't seem to understand the following sentence: \n> The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.\n- [x] Not sure about the following sentence: Why not from the client? Are you scoping to a specific scenario, e.g., server/client as Attester or something else? This needs some explanation. \n> The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators.",
       "createdAt": "2025-02-20T20:31:25Z",
-      "updatedAt": "2025-02-20T20:31:25Z",
+      "updatedAt": "2025-10-15T23:08:47Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hi Usama, I've taken the liberty to make checkboxes from your points above to track them more easily, but it turns out all of the issues are now gone, probably fixed in a newer version of the draft. If you'd like, you can check as well. Otherwise, feel free to close this.",
+          "createdAt": "2025-10-15T23:08:47Z",
+          "updatedAt": "2025-10-15T23:08:47Z"
+        }
+      ]
     },
     {
       "number": 7,
@@ -118,9 +128,38 @@
       "labels": [],
       "body": "The draft (maybe in Sec Considerations) should say that not only does the TLS stack need to be covered by measurements, but also:\n\n1. The code that performs the post-handshake phase must be measured, and...\n2. There must be no other way to initiate generation of evidence except from signed code.",
       "createdAt": "2025-03-19T09:49:04Z",
-      "updatedAt": "2025-03-19T09:49:04Z",
+      "updatedAt": "2025-10-15T11:01:21Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I wonder if this should be part of the properties in the [use-cases draft](https://github.com/tls-attestation/use-cases-and-properties).\n\n@thomas-fossati @muhammad-usama-sardar - thoughts?",
+          "createdAt": "2025-10-15T10:04:40Z",
+          "updatedAt": "2025-10-15T10:04:40Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I wonder if this should be part of the properties in the [use-cases draft](https://github.com/tls-attestation/use-cases-and-properties).\n> \n> [@thomas-fossati](https://github.com/thomas-fossati) [@muhammad-usama-sardar](https://github.com/muhammad-usama-sardar) - thoughts?\n\nI am not sure.  How are these supposed to be achieved through pure protocol means?",
+          "createdAt": "2025-10-15T10:11:37Z",
+          "updatedAt": "2025-10-15T10:11:37Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "True, don't think it's something we can design in, but I don't think they have to be strictly solvable like that. Maybe we can cover things that _need_ to go in the Security considerations as well.",
+          "createdAt": "2025-10-15T10:19:20Z",
+          "updatedAt": "2025-10-15T10:19:20Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fair enough. Then I am fine with (also) adding it to the UC document.",
+          "createdAt": "2025-10-15T11:01:12Z",
+          "updatedAt": "2025-10-15T11:01:21Z"
+        }
+      ]
     },
     {
       "number": 13,
@@ -158,7 +197,7 @@
       "labels": [],
       "body": "In RATS interim, Deb mentioned that ephemeral key in CertificateVerify for Authenticator is confusing. \nClarify the terminology such that it does not contradict TLS.\n\nMore context: [interim notes](https://notes.ietf.org/notes-ietf-interim-2025-rats-01-rats#740---755-Identity-Crisis-in-Attested-TLS-for-Confidential-Computing)\n\nWe should define EK upfront in the terminology section. ",
       "createdAt": "2025-05-02T19:21:32Z",
-      "updatedAt": "2025-05-05T10:48:10Z",
+      "updatedAt": "2025-10-15T10:55:40Z",
       "closedAt": null,
       "comments": [
         {
@@ -174,6 +213,13 @@
           "body": "Summary of discussion with @thomas-fossati, @ionut-arm and @tireddy2 (Please correct if I get something wrong and add if I missed something)\n\nWith Realm Personalization Value (RPV), it may be possible to identify the Realm. Hence, it may be possible to get rid of `EK` altogether. Post-handshake CertificateVerify message will then use the `LTK` as usual. \n\nAll of this is under the assumption that `LTK` has been provisioned to the TEE. ",
           "createdAt": "2025-05-05T10:48:08Z",
           "updatedAt": "2025-05-05T10:48:08Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hmm, not sure if this issue is (still) relevant. The draft does not mention EK / \"ephemeral\" anywhere, so I assume it was part of your presentation?",
+          "createdAt": "2025-10-15T10:55:40Z",
+          "updatedAt": "2025-10-15T10:55:40Z"
         }
       ]
     },
@@ -189,9 +235,17 @@
       "labels": [],
       "body": "What prevents a malicious Attester from relaying the `certificate_request_context` to a genuine TEE and presenting the Evidence of that genuine TEE?\nThis question is not specific to `certificate_request_context` but applies in general to the draft (i.e., also to nonce, timestamp, epoch markers etc.).\n\nTiru's proposal: (discussed [here](https://github.com/tls-attestation/exported-attestation/pull/12#issuecomment-2844582521))\n> one possible technique could be that the verifier will have to enforce policies that ensure the TEE producing the evidence is the one it expects, not just any valid TEE.",
       "createdAt": "2025-05-03T09:25:45Z",
-      "updatedAt": "2025-05-03T09:25:45Z",
+      "updatedAt": "2025-10-15T11:09:11Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think we discussed this and the clarification in the security section should be two-fold:\n\n* from a protocol perspective, the authenticator binds the attester's response to the current session\n* from an RA perspective, the code handling this should be measured and appraised as per #11 \n\nTiru's proposal works in situations where the RP knows exactly which machine they're expecting to talk to, but that's not always the case.",
+          "createdAt": "2025-10-15T11:09:11Z",
+          "updatedAt": "2025-10-15T11:09:11Z"
+        }
+      ]
     },
     {
       "number": 21,
@@ -232,11 +286,13 @@
       "state": "OPEN",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "thomas-fossati"
+      ],
       "labels": [],
       "body": "Before the IETF meeting, we check working group agendas for documents with IANA-related issues. We have notes about this document:\n\nhttps://datatracker.ietf.org/doc/html/draft-fossati-tls-exported-attestation-02\n\n1) In Table 1, \u201cDTLS 1.3\u201d should be changed to \u201cDTLS-Only\u201d to match the registry:\n\nhttps://www.iana.org/assignments/tls-extensiontype-values\n\n2) The registry \u201cTLS Flags\u201d hasn\u2019t been created yet. Please add a reference to the document that\u2019s going to create it. (The section currently has a link to the registry URL, but the registry isn\u2019t there.)\n\nAmanda Baber\nIANA Operations Sr. Manager",
       "createdAt": "2025-07-18T08:56:00Z",
-      "updatedAt": "2025-07-18T08:56:00Z",
+      "updatedAt": "2025-10-15T08:19:03Z",
       "closedAt": null,
       "comments": []
     },
@@ -303,31 +359,39 @@
       "id": "I_kwDON6zrys7FujgO",
       "title": "Ahmed's feedback on -02",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/26",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "\n> If we want to support continued trust across session lifetime or regain trust after a state transition then this seems like something we can already express using existing mechanisms since using Exported Authenticators (RFC 9261) with a cmw_attestation extension lets us carry session-bound attestation evidence after the handshake.\n> \n> What\u2019s worth calling out, though, is how standard EAT (RFC 9248) claims help enforce key properties depending on the verifiers policy:\n> \n>     nonce \u2192 binds the evidence to the verifier's challenge and the TLS session,\n>     iat / exp \u2192 allow the verifier to enforce a freshness window or session expiration window,\n>     firmware_id, secboot, or similar \u2192 help the verifier evaluate platform state against known-trusted configuration.\n> \n> \n> This gives the relying party enough structure to say: \u201cI\u2019ll continue trusting this session if the attestation was recent and the platform is still in a known-good state.\u201d\n> \n> If that\u2019s no longer the case, for example, if the evidence has expired or the verifier has learned that the attested state is no longer acceptable then it can simply send a new CertificateRequest message. That triggers the peer to generate a fresh Exported Authenticator with updated attestation (or fail to do so), and the verifier can decide whether to continue the session or terminate it based on that result.\n> \n> It might be helpful to include a concrete EAT-style example in the EXPATdraft, illustrating how claims like nonce, iat, and exp can support verifier-side policy, for example, enforcing evidence freshness, session binding, or attestation expiry. Since these claims are optional in EAT but highly relevant in this context, showing how they apply in the TLS Exported Authenticator setting would make the draft more implementer-friendly. ",
       "createdAt": "2025-08-13T07:52:53Z",
-      "updatedAt": "2025-08-13T07:52:53Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-10-15T17:02:18Z",
+      "closedAt": "2025-10-15T17:02:18Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Ahmed [agreed on the list](https://mailarchive.ietf.org/arch/msg/seal/gIyBfUJwBwbtD6_DkvYetkWMGjg/) that the security goals are already covered in our list. Hence, I prefer to go with the design that is undergoing thorough formal analysis rather than going for a completely new design.",
+          "createdAt": "2025-10-15T17:02:18Z",
+          "updatedAt": "2025-10-15T17:02:18Z"
+        }
+      ]
     },
     {
       "number": 27,
       "id": "I_kwDON6zrys7IP96m",
       "title": "Ahmed's proposal (cnf claim)",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/27",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Part of discussion in the [thread](https://mailarchive.ietf.org/arch/msg/attested-tls/IYPz5RGj3WnjruWEVUzkwjH7cmQ/):\n\n> With cnf, the attestation includes the public TLS key. The Verifier can verify that the presented session key matches what\u2019s in the evidence, ensuring that the entity being attested is the one actually controlling the TLS connection.\n>  \n>  \n> Which is what I believe is what you and I are looking for:\n> It is only the platform/TCB that could have produced the evidence given it is the only place where the attestation key exists.\n> This attested evidence was indeed carried out by this specific session and this specific TLS key.\n>  \n> This addresses both conditions you mentioned:\n>  \n> The physical platform is in control of the TCB\n> The TLS session terminates in a target environment/VM with the expected measurements\n> And it avoids the ambiguity about who issued the certificate, since trust is anchored directly in the attestation evidence itself, not in external PKI.\n> This same approach is already used in:\n> OAuth 2.0 DPoP ([RFC 9449]) \u2014 to bind tokens to client-held keys\n> ACE-OAuth ([RFC 9200]) \u2014 to enforce PoP in constrained IoT environments using CWT and cnf\n> I think that the design is clear, secure, and available and would provide the missing link between attestation evidence and session key ownership for TLS EXPAT. I hope this clarifies it better.",
       "createdAt": "2025-08-27T14:38:45Z",
-      "updatedAt": "2025-08-29T05:52:40Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-15T17:01:21Z",
+      "closedAt": "2025-10-15T17:01:21Z",
       "comments": [
         {
           "author": "yaronf",
@@ -342,6 +406,13 @@
           "body": "added link. I aslo don't understand what security goal it achieves, and in what ways it is better than our proposal.",
           "createdAt": "2025-08-29T05:52:40Z",
           "updatedAt": "2025-08-29T05:52:40Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Ahmed [agreed on the list](https://mailarchive.ietf.org/arch/msg/seal/gIyBfUJwBwbtD6_DkvYetkWMGjg/) that the security goals are already covered in our list. Hence, I prefer to go with the design that is undergoing thorough formal analysis rather than going for a completely new design.",
+          "createdAt": "2025-10-15T17:01:21Z",
+          "updatedAt": "2025-10-15T17:01:21Z"
         }
       ]
     }
@@ -1776,18 +1847,26 @@
       "labels": [],
       "body": "From older draft with some updates",
       "createdAt": "2025-09-23T08:59:29Z",
-      "updatedAt": "2025-09-29T12:46:59Z",
+      "updatedAt": "2025-10-15T13:00:29Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
-      "headRefOid": "78e06b8bc1164751bd1935951cec0dfde2217be9",
+      "headRefOid": "4b583b4dfbb8f822d652e67868f797938e07d45b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The build is currently broken.  I\u2019ll push a fix shortly, please avoid pushing further commits in the meantime.  Thanks!",
+          "createdAt": "2025-10-15T12:45:43Z",
+          "updatedAt": "2025-10-15T12:45:43Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDON6zrys7DajMr",
@@ -1828,6 +1907,86 @@
               "updatedAt": "2025-09-29T08:32:33Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7HFc-c",
+          "commit": {
+            "abbreviatedOid": "189cb33"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-15T12:23:48Z",
+          "updatedAt": "2025-10-15T12:23:48Z",
+          "comments": [
+            {
+              "originalPosition": 68,
+              "body": "Moved the comparison parts to Appendix. ",
+              "createdAt": "2025-10-15T12:23:48Z",
+              "updatedAt": "2025-10-15T12:23:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7HGLTq",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-15T13:00:28Z",
+          "updatedAt": "2025-10-15T13:00:29Z",
+          "comments": [
+            {
+              "originalPosition": 103,
+              "body": "We should give it a proper title.\r\n\r\nAs is, it renders as \u201cAppendix X. Appendix\u201d, which is not what we want.\r\n\r\nWhile you are at it, please add `{:unnumbered}` between L370 and L371.",
+              "createdAt": "2025-10-15T13:00:28Z",
+              "updatedAt": "2025-10-15T13:00:29Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDON6zrys6t3i8s",
+      "title": "address IANA review comments",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/29",
+      "state": "OPEN",
+      "author": "thomas-fossati",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fix #22",
+      "createdAt": "2025-10-15T12:02:36Z",
+      "updatedAt": "2025-10-15T13:38:40Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "iana-fixes",
+      "headRefOid": "c332342b6473a7c944638b6b35184316c31e1d4e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7HG3TD",
+          "commit": {
+            "abbreviatedOid": "c332342"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": ":+1:",
+          "createdAt": "2025-10-15T13:38:40Z",
+          "updatedAt": "2025-10-15T13:38:40Z",
+          "comments": []
         }
       ]
     }
