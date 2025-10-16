@@ -97,6 +97,7 @@ Table of Contents
    5.  Security Considerations
      5.1.  Using the TLS Connection
      5.2.  Evidence Freshness
+     5.3.  Protection of handshake signing key
    6.  IANA Considerations
      6.1.  TLS Extension Type Registration
      6.2.  TLS Flags Extension Registry
@@ -274,7 +275,9 @@ Table of Contents
    *  The attestation credentials carried in cmw_attestation MUST NOT be
       used as a substitute for X.509 certificate validation but can be
       used alongside standard certificate validation for additional
-      security assurances.
+      security assurances.  See Section 5.3 for more information
+      regarding the assurances linking attestation credentials and X.509
+      certificates.
 
    *  Implementations MAY reject connections where the certificate is
       valid but the attestation credentials is missing or does not meet
@@ -468,14 +471,6 @@ Table of Contents
    This trust anchor will typically be provided by the hardware
    manufacturer.
 
-   This specification assumes that the Hardware Security Module (HSM) or
-   Trusted Execution Environment (TEE) is responsible for generating the
-   key pair and producing either Evidence or attestation results, which
-   is included in the Certificate Signing Request (CSR) as defined in
-   [I-D.ietf-lamps-csr-attestation].  This attestation enables the CA to
-   verify that the private key is securely stored and that the platform
-   meets the required security standards before issuing a certificate.
-
 5.1.  Using the TLS Connection
 
    Remote attestation in this document occurs within the context of a
@@ -506,6 +501,31 @@ Table of Contents
    initiating a new Exported Authenticator-based post-handshake
    authentication exchange, which will generate a new
    certificate_request_context to maintain freshness.
+
+5.3.  Protection of handshake signing key
+
+   The use of remote attestation in the context of this document extends
+   to the establishment of trustworthiness for the key in the
+   Certificate message.  This can apply to certificate generation for
+   this key, but more importantly to its use in the Exported
+   Authenticator-based authentication.
+
+   In certain deployments it is expected that the Hardware Security
+   Module (HSM) or Trusted Execution Environment (TEE) is responsible
+   for generating the key pair and producing attestation credentials,
+   which are included in the Certificate Signing Request (CSR) as
+   defined in [I-D.ietf-lamps-csr-attestation].  This attestation
+   enables the CA to verify that the private key is securely stored and
+   that the platform meets the required security standards before
+   issuing a certificate.
+
+   During the Exported Authenticator-based authentication exchange, the
+   attestation credential MUST convey enough context relating to how the
+   key in the Certificate message is protected.  Conveyance can be
+   either explicit (e.g., through the use of the key attestation
+   mechanisms defined in [I-D.bft-rats-kat]), or implicit by relying on
+   properties of the code which handles the Exported Authenticator-based
+   exchange.
 
 6.  IANA Considerations
 
@@ -542,6 +562,13 @@ Table of Contents
 7.  References
 
 7.1.  Normative References
+
+   [I-D.bft-rats-kat]
+              Brossard, M., Fossati, T., Tschofenig, H., and H.
+              Birkholz, "An EAT-based Key Attestation Token", Work in
+              Progress, Internet-Draft, draft-bft-rats-kat-05, 21
+              November 2024, <https://datatracker.ietf.org/doc/html/
+              draft-bft-rats-kat-05>.
 
    [I-D.ietf-rats-msg-wrap]
               Birkholz, H., Smith, N., Fossati, T., Tschofenig, H., and

@@ -1212,6 +1212,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-evidence-freshness" class="internal xref">Evidence Freshness</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-protection-of-handshake-sig" class="internal xref">Protection of handshake signing key</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
@@ -1335,7 +1338,7 @@ struct {
             <p id="section-3.3-2.1.1">Certificate validation (e.g., signature verification, revocation checks) MUST still be performed according to TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> and PKIX <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>.<a href="#section-3.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-2.2">
-            <p id="section-3.3-2.2.1">The attestation credentials carried in <code>cmw_attestation</code> MUST NOT be used as a substitute for X.509 certificate validation but can be used alongside standard certificate validation for additional security assurances.<a href="#section-3.3-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-2.2.1">The attestation credentials carried in <code>cmw_attestation</code> MUST NOT be used as a substitute for X.509 certificate validation but can be used alongside standard certificate validation for additional security assurances. See <a href="#key-prot" class="auto internal xref">Section 5.3</a> for more information regarding the assurances linking attestation credentials and X.509 certificates.<a href="#section-3.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-2.3">
             <p id="section-3.3-2.3.1">Implementations MAY reject connections where the certificate is valid but the attestation credentials is missing or does not meet security policy.<a href="#section-3.3-2.3.1" class="pilcrow">¶</a></p>
@@ -1593,7 +1596,6 @@ struct {
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-5-1">This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span>. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <div id="using-the-tls-connection">
 <section id="section-5.1">
         <h3 id="name-using-the-tls-connection">
@@ -1615,6 +1617,16 @@ session has already completed remote attestation before the session can be used 
         </h3>
 <p id="section-5.2-1">The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer remains in a secure state, remote attestation may be re-initiated periodically. In the current protocol, this can be achieved by initiating a new Exported Authenticator-based post-handshake authentication exchange, which will generate a new certificate_request_context to maintain freshness.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="key-prot">
+<section id="section-5.3">
+        <h3 id="name-protection-of-handshake-sig">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-protection-of-handshake-sig" class="section-name selfRef">Protection of handshake signing key</a>
+        </h3>
+<p id="section-5.3-1">The use of remote attestation in the context of this document extends to the establishment of trustworthiness for the key in the Certificate message. This can apply to certificate generation for this key, but more importantly to its use in the Exported Authenticator-based authentication.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">In certain deployments it is expected that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing attestation credentials, which are included in the Certificate Signing Request (CSR) as defined in <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span>. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">During the Exported Authenticator-based authentication exchange, the attestation credential MUST convey enough context relating to how the key in the Certificate message is protected. Conveyance can be either explicit (e.g., through the use of the key attestation mechanisms defined in <span>[<a href="#I-D.bft-rats-kat" class="cite xref">I-D.bft-rats-kat</a>]</span>), or implicit by relying on properties of the code which handles the Exported Authenticator-based exchange.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1694,6 +1706,10 @@ session has already completed remote attestation before the session can be used 
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.bft-rats-kat">[I-D.bft-rats-kat]</dt>
+        <dd>
+<span class="refAuthor">Brossard, M.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"An EAT-based Key Attestation Token"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-bft-rats-kat-05</span>, <time datetime="2024-11-21" class="refDate">21 November 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-bft-rats-kat-05">https://datatracker.ietf.org/doc/html/draft-bft-rats-kat-05</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-rats-msg-wrap">[I-D.ietf-rats-msg-wrap]</dt>
         <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Smith, N.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">D. Glaze</span>, <span class="refTitle">"RATS Conceptual Messages Wrapper (CMW)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-msg-wrap-18</span>, <time datetime="2025-09-29" class="refDate">29 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-18">https://datatracker.ietf.org/doc/html/draft-ietf-rats-msg-wrap-18</a>&gt;</span>. </dd>
