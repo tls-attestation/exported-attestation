@@ -129,13 +129,14 @@ cmw_data: Encapsulates the attestation credentials in CMW format {{I-D.ietf-rats
 
 This approach eliminates the need for real-time certificate issuance from a Certificate Authority (CA) and minimizes handshake delays. Typically, CAs require several seconds to minutes to issue a certificate due to verification steps such as validating subject identity, signing the certificate, and distributing it. These delays introduce latency into the TLS handshake, making real-time certificate generation impractical. The cmw_attestation extension circumvents this issue by embedding attestation data within the Certificate message itself, removing reliance on external certificate issuance processes.
 
-## Negotiation of cmw_attestation Extension
+## Negotiation of the cmw_attestation Extension
 
-Clients and servers use the TLS flags extension defined in {{I-D.ietf-tls-tlsflags}} to indicate support for the functionality defined in this document. We refer to flag corresponding to the "cmw_attestation" extension as the "CMW_Attestation" flag.
+Negotiation of support cmw_attestation extension follows the model defined in {{Section 5.2 of RFC9261}}.
 
-The "CMW_Attestation" flag proposed by the client in the ClientHello MUST be acknowledged in the EncryptedExtensions if the server also  supports the functionality defined in this document and is configured to use it.
+Endpoints that wish to receive attestation credentials using Exported Authenticators MUST indicate support by including an empty cmw_attestation extension in the CertificateRequest or ClientCertificateRequest message.
+The presence of this empty extension indicates that the requester understands this specification and is willing to process an attestation credential in the peer's Certificate message.
 
-If the "CMW_Attestation" flag is not set, servers ignore any of the functionality specified in this document, and attestation credentials cannot be conveyed using "Exported TLS Authenticators".
+An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the `cmw_attestation` extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. Endpoints that do not recognize the cmw_attestation extension in a request MUST ignore it.
 
 ## Usage in Post-Handshake Authentication
 
@@ -303,17 +304,6 @@ IANA is requested to register the following new extension type in the "TLS Exten
 |-------|-------------------|---------|----------|-------------|----------------|
 | TBD   | cmw_attestation   | CT      | Y        | Yes         | This Document  |
 
-
-## TLS Flags Extension Registry
-
-IANA is requested to add the following entry to the "TLS Flags" extension registry
-[TLS-Ext-Registry]:
-
-- Value: TBD1
-- Flag Name: CMW_Attestation
-- Messages: CH, EE
-- Recommended: Y
-- Reference: [This document]
 
 --- back
 
