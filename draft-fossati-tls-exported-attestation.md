@@ -326,6 +326,8 @@ The evidence presented in this protocol is valid only at the time it is generate
 
 # Privacy Considerations
 
+## Client as Attester
+
 In this section, we are assuming that the Attester is a TLS client, representing an individual person.
 We are concerned about the potential leakage of privacy-sensitive information about that person, such as the correlation of different connections initiated by them.
 
@@ -343,6 +345,8 @@ Some ways to address this include:
 The last two also have the property of hiding the peer's identity from the RP.
 
 Note that the equivalent of OCSP "stapling" involves using a passport topology where the Verifier's involvement is unrelated to the TLS session.
+
+## Server as Attester
 
 For the case of the TLS server as the Attester, the server can ask for client authentication and only send the Evidence after successful client authentication. This limits the exposure of server's hardware-level Claims to be revealed only to authorized clients.
 
