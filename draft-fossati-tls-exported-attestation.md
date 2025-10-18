@@ -136,7 +136,9 @@ Negotiation of support cmw_attestation extension follows the model defined in {{
 Endpoints that wish to receive attestation credentials using Exported Authenticators MUST indicate support by including an empty cmw_attestation extension in the CertificateRequest or ClientCertificateRequest message.
 The presence of this empty extension indicates that the requester understands this specification and is willing to process an attestation credential in the peer's Certificate message.
 
-An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the `cmw_attestation` extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. Endpoints that do not recognize the cmw_attestation extension in a request MUST ignore it.
+An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the `cmw_attestation` extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. As specified in {{Section 9.3 of
+RFC8446}}, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or
+ClientCertificateRequest MUST ignore it and continue processing the message as if the extension were absent.
 
 ## Usage in Post-Handshake Authentication
 
