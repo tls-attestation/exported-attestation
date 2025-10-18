@@ -5,7 +5,7 @@
 TLS                                                           T. Fossati
 Internet-Draft                                                    Linaro
 Intended status: Standards Track                            M. U. Sardar
-Expires: 20 April 2026                                        TU Dresden
+Expires: 21 April 2026                                        TU Dresden
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 20 April 2026                                        TU Dresden
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         17 October 2025
+                                                         18 October 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -66,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2026.
+   This Internet-Draft will expire on 21 April 2026.
 
 Copyright Notice
 
@@ -243,8 +243,11 @@ Table of Contents
    cmw_attestation extension appears in a Certificate message without it
    having been previously offered in the corresponding request, the
    receiver MUST abort the authenticator verification with an
-   "unsupported_extension" alert.  Endpoints that do not recognize the
-   cmw_attestation extension in a request MUST ignore it.
+   "unsupported_extension" alert.  As specified in Section 9.3 of
+   [RFC8446], endpoints that do not recognize the cmw_attestation
+   extension in a CertificateRequest or ClientCertificateRequest MUST
+   ignore it and continue processing the message as if the extension
+   were absent.
 
 3.2.  Usage in Post-Handshake Authentication
 

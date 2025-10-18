@@ -14,25 +14,24 @@
 <meta content="
        This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. Additionally, it introduces the  cmw_attestation  extension, which allows attestation credentials to be included directly in the Certificate message sent during the Exported Authenticator-based post-handshake authentication. The approach supports both the passport and background check models from the RATS architecture while ensuring that attestation remains bound to the underlying communication channel. 
     " name="description">
-<meta content="xml2rfc 3.30.2" name="generator">
+<meta content="xml2rfc 3.31.0" name="generator">
 <meta content="Attestation" name="keyword">
 <meta content="TLS" name="keyword">
 <meta content="Key Attestation" name="keyword">
 <meta content="Exported Authenticators" name="keyword">
 <meta content="draft-fossati-tls-exported-attestation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.2
-    Python 3.12.11
+  xml2rfc 3.31.0
+    Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.4.0
+    platformdirs 4.5.0
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.5
-    setuptools 80.9.0
     wcwidth 0.2.14
 -->
 <link href="draft-fossati-tls-exported-attestation.xml" rel="alternate" type="application/rfc+xml">
@@ -1056,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Fossati, et al.</td>
-<td class="center">Expires 20 April 2026</td>
+<td class="center">Expires 21 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1069,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-fossati-tls-exported-attestation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-17" class="published">17 October 2025</time>
+<time datetime="2025-10-18" class="published">18 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-20">20 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-21">21 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1143,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1303,7 +1302,8 @@ struct {
 <p id="section-3.1-1">Negotiation of support cmw_attestation extension follows the model defined in <span><a href="https://rfc-editor.org/rfc/rfc9261#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9261" class="cite xref">RFC9261</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">Endpoints that wish to receive attestation credentials using Exported Authenticators MUST indicate support by including an empty cmw_attestation extension in the CertificateRequest or ClientCertificateRequest message.
 The presence of this empty extension indicates that the requester understands this specification and is willing to process an attestation credential in the peer's Certificate message.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the <code>cmw_attestation</code> extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. Endpoints that do not recognize the cmw_attestation extension in a request MUST ignore it.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the <code>cmw_attestation</code> extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. As specified in <span><a href="https://rfc-editor.org/rfc/rfc8446#section-9.3" class="relref">Section 9.3</a> of [<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or
+ClientCertificateRequest MUST ignore it and continue processing the message as if the extension were absent.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="usage-in-post-handshake-authentication">
