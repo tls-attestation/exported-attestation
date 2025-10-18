@@ -82,7 +82,7 @@ informative:
        - ins: H. Tschofenig
        - ins: T. Fossati
   RFC9711: rats-eat
-  RFC6969: ocsp
+  RFC6960: ocsp
   FIDO-REQS:
     target: https://fidoalliance.org/specs/fido-security-requirements/
     title: "FIDO Authenticator Security and Privacy Requirements"
