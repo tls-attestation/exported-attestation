@@ -329,7 +329,7 @@ The evidence presented in this protocol is valid only at the time it is generate
 In this section, we are assuming that the Attester is a TLS client, representing an individual person.
 We are concerned about the potential leakage of privacy-sensitive information about that person, such as the correlation of different connections initiated by them.
 
-In background-check model, the Verifier not only has access to detailed information about the Attester's TCB through Evidence, but it also knows the exact time and the party (i.e., the RP) with whom the secure channel establishment is attempted [RA-TLS].
+In background-check model, the Verifier not only has access to detailed information about the Attester's TCB through Evidence, but it also knows the exact time and the party (i.e., the RP) with whom the secure channel establishment is attempted {{RA-TLS}}.
 The privacy implications are similar to online OCSP {{-ocsp}}.
 While the RP may trust the Verifier not to disclose any information it receives, the same cannot be assumed for the Attester, which generally has no prior relationship with the Verifier.
 Some ways to address this include:
