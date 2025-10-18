@@ -363,8 +363,8 @@ IANA is requested to register the following new extension type in the "TLS Exten
 {:unnumbered}
 
 We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
-We would also like to thank Paul Howard and Yogesh Deshpande for their input.
+We would also like to thank Eric Rescorla, Paul Howard, and Yogesh Deshpande for their input.
 
 # Post-handshake vs Intra-handshake Privacy
 
-Post-handshake attestation offers better privacy than intra-handshake attestation when the TLS server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
+From the view of the TLS server, post-handshake attestation offers better privacy than intra-handshake attestation when the server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
