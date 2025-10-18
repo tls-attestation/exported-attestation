@@ -96,7 +96,7 @@ informative:
 --- abstract
 
 
-This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in RFC 9261. Additionally, it introduces the `cmw_attestation` extension, which allows attestation credentials to be included directly in the Certificate message sent during the Exported Authenticator-based post-handshake authentication. The approach supports both the passport and background check models from the RATS architecture while ensuring that attestation remains bound to the underlying communication channel.
+This specification defines a method for two parties in a communication interaction to exchange Evidence and Attestation Results using exported authenticators, as defined in {{RFC9261}}. Additionally, it introduces the `cmw_attestation` extension, which allows attestation credentials to be included directly in the Certificate message sent during the Exported Authenticator-based post-handshake authentication. The approach supports both the passport and background check models from the RATS architecture while ensuring that attestation remains bound to the underlying communication channel.
 
 --- middle
 
@@ -104,15 +104,15 @@ This specification defines a method for two parties in a communication interacti
 
 There is a growing need to demonstrate to a remote party that cryptographic keys are stored in a secure element, the device is in a known good state, secure boot has been enabled, and that low-level software and firmware have not been tampered with. Remote attestation provides this capability.
 
-More technically, an Attester produces a signed collection of Claims that constitute Evidence about its running environment(s). A Relying Party may consult an Attestation Result produced by a Verifier that has appraised the Evidence to make policy decisions regarding the trustworthiness of the Target Environment being assessed. This is, in essence, what RFC 9334 {{RFC9334}} defines.
+More technically, an Attester produces a signed collection of Claims that constitute Evidence about its running environment(s). A Relying Party may consult an Attestation Result produced by a Verifier that has appraised the Evidence to make policy decisions regarding the trustworthiness of the Target Environment being assessed. This is, in essence, what {{RFC9334}} defines.
 
 At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. To streamline attestation in TLS, this document introduces the cmw_attestation extension, which allows attestation credentials to be conveyed directly in the Certificate message during the Exported Authenticator-based post-handshake authentication. This eliminates reliance on real-time certificate issuance from a Certificate Authority (CA), reducing handshake delays while ensuring Evidence remains bound to the TLS session. The extension supports both the passport and background check models from the RATS architecture, enhancing flexibility for different deployment scenarios.
 
 This document builds upon three foundational specifications:
 
-- RATS (Remote Attestation Procedures) Architecture {{RFC9334}}: RFC 9334 defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or the background check model, depending on the order of data flow in the system.
+- RATS (Remote Attestation Procedures) Architecture {{RFC9334}}: It defines how remote attestation systems establish trust between parties by exchanging Evidence and Attestation Results. These interactions can follow different models, such as the passport or the background check model, depending on the order of data flow in the system.
 
-- TLS Exported Authenticators {{RFC9261}}: RFC 9261 offers bi-directional, post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer.
+- TLS Exported Authenticators {{RFC9261}}: It offers bi-directional post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer.
 
 - RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.
 
@@ -123,7 +123,7 @@ This specification introduces the cmw_attestation extension, enabling Evidence t
 
 The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals as shown here.
 
-The reader is assumed to be familiar with the vocabulary and concepts defined in RFC 9334 and RFC 9261.
+The reader is assumed to be familiar with the vocabulary and concepts defined in {{RFC9334}} and {{RFC9261}}.
 
 "Remote attestation credentials", or "attestation credentials", is used to refer to both Evidence and attestation results, when no distinction needs to be made between them.
 
@@ -146,17 +146,20 @@ cmw_data: Encapsulates the attestation credentials in CMW format {{I-D.ietf-rats
 
 This approach eliminates the need for real-time certificate issuance from a Certificate Authority (CA) and minimizes handshake delays. Typically, CAs require several seconds to minutes to issue a certificate due to verification steps such as validating subject identity, signing the certificate, and distributing it. These delays introduce latency into the TLS handshake, making real-time certificate generation impractical. The cmw_attestation extension circumvents this issue by embedding attestation data within the Certificate message itself, removing reliance on external certificate issuance processes.
 
-## Negotiation of cmw_attestation Extension
+## Negotiation of the cmw_attestation Extension
 
-Clients and servers use the TLS flags extension defined in {{I-D.ietf-tls-tlsflags}} to indicate support for the functionality defined in this document. We refer to flag corresponding to the "cmw_attestation" extension as the "CMW_Attestation" flag.
+Negotiation of support cmw_attestation extension follows the model defined in {{Section 5.2 of RFC9261}}.
 
-The "CMW_Attestation" flag proposed by the client in the ClientHello MUST be acknowledged in the EncryptedExtensions if the server also  supports the functionality defined in this document and is configured to use it.
+Endpoints that wish to receive attestation credentials using Exported Authenticators MUST indicate support by including an empty cmw_attestation extension in the CertificateRequest or ClientCertificateRequest message.
+The presence of this empty extension indicates that the requester understands this specification and is willing to process an attestation credential in the peer's Certificate message.
 
-If the "CMW_Attestation" flag is not set, servers ignore any of the functionality specified in this document, and attestation credentials cannot be conveyed using "Exported TLS Authenticators".
+An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the `cmw_attestation` extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. As specified in {{Section 9.3 of
+RFC8446}}, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or
+ClientCertificateRequest MUST ignore it and continue processing the message as if the extension were absent.
 
-## Usage in Post-Handshake Authentication
+## Usage in Exported Authenticator-based Post-Handshake Authentication
 
-The `cmw_attestation` extension is designed to be used exclusively in post-handshake authentication as defined in {{RFC9261}}. It allows attestation credentials to be transmitted in the Authenticator's Certificate message only in response to an Authenticator Request. This ensures that attestation credentials are provided on demand rather than being included in the initial TLS handshake.
+The `cmw_attestation` extension is designed to be used exclusively in Exported Authenticator-based post-handshake authentication as defined in {{RFC9261}}. It allows attestation credentials to be transmitted in the Authenticator's Certificate message only in response to an Authenticator Request. This ensures that attestation credentials are provided on demand rather than being included in the initial TLS handshake.
 
 To maintain a cryptographic binding between the Evidence and the authentication request, the `cmw_attestation` extension MUST be associated with the `certificate_request_context` of the corresponding CertificateRequest or ClientCertificateRequest message (from the Server or Client, respectively). This binding ensures that:
 
@@ -289,7 +292,7 @@ To enable attestation workflows, implementations of the Exported Authenticator A
 
 # Security Considerations
 
-This document inherits the security considerations of RFC 9261 and RFC 9334. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.
+This document inherits the security considerations of {{RFC9261}} and {{RFC9334}}. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.
 
 This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in {{I-D.ietf-lamps-csr-attestation}}. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.
 
@@ -353,17 +356,6 @@ IANA is requested to register the following new extension type in the "TLS Exten
 |-------|-------------------|---------|----------|-------------|----------------|
 | TBD   | cmw_attestation   | CT      | Y        | Yes         | This Document  |
 
-
-## TLS Flags Extension Registry
-
-IANA is requested to add the following entry to the "TLS Flags" extension registry
-[TLS-Ext-Registry]:
-
-- Value: TBD1
-- Flag Name: CMW_Attestation
-- Messages: CH, EE
-- Recommended: Y
-- Reference: [This document]
 
 --- back
 
