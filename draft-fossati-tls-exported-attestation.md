@@ -298,12 +298,12 @@ This specification assumes that the Hardware Security Module (HSM) or Trusted Ex
 
 ## Security Guarantees
 
-Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the Identity Key is known by the TEE. A number of additional guarantees must be provided by the platform and/or the TLS stack,
+Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the identity key used for TLS handshake is known by the the confidential environment, such as confidential virtual machine. A number of additional guarantees must be provided by the platform and/or the TLS stack,
 and the overall security level depends on their existence and quality of assurance:
 
-* The Identity Key is generated within the TEE.
-* The Identity Key is never exported or leaked outside the TEE.
-* The TLS protocol, whether implemented by the TEE or outside the TEE, is implemented correctly and (for example) does not leak any session key material.
+* The identity key used for TLS handshake is generated within the confidential environment.
+* The identity key used for TLS handshake is never exported or leaked outside the confidential environment.
+* The TLS protocol is implemented within the confidential environment, and is implemented correctly, e.g., it does not leak any session key material.
 
 These properties may be explicitly promised ("attested") by the platform, or they can be assured in other ways such as by providing source code, reproducible builds, formal verification etc. The exact mechanisms are out of scope of this document.
 
