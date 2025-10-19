@@ -298,7 +298,7 @@ This specification assumes that the Hardware Security Module (HSM) or Trusted Ex
 
 ## Security Guarantees
 
-Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the identity key used for TLS handshake is known by the the confidential environment, such as confidential virtual machine. A number of additional guarantees must be provided by the platform and/or the TLS stack,
+Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the identity key used for TLS handshake is known by the confidential environment, such as confidential virtual machine. A number of additional guarantees must be provided by the platform and/or the TLS stack,
 and the overall security level depends on their existence and quality of assurance:
 
 * The identity key used for TLS handshake is generated within the confidential environment.
