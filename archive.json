@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-16T01:17:26.484351+00:00",
+  "timestamp": "2025-10-19T01:26:00.006327+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -62,9 +62,9 @@
         "ionut-arm"
       ],
       "labels": [],
-      "body": "- [x] I didn't find \"Payload\" in RFC9261. Can you refer me to the document which is closest in the sense it is used?\n- [x] I don't seem to understand the following sentence: \n> The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.\n- [x] Not sure about the following sentence: Why not from the client? Are you scoping to a specific scenario, e.g., server/client as Attester or something else? This needs some explanation. \n> The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators.",
+      "body": "- [ ] I didn't find \"Payload\" in RFC9261. Can you refer me to the document which is closest in the sense it is used?\n- [x] I don't seem to understand the following sentence: \n> The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.\n- [x] Not sure about the following sentence: Why not from the client? Are you scoping to a specific scenario, e.g., server/client as Attester or something else? This needs some explanation. \n> The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators.",
       "createdAt": "2025-02-20T20:31:25Z",
-      "updatedAt": "2025-10-15T23:08:47Z",
+      "updatedAt": "2025-10-18T17:33:05Z",
       "closedAt": null,
       "comments": [
         {
@@ -73,6 +73,13 @@
           "body": "Hi Usama, I've taken the liberty to make checkboxes from your points above to track them more easily, but it turns out all of the issues are now gone, probably fixed in a newer version of the draft. If you'd like, you can check as well. Otherwise, feel free to close this.",
           "createdAt": "2025-10-15T23:08:47Z",
           "updatedAt": "2025-10-15T23:08:47Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks, the last 2 sub-issues are indeed fixed. About the first one, I still see the \"payload\" in the editor draft. \n\n> CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.\n\nMaybe some PR replaces it; else I want to understand what exactly does it mean. For example, what is the difference between `Evidence` and `Evidence payload`?",
+          "createdAt": "2025-10-18T17:33:05Z",
+          "updatedAt": "2025-10-18T17:33:05Z"
         }
       ]
     },
@@ -88,7 +95,7 @@
       "labels": [],
       "body": "I am not yet sure in what sense key attestation is used in the draft. I think you mean workload attestation instead? Particularly the key in Confidential Computing does not exist at initial measurement time (load-time measurement), and hence I think the key -- per se -- cannot be \"attested\". ",
       "createdAt": "2025-03-03T14:22:35Z",
-      "updatedAt": "2025-05-01T10:15:09Z",
+      "updatedAt": "2025-10-16T11:00:19Z",
       "closedAt": null,
       "comments": [
         {
@@ -97,6 +104,48 @@
           "body": "Alternatively copy the definition of \"key attestation\" from draft-bft-rats-kat:\n\n> Evidence containing properties of the environment(s) in which the\n      private keys are stored.  For example, a Relying Party may want to\n      know whether a private key is stored in a hardware security module\n      and cannot be exported in unencrypted fashion.",
           "createdAt": "2025-05-01T10:15:08Z",
           "updatedAt": "2025-05-01T10:15:08Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm leaning towards removing any references to key attestation from the document, as I'm unsure what the value add of attesting keys is in this context. We're making it clear that there has to be some network identity key available to the attester, along with a certificate for it (since the attestation credential is only in an extension of the Certificate message). The binding between RA and TLS also doesn't happen through this key, but through the exported material.",
+          "createdAt": "2025-10-16T09:43:46Z",
+          "updatedAt": "2025-10-16T09:43:46Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm pretty sure that we still want to say that the key used for signing the handshake is guaranteed to have the property of being protected by the TEE, and that this can be proven by means of attestation.\nThis is what I believe \"key attestation\u201d means, or at least how I intend it.\nIf the term is confusing, I am happy to remove it.\nHowever, whenever we use the term \u201cattestation\u201d or \u201cevidence\u201d in the context of the document, the above property should be clearly implied.",
+          "createdAt": "2025-10-16T10:04:25Z",
+          "updatedAt": "2025-10-16T10:12:08Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I'm pretty sure that we still want to say that the key used for signing the handshake is guaranteed to have the property of being protected by the TEE, and that this can be proven by means of attestation.\n\nI don't know if key attestation in particular makes this easier or not. For key attestation to be valid you need to:\n\n1. attest the key (which I assume is daisy-chained via hashes to the platform and/or workload tokens)\n2. send the attestation credential to the RP\n3. get the RP to understand the credential _and_ trust that the code enforces what the credential says about the key (i.e., that it's protected by the TEE)\n\nBut for point (3) if the RP understands and trusts all that about the attester (via its measurements), what's the difference from just having regular workload attestation and relying on measurements of the networking stack to infer that the key used is indeed in the TEE. The RP _needs_ to know that anyway (and can infer it), without explicitly binding the key in the evidence.\n\nI guess we're both after the same guarantee, just that you're looking for explicit attestation and I'm settling for implicit attestation :grin:",
+          "createdAt": "2025-10-16T10:32:04Z",
+          "updatedAt": "2025-10-16T10:34:34Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I guess we're both after the same guarantee, just that you're looking for explicit attestation and I'm settling for implicit attestation\n\nAlso, implicit is probably far more rough in what it can convey, perhaps only one bit (\"in TEE\"). So depends if you want/need more metadata about the key (provenance, security policy...)",
+          "createdAt": "2025-10-16T10:44:26Z",
+          "updatedAt": "2025-10-16T10:44:26Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Sure, I don\u2019t think explicit vs implicit is the discriminant here.  The important thing is to clearly state that the RP needs to check that the \u201cprotection of the signing key\u201d property is satisfied.\n",
+          "createdAt": "2025-10-16T10:57:08Z",
+          "updatedAt": "2025-10-16T10:57:08Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Cool, I'll update the PR to reflect this! Thanks!",
+          "createdAt": "2025-10-16T11:00:19Z",
+          "updatedAt": "2025-10-16T11:00:19Z"
         }
       ]
     },
@@ -1847,13 +1896,13 @@
       "labels": [],
       "body": "From older draft with some updates",
       "createdAt": "2025-09-23T08:59:29Z",
-      "updatedAt": "2025-10-15T13:00:29Z",
+      "updatedAt": "2025-10-18T21:48:41Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
-      "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
+      "baseRefOid": "e13891041787bcbc384cc867813f60bf670ad092",
       "headRepository": "muhammad-usama-sardar/exported-attestation",
       "headRefName": "main",
-      "headRefOid": "4b583b4dfbb8f822d652e67868f797938e07d45b",
+      "headRefOid": "d8091c0bd70056ba16715da60ad2d88a7b7cbfbd",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1947,6 +1996,310 @@
               "updatedAt": "2025-10-15T13:00:29Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7HoupE",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-17T10:25:04Z",
+          "updatedAt": "2025-10-17T10:25:04Z",
+          "comments": [
+            {
+              "originalPosition": 55,
+              "body": "Can you please add `Identity Key` to the terminology section? Don't think we define it anywhere.",
+              "createdAt": "2025-10-17T10:25:04Z",
+              "updatedAt": "2025-10-17T10:25:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7HowpM",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I've added a few minor comments, otherwise looks good.",
+          "createdAt": "2025-10-17T10:26:37Z",
+          "updatedAt": "2025-10-17T13:39:18Z",
+          "comments": [
+            {
+              "originalPosition": 78,
+              "body": "Is that `[RA-TLS]` at the end correct syntax? I'm probably still clueless about how this format works...",
+              "createdAt": "2025-10-17T10:26:37Z",
+              "updatedAt": "2025-10-17T13:39:18Z"
+            },
+            {
+              "originalPosition": 79,
+              "body": "```suggestion\r\nThe privacy implications are similar to OCSP {{-ocsp}}.\r\n```\r\n(first letter in OCSP stands for \"online\")",
+              "createdAt": "2025-10-17T11:08:50Z",
+              "updatedAt": "2025-10-17T13:39:18Z"
+            },
+            {
+              "originalPosition": 93,
+              "body": "Does this not apply to client-as-atteser as well (the ability to check the identity of the peer first)? Because this paragraph makes it sound like only the server can check.",
+              "createdAt": "2025-10-17T13:38:02Z",
+              "updatedAt": "2025-10-17T13:39:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7HtVr3",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-17T14:08:59Z",
+          "updatedAt": "2025-10-17T14:08:59Z",
+          "comments": [
+            {
+              "originalPosition": 78,
+              "body": "It should be `{{RA-TLS}}`",
+              "createdAt": "2025-10-17T14:08:59Z",
+              "updatedAt": "2025-10-17T14:08:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Htgh0",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-17T14:20:07Z",
+          "updatedAt": "2025-10-17T14:20:08Z",
+          "comments": [
+            {
+              "originalPosition": 78,
+              "body": "```suggestion\r\nIn background-check model, the Verifier not only has access to detailed information about the Attester's TCB through Evidence, but it also knows the exact time and the party (i.e., the RP) with whom the secure channel establishment is attempted {{RA-TLS}}.\r\n```",
+              "createdAt": "2025-10-17T14:20:07Z",
+              "updatedAt": "2025-10-17T14:20:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Hth2K",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-17T14:21:29Z",
+          "updatedAt": "2025-10-17T14:21:29Z",
+          "comments": [
+            {
+              "originalPosition": 103,
+              "body": "```suggestion\r\n# Acknowledgements\r\n{:unnumbered}\r\n\r\nWe would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.\r\nWe would also like to thank Paul Howard and Yogesh Deshpande for their input.\r\n\r\n# Post-handshake vs Intra-handshake Privacy\r\n```",
+              "createdAt": "2025-10-17T14:21:29Z",
+              "updatedAt": "2025-10-17T14:21:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Htn5f",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-17T14:28:23Z",
+          "updatedAt": "2025-10-17T14:28:24Z",
+          "comments": [
+            {
+              "originalPosition": 93,
+              "body": "```suggestion\r\nFor the case of the TLS server as the Attester, the server can ask for client authentication and only send the Evidence after successful client authentication. This limits the exposure of server's hardware-level Claims to be revealed only to authorized clients. A client running as an Attester can similarly rely on the server's authentication to limit exposure of its attestation credential to authorized servers.\r\n```",
+              "createdAt": "2025-10-17T14:28:24Z",
+              "updatedAt": "2025-10-17T14:28:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5Eb_",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-10-18T15:13:06Z",
+          "updatedAt": "2025-10-18T15:21:22Z",
+          "comments": [
+            {
+              "originalPosition": 79,
+              "body": "I think the comparison to OCSP does not hold, because an OCSP server may be a total \"third party\", whereas the Verifier is typically strongly associated with the RP. So for example, attester-side redaction is not effective because if you don't trust the Verifier, you shouldn't trust the RP either.",
+              "createdAt": "2025-10-18T15:13:06Z",
+              "updatedAt": "2025-10-18T15:21:22Z"
+            },
+            {
+              "originalPosition": 105,
+              "body": "This may be true, but if the client also needs to be attested, then you have the same problem with the client's Evidence, no? And in fact from a privacy POV the client's Evidence is a lot more sensitive (because clients represent individuals more than servers do.)",
+              "createdAt": "2025-10-18T15:21:05Z",
+              "updatedAt": "2025-10-18T15:21:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5GPb",
+          "commit": {
+            "abbreviatedOid": "ff541c8"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T15:35:47Z",
+          "updatedAt": "2025-10-18T15:35:48Z",
+          "comments": [
+            {
+              "originalPosition": 105,
+              "body": "> This may be true, but if the client also needs to be attested, then you have the same problem with the client's Evidence, no?\r\n\r\nThe point here is that if the client also needs to be attested, then in post-HS, the server has the opportunity to at least authenticate the client before the server sends its Evidence. In intra-HS, the server cannot apply such a filter.\r\n\r\n> And in fact from a privacy POV the client's Evidence is a lot more sensitive (because clients represent individuals more than servers do.)\r\n\r\nI agree. I will rephrase to clarify that the comparison here is from the server's view. ",
+              "createdAt": "2025-10-18T15:35:47Z",
+              "updatedAt": "2025-10-18T15:35:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5mlm",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T20:26:57Z",
+          "updatedAt": "2025-10-18T20:26:57Z",
+          "comments": [
+            {
+              "originalPosition": 79,
+              "body": "> [\u2026] the Verifier is typically strongly associated with the RP\r\n\r\ns/typically/sometimes/",
+              "createdAt": "2025-10-18T20:26:57Z",
+              "updatedAt": "2025-10-18T20:26:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5nqv",
+          "commit": {
+            "abbreviatedOid": "4b583b4"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T20:46:04Z",
+          "updatedAt": "2025-10-18T20:46:04Z",
+          "comments": [
+            {
+              "originalPosition": 79,
+              "body": "@thomas-fossati Can you give a counterexample where this makes sense, i.e. where an RP blindly trusts a Verifier even though they are not within the same trust domain?",
+              "createdAt": "2025-10-18T20:46:04Z",
+              "updatedAt": "2025-10-18T20:46:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5ptP",
+          "commit": {
+            "abbreviatedOid": "ff541c8"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T21:15:29Z",
+          "updatedAt": "2025-10-18T21:15:29Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "Isn't it RFC6960?",
+              "createdAt": "2025-10-18T21:15:29Z",
+              "updatedAt": "2025-10-18T21:15:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5puf",
+          "commit": {
+            "abbreviatedOid": "ff541c8"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T21:15:57Z",
+          "updatedAt": "2025-10-18T21:17:28Z",
+          "comments": [
+            {
+              "originalPosition": 55,
+              "body": "Agree, working on it.",
+              "createdAt": "2025-10-18T21:15:57Z",
+              "updatedAt": "2025-10-18T21:17:28Z"
+            },
+            {
+              "originalPosition": 79,
+              "body": "I am accepting the removal of \"online\". We can continue the discussion on the rest. ",
+              "createdAt": "2025-10-18T21:16:53Z",
+              "updatedAt": "2025-10-18T21:17:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5qGl",
+          "commit": {
+            "abbreviatedOid": "ae6bac8"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T21:24:05Z",
+          "updatedAt": "2025-10-18T21:24:05Z",
+          "comments": [
+            {
+              "originalPosition": 93,
+              "body": "I think the rest of this section is about Client as Attester and only this paragraph is about Server as Attester. If you agree, I propose to add `## Server as Attester` on top of this paragraph and `## Client as Attester` in the beginning. ",
+              "createdAt": "2025-10-18T21:24:05Z",
+              "updatedAt": "2025-10-18T21:24:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5sRw",
+          "commit": {
+            "abbreviatedOid": "d8091c0"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T21:48:41Z",
+          "updatedAt": "2025-10-18T21:48:41Z",
+          "comments": [
+            {
+              "originalPosition": 93,
+              "body": "Resolving it for now. Reopen if you think it is not correct. ",
+              "createdAt": "2025-10-18T21:48:41Z",
+              "updatedAt": "2025-10-18T21:48:41Z"
+            }
+          ]
         }
       ]
     },
@@ -1962,7 +2315,7 @@
       "labels": [],
       "body": "Fix #22",
       "createdAt": "2025-10-15T12:02:36Z",
-      "updatedAt": "2025-10-15T13:38:40Z",
+      "updatedAt": "2025-10-18T15:32:44Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
@@ -1987,6 +2340,291 @@
           "createdAt": "2025-10-15T13:38:40Z",
           "updatedAt": "2025-10-15T13:38:40Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5Fv-",
+          "commit": {
+            "abbreviatedOid": "c332342"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-10-18T15:27:58Z",
+          "updatedAt": "2025-10-18T15:32:44Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "I consulted with ChatGPT about SELF/RFCThis and it referenced another of your drafts... Anyway, please add \"Note to RFC Editor: replace RFCThis by...\".",
+              "createdAt": "2025-10-18T15:27:58Z",
+              "updatedAt": "2025-10-18T15:32:44Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "PR_kwDON6zrys6uDFkI",
+      "title": "Nix \"key attestation\"",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/30",
+      "state": "OPEN",
+      "author": "ionut-arm",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Key Attestation as a mechanism is not required for our use-case and complicates the picture. Removing it for now at least.\r\n\r\nFixes #7",
+      "createdAt": "2025-10-16T09:56:27Z",
+      "updatedAt": "2025-10-18T17:54:16Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "fix-issue7",
+      "headRefOid": "cf8b8c9475dff6188e09e84d9b74324a370ce023",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "See https://github.com/tls-attestation/exported-attestation/issues/7#issuecomment-3410129282 \r\n\r\nI am happy to remove this \u2014 especially in this context, which does not seem particularly suitable.\r\nBut the property of \u201ckey attestation\u201d must be stated somewhere else.",
+          "createdAt": "2025-10-16T10:10:25Z",
+          "updatedAt": "2025-10-16T10:10:25Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "OK! New text has dropped, let me know if it sounds good. ",
+          "createdAt": "2025-10-16T22:35:00Z",
+          "updatedAt": "2025-10-16T22:35:00Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7HUkcH",
+          "commit": {
+            "abbreviatedOid": "488627b"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Not sure the \u201cFixes #7\u201d is the right tag.  I\u2019d say \u201cPartly addresses #7\u201d instead.",
+          "createdAt": "2025-10-16T10:11:14Z",
+          "updatedAt": "2025-10-16T10:11:14Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7HmrS4",
+          "commit": {
+            "abbreviatedOid": "cf8b8c9"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-17T08:12:19Z",
+          "updatedAt": "2025-10-17T08:12:19Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5GjG",
+          "commit": {
+            "abbreviatedOid": "cf8b8c9"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-10-18T15:40:58Z",
+          "updatedAt": "2025-10-18T15:48:23Z",
+          "comments": [
+            {
+              "originalPosition": 60,
+              "body": "The title of this PR is \"nix key attestation\", but then you talk about the key being trustworthy. I think the key is neither attested nor is it trustworthy; it is the *platform* that's attested and becomes trustworthy.",
+              "createdAt": "2025-10-18T15:40:58Z",
+              "updatedAt": "2025-10-18T15:48:23Z"
+            },
+            {
+              "originalPosition": 62,
+              "body": "This paragraph is somewhat weak: do we have an opinion on whether the platform needs to provide evidence as part of the key being certified?\n\nAlso, these guarantees (the private key is securely stored etc.) are subject to the same caveats as the Security Guarantees section being added in PR #28.",
+              "createdAt": "2025-10-18T15:45:45Z",
+              "updatedAt": "2025-10-18T15:48:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H5W-S",
+          "commit": {
+            "abbreviatedOid": "cf8b8c9"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T17:54:16Z",
+          "updatedAt": "2025-10-18T17:54:16Z",
+          "comments": [
+            {
+              "originalPosition": 64,
+              "body": "Contrary to title of PR, \"key attestation\" is still in use. ",
+              "createdAt": "2025-10-18T17:54:16Z",
+              "updatedAt": "2025-10-18T17:54:16Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "PR_kwDON6zrys6uVKH1",
+      "title": "Address comments from Ekr",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/31",
+      "state": "MERGED",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Addresses issues raised in https://github.com/tls-attestation/exported-attestation/issues/23",
+      "createdAt": "2025-10-17T15:10:09Z",
+      "updatedAt": "2025-10-18T05:08:38Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "29a78ed52634255177849b98ccab6df8e76020e8",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "tireddy2-patch-2",
+      "headRefOid": "7a7ce0dab5003f851d6a3d2b1c3484de75fdc59e",
+      "closedAt": "2025-10-18T05:08:38Z",
+      "mergedAt": "2025-10-18T05:08:38Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "def22ef226ded0f233a8df07ab497fcf7df087ce"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7Huozd",
+          "commit": {
+            "abbreviatedOid": "14bb15f"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the fix, Tiru!",
+          "createdAt": "2025-10-17T15:41:00Z",
+          "updatedAt": "2025-10-17T15:42:32Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "I'm a bit confused by the last sentence:\r\n\r\n> Endpoints that do not recognize the cmw_attestation extension in a request MUST ignore it.\r\n\r\nPresumably if the endpoint does not recognize cmw_attestation it's because this document is not something that was considered, so the `MUST` is not enforceable. Is this just the standard way to write up such extensions?",
+              "createdAt": "2025-10-17T15:41:00Z",
+              "updatedAt": "2025-10-17T15:43:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H09ew",
+          "commit": {
+            "abbreviatedOid": "14bb15f"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T05:06:02Z",
+          "updatedAt": "2025-10-18T05:06:02Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "It is discussed in Section 9.3 of RFC8446 which says:\r\n   -  A server receiving a ClientHello MUST correctly ignore all\r\n      unrecognized cipher suites, extensions, and other parameters.\r\n      Otherwise, it may fail to interoperate with newer clients.  In\r\n      TLS 1.3, a client receiving a CertificateRequest or\r\n      NewSessionTicket MUST also ignore all unrecognized extensions.\r\n\r\nFixed text as follows:\r\nAs specified in {{Section 9.3 of RFC8446}}, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or ClientCertificateRequest MUST ignore it and continue processing the message as if the extension were absent.",
+              "createdAt": "2025-10-18T05:06:02Z",
+              "updatedAt": "2025-10-18T05:06:02Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "PR_kwDON6zrys6uah4q",
+      "title": "Address Nits from Ekr",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/32",
+      "state": "MERGED",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-10-18T05:18:42Z",
+      "updatedAt": "2025-10-18T13:31:59Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "def22ef226ded0f233a8df07ab497fcf7df087ce",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "tireddy2-patch-3",
+      "headRefOid": "bcb643bf27f3efa98f76fbd6c517867c19991762",
+      "closedAt": "2025-10-18T13:31:59Z",
+      "mergedAt": "2025-10-18T13:31:59Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "e13891041787bcbc384cc867813f60bf670ad092"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7H36Gw",
+          "commit": {
+            "abbreviatedOid": "64bda6a"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Awesome, thank you!",
+          "createdAt": "2025-10-18T11:16:11Z",
+          "updatedAt": "2025-10-18T11:16:11Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7H1pU8",
+          "commit": {
+            "abbreviatedOid": "64bda6a"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-10-18T07:38:18Z",
+          "updatedAt": "2025-10-18T11:46:53Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "I don't think it is a useful change. You are explaining \"TLS Exported Authenticators\" via \"Exported Authenticator-based\" which is cyclic and does not help the readers with anything.",
+              "createdAt": "2025-10-18T07:38:18Z",
+              "updatedAt": "2025-10-18T11:46:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7H4QP7",
+          "commit": {
+            "abbreviatedOid": "64bda6a"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-18T11:48:00Z",
+          "updatedAt": "2025-10-18T11:48:01Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\n- TLS Exported Authenticators {{RFC9261}}: It offers bi-directional post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer.\r\n```",
+              "createdAt": "2025-10-18T11:48:00Z",
+              "updatedAt": "2025-10-18T11:48:01Z"
+            }
+          ]
         }
       ]
     }
