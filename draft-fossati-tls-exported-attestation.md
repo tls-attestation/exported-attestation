@@ -298,7 +298,7 @@ This specification assumes that the Hardware Security Module (HSM) or Trusted Ex
 
 ## Security Guarantees
 
-We note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the Identity Key is known by the TEE. A number of additional guarantees must be provided by the platform and/or the TLS stack,
+Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the Identity Key is known by the TEE. A number of additional guarantees must be provided by the platform and/or the TLS stack,
 and the overall security level depends on their existence and quality of assurance:
 
 * The Identity Key is generated within the TEE.
