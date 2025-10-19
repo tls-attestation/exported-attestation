@@ -303,6 +303,8 @@ and the overall security level depends on their existence and quality of assuran
 * The identity key used for TLS handshake is generated within the confidential environment.
 * The identity key used for TLS handshake is never exported or leaked outside the confidential environment.
 * The TLS protocol is implemented within the confidential environment, and is implemented correctly, e.g., it does not leak any session key material.
+* The TLS stack including the code that performs the post-handshake phase must be measured.
+* There must be no other way to initiate generation of evidence except from signed code.
 
 These properties may be explicitly promised ("attested") by the platform, or they can be assured in other ways such as by providing source code, reproducible builds, formal verification etc. The exact mechanisms are out of scope of this document.
 
