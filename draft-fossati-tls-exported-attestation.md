@@ -14,7 +14,6 @@ workgroup: TLS
 keyword:
  - Attestation
  - TLS
- - Key Attestation
  - Exported Authenticators
 venue:
   group: tls
@@ -117,7 +116,7 @@ This document builds upon three foundational specifications:
 - RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.
 
 
-This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}. This approach enhances flexibility and efficiency, supporting key attestation mechanisms without being restricted to X.509 certificate encoding formats.
+This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}.
 
 # Terminology
 
@@ -258,8 +257,8 @@ Client              Attester                 Server           Verifier
   |                   |                        |                  |
   | Request Evidence  |                        |                  |
   |------------------>|                        |                  |
-  | Key Attestation   |                        |                  |
-  | as Evidence       |                        |                  |
+  | Attestation       |                        |                  |
+  | Evidence          |                        |                  |
   |<------------------|                        |                  |
   | Exported Authenticator(Certificate with    |                  |
   | cmw_attestation                            |                  |
