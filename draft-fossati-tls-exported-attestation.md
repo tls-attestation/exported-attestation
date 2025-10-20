@@ -378,7 +378,7 @@ From the view of the TLS server, post-handshake attestation offers better privac
 # Document History
 {:unnumbered}
 
--03 
+-03
 
 * Expanded security considerations, in particular added security guarantees
 * Added privacy considerations
