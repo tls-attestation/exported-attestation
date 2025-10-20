@@ -61,20 +61,15 @@ normative:
   RFC9261:
   RFC2119:
   RFC8174:
-  RFC9261:
   RFC8446: tls13
   I-D.ietf-rats-msg-wrap:
-  I-D.ietf-tls-tlsflags:
-
+  I-D.ietf-tls-tlsflags: tls-flags
 
 informative:
   I-D.ietf-lamps-csr-attestation:
-  TLS-Ext-Registry:
-     author:
-        org: IANA
-     title: Transport Layer Security (TLS) Extensions
-     target: https://www.iana.org/assignments/tls-extensiontype-values
-     date: November 2023
+
+entity:
+  SELF: "RFCthis"
 
 --- abstract
 
@@ -298,14 +293,26 @@ The evidence presented in this protocol is valid only at the time it is generate
 
 # IANA Considerations
 
+// Note to RFC Editor: in this section, please replace {{&SELF}} with the RFC number assigned to this document and remove this note.
+
 ## TLS Extension Type Registration
 
-IANA is requested to register the following new extension type in the "TLS ExtensionType Values" registry:
+IANA is requested to register the following new extension type in the "TLS ExtensionType Values" registry {{!IANA.tls-extensiontype-values}}:
 
-| Value | Extension Name    | TLS 1.3 | DTLS 1.3 | Recommended | Reference      |
-|-------|-------------------|---------|----------|-------------|----------------|
-| TBD   | cmw_attestation   | CT      | Y        | Yes         | This Document  |
+| Value | Extension Name    | TLS 1.3 | DTLS-Only | Recommended | Reference |
+|-------|-------------------|---------|-----------|-------------|-----------|
+| TBD   | cmw_attestation   | CT      | N         | Yes         | {{&SELF}} |
 
+
+## TLS Flags Extension Registry
+
+IANA is requested to add the following entry to the "TLS Flags" extension registry established by {{-tls-flags}}:
+
+- Value: TBD1
+- Flag Name: CMW_Attestation
+- Messages: CH, EE
+- Recommended: Y
+- Reference: {{&SELF}}
 
 --- back
 
