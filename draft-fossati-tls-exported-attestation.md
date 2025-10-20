@@ -14,7 +14,6 @@ workgroup: TLS
 keyword:
  - Attestation
  - TLS
- - Key Attestation
  - Exported Authenticators
 venue:
   group: tls
@@ -55,10 +54,8 @@ author:
     organization: Arm Limited
     email: ionut.mihalcea@arm.com
 
-
 normative:
   RFC9334:
-  RFC9261:
   RFC2119:
   RFC8174:
   RFC8446: tls13
@@ -95,7 +92,7 @@ This document builds upon three foundational specifications:
 - RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.
 
 
-This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}. This approach enhances flexibility and efficiency, supporting key attestation mechanisms without being restricted to X.509 certificate encoding formats.
+This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}.
 
 # Terminology
 
@@ -236,8 +233,8 @@ Client              Attester                 Server           Verifier
   |                   |                        |                  |
   | Request Evidence  |                        |                  |
   |------------------>|                        |                  |
-  | Key Attestation   |                        |                  |
-  | as Evidence       |                        |                  |
+  | Attestation       |                        |                  |
+  | Evidence          |                        |                  |
   |<------------------|                        |                  |
   | Exported Authenticator(Certificate with    |                  |
   | cmw_attestation                            |                  |
@@ -274,6 +271,19 @@ This document inherits the security considerations of {{RFC9261}} and {{RFC9334}
 
 This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in {{I-D.ietf-lamps-csr-attestation}}. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.
 
+## Security Guarantees
+
+Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the identity key used for TLS handshake is known by the confidential environment, such as confidential virtual machine. A number of additional guarantees must be provided by the platform and/or the TLS stack,
+and the overall security level depends on their existence and quality of assurance:
+
+* The identity key used for TLS handshake is generated within the trustworthy environment, such as Trusted Platform Module (TPM) or TEE.
+* The identity key used for TLS handshake is never exported or leaked outside the trustworthy environment.
+* For confidential computing use cases, the TLS protocol is implemented within the confidential environment, and is implemented correctly, e.g., it does not leak any session key material.
+* The TLS stack including the code that performs the post-handshake phase must be measured.
+* There must be no other way to initiate generation of evidence except from signed code.
+
+These properties may be explicitly promised ("attested") by the platform, or they can be assured in other ways such as by providing source code, reproducible builds, formal verification etc. The exact mechanisms are out of scope of this document.
+
 ## Using the TLS Connection
 
 Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection
@@ -287,9 +297,35 @@ session has already completed remote attestation before the session can be used 
 
 ## Evidence Freshness
 
-The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.
+The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce {{RA-TLS}} or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.
 
 The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer remains in a secure state, remote attestation may be re-initiated periodically. In the current protocol, this can be achieved by initiating a new Exported Authenticator-based post-handshake authentication exchange, which will generate a new certificate_request_context to maintain freshness.
+
+# Privacy Considerations
+
+## Client as Attester
+
+In this section, we are assuming that the Attester is a TLS client, representing an individual person.
+We are concerned about the potential leakage of privacy-sensitive information about that person, such as the correlation of different connections initiated by them.
+
+In background-check model, the Verifier not only has access to detailed information about the Attester's TCB through Evidence, but it also knows the exact time and the party (i.e., the RP) with whom the secure channel establishment is attempted {{RA-TLS}}.
+The privacy implications are similar to OCSP {{-ocsp}}.
+While the RP may trust the Verifier not to disclose any information it receives, the same cannot be assumed for the Attester, which generally has no prior relationship with the Verifier.
+Some ways to address this include:
+
+* Attester-side redaction of privacy-sensitive evidence claims,
+* Using selective disclosure (e.g., SD-JWT {{-sd-jwt}} with EAT {{-rats-eat}}),
+* Co-locating the Verifier role with the RP,
+* Utilizing privacy-preserving attestation schemes (e.g., DAA {{-rats-daa}}), or
+* Utilizing Attesters manufactured with group identities (e.g., Requirement 4.1 of {{FIDO-REQS}}).
+
+The last two also have the property of hiding the peer's identity from the RP.
+
+Note that the equivalent of OCSP "stapling" involves using a passport topology where the Verifier's involvement is unrelated to the TLS session.
+
+## Server as Attester
+
+For the case of the TLS server as the Attester, the server can ask for client authentication and only send the Evidence after successful client authentication. This limits the exposure of server's hardware-level Claims to be revealed only to authorized clients.
 
 # IANA Considerations
 
@@ -317,5 +353,21 @@ IANA is requested to add the following entry to the "TLS Flags" extension regist
 --- back
 
 # Acknowledgements
+{:unnumbered}
+
 We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
-We would also like to thank Paul Howard and Yogesh Deshpande for their input.
+We would also like to thank Eric Rescorla, Paul Howard, and Yogesh Deshpande for their input.
+
+# Post-handshake vs Intra-handshake Privacy
+{:unnumbered}
+
+From the view of the TLS server, post-handshake attestation offers better privacy than intra-handshake attestation when the server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
+
+# Document History
+{:unnumbered}
+
+-03
+
+* Expanded security considerations, in particular added security guarantees
+* Added privacy considerations
+* Corrected {{fig-passport}}
