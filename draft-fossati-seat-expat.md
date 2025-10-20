@@ -3,25 +3,25 @@ title: "Remote Attestation with Exported Authenticators"
 abbrev: "Application Layer Attestation"
 category: std
 
-docname: draft-fossati-tls-exported-attestation-latest
+docname: draft-fossati-seat-expat-latest
 submissiontype: IETF
 number:
 date:
 consensus: true
 v: 3
 area: Security
-workgroup: TLS
+workgroup: Secure Evidence and Attestation Transport (SEAT) Working Group
 keyword:
  - Attestation
  - TLS
  - Exported Authenticators
 venue:
-  group: tls
+  group: SEAT
   type: Working Group
-  mail: tls@ietf.org
-  arch: https://datatracker.ietf.org/wg/tls/about/
+  mail: seat@ietf.org
+  arch: https://datatracker.ietf.org/wg/seat/about/
   github: "tls-attestation/exported-attestation"
-  latest: "https://tls-attestation.github.io/exported-attestation/draft-fossati-tls-exported-attestation.html"
+  latest: "https://tls-attestation.github.io/exported-attestation/draft-fossati-seat-expat.html"
 
 author:
   -
@@ -59,11 +59,38 @@ normative:
   RFC2119:
   RFC8174:
   RFC8446: tls13
+  RFC9261:
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags: tls-flags
 
 informative:
   I-D.ietf-lamps-csr-attestation:
+  TLS-Ext-Registry:
+    author:
+      org: IANA
+    title: Transport Layer Security (TLS) Extensions
+    target: https://www.iana.org/assignments/tls-extensiontype-values
+    date: November 2023
+  RA-TLS:
+    title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
+    date: 13 November 2024,
+    target: https://ieeexplore.ieee.org/document/10752524
+    author:
+      - ins: M. U. Sardar
+      - ins: A. Niemi
+      - ins: H. Tschofenig
+      - ins: T. Fossati
+  RFC9711: rats-eat
+  RFC6960: ocsp
+  FIDO-REQS:
+    target: https://fidoalliance.org/specs/fido-security-requirements/
+    title: "FIDO Authenticator Security and Privacy Requirements"
+    author:
+      - ins: B. Peirani
+      - ins: J. Verrept
+    date: March 2025
+  I-D.ietf-rats-daa: rats-daa
+  I-D.ietf-oauth-selective-disclosure-jwt: sd-jwt
 
 entity:
   SELF: "RFCthis"
