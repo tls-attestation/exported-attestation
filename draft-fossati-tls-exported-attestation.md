@@ -300,9 +300,9 @@ This specification assumes that the Hardware Security Module (HSM) or Trusted Ex
 Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the identity key used for TLS handshake is known by the confidential environment, such as confidential virtual machine. A number of additional guarantees must be provided by the platform and/or the TLS stack,
 and the overall security level depends on their existence and quality of assurance:
 
-* The identity key used for TLS handshake is generated within the confidential environment.
-* The identity key used for TLS handshake is never exported or leaked outside the confidential environment.
-* The TLS protocol is implemented within the confidential environment, and is implemented correctly, e.g., it does not leak any session key material.
+* The identity key used for TLS handshake is generated within the trustworthy environment, such as TPM or TEE.
+* The identity key used for TLS handshake is never exported or leaked outside the trustworthy environment.
+* For confidential computing use cases, the TLS protocol is implemented within the confidential environment, and is implemented correctly, e.g., it does not leak any session key material.
 * The TLS stack including the code that performs the post-handshake phase must be measured.
 * There must be no other way to initiate generation of evidence except from signed code.
 
