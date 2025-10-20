@@ -9,17 +9,17 @@ number:
 date:
 consensus: true
 v: 3
-# area: Security
-# workgroup: Secure Evidence and Attestation Transport (SEAT) Working Group
+area: Security
+workgroup: Secure Evidence and Attestation Transport (SEAT) Working Group
 keyword:
  - Attestation
  - TLS
  - Exported Authenticators
 venue:
-#  group: SEAT
-#  type: Working Group
-#  mail: seat@ietf.org
-#  arch: https://datatracker.ietf.org/wg/seat/about/
+  group: SEAT
+  type: Working Group
+  mail: seat@ietf.org
+  arch: https://datatracker.ietf.org/wg/seat/about/
   github: "tls-attestation/exported-attestation"
   latest: "https://tls-attestation.github.io/exported-attestation/draft-fossati-seat-expat.html"
 
