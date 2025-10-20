@@ -2,7 +2,7 @@
 
 
 
-TLS                                                           T. Fossati
+Secure Evidence and Attestation Transport (SEAT) Working GroupT. Fossati
 Internet-Draft                                                    Linaro
 Intended status: Standards Track                            M. U. Sardar
 Expires: 23 April 2026                                        TU Dresden
@@ -18,7 +18,7 @@ Expires: 23 April 2026                                        TU Dresden
 
 
             Remote Attestation with Exported Authenticators
-             draft-fossati-tls-exported-attestation-latest
+                    draft-fossati-seat-expat-latest
 
 Abstract
 
@@ -38,15 +38,14 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at https://tls-
-   attestation.github.io/exported-attestation/draft-fossati-tls-
-   exported-attestation.html.  Status information for this document may
-   be found at https://datatracker.ietf.org/doc/draft-fossati-tls-
-   exported-attestation/.
+   attestation.github.io/exported-attestation/draft-fossati-seat-
+   expat.html.  Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-fossati-seat-expat/.
 
-   Discussion of this document takes place on the tls Working Group
-   mailing list (mailto:tls@ietf.org), which is archived at
-   https://datatracker.ietf.org/wg/tls/about/.  Subscribe at
-   https://www.ietf.org/mailman/listinfo/tls/.
+   Discussion of this document takes place on the SEAT Working Group
+   mailing list (mailto:seat@ietf.org), which is archived at
+   https://datatracker.ietf.org/wg/seat/about/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/seat/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/tls-attestation/exported-attestation.
@@ -96,15 +95,21 @@ Table of Contents
    4.  Architecture
      4.1.  API Requirements for Attestation Support
    5.  Security Considerations
-     5.1.  Using the TLS Connection
-     5.2.  Evidence Freshness
-   6.  IANA Considerations
-     6.1.  TLS Extension Type Registration
-     6.2.  TLS Flags Extension Registry
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
-   Appendix A.  Acknowledgements
+     5.1.  Security Guarantees
+     5.2.  Using the TLS Connection
+     5.3.  Evidence Freshness
+   6.  Privacy Considerations
+     6.1.  Client as Attester
+     6.2.  Server as Attester
+   7.  IANA Considerations
+     7.1.  TLS Extension Type Registration
+     7.2.  TLS Flags Extension Registry
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
+   Acknowledgements
+   Post-handshake vs Intra-handshake Privacy
+   Document History
    Authors' Addresses
 
 1.  Introduction
@@ -164,9 +169,7 @@ Table of Contents
    This specification introduces the cmw_attestation extension, enabling
    Evidence to be included directly in the Certificate message during
    the Exported Authenticator-based post-handshake authentication
-   defined in [RFC9261].  This approach enhances flexibility and
-   efficiency, supporting key attestation mechanisms without being
-   restricted to X.509 certificate encoding formats.
+   defined in [RFC9261].
 
 2.  Terminology
 
@@ -427,8 +430,8 @@ Table of Contents
     |                   |                        |                  |
     | Request Evidence  |                        |                  |
     |------------------>|                        |                  |
-    | Key Attestation   |                        |                  |
-    | as Evidence       |                        |                  |
+    | Attestation       |                        |                  |
+    | Evidence          |                        |                  |
     |<------------------|                        |                  |
     | Exported Authenticator(Certificate with    |                  |
     | cmw_attestation                            |                  |
@@ -490,7 +493,39 @@ Table of Contents
    verify that the private key is securely stored and that the platform
    meets the required security standards before issuing a certificate.
 
-5.1.  Using the TLS Connection
+5.1.  Security Guarantees
+
+   Note that as a pure cryptographic protocol, attested TLS as-is only
+   guarantees that the identity key used for TLS handshake is known by
+   the confidential environment, such as confidential virtual machine.
+   A number of additional guarantees must be provided by the platform
+   and/or the TLS stack, and the overall security level depends on their
+   existence and quality of assurance:
+
+   *  The identity key used for TLS handshake is generated within the
+      trustworthy environment, such as Trusted Platform Module (TPM) or
+      TEE.
+
+   *  The identity key used for TLS handshake is never exported or
+      leaked outside the trustworthy environment.
+
+   *  For confidential computing use cases, the TLS protocol is
+      implemented within the confidential environment, and is
+      implemented correctly, e.g., it does not leak any session key
+      material.
+
+   *  The TLS stack including the code that performs the post-handshake
+      phase must be measured.
+
+   *  There must be no other way to initiate generation of evidence
+      except from signed code.
+
+   These properties may be explicitly promised ("attested") by the
+   platform, or they can be assured in other ways such as by providing
+   source code, reproducible builds, formal verification etc.  The exact
+   mechanisms are out of scope of this document.
+
+5.2.  Using the TLS Connection
 
    Remote attestation in this document occurs within the context of a
    TLS handshake, and the TLS connection remains valid after this
@@ -506,12 +541,12 @@ Table of Contents
    attestation before the session can be used normally, and race
    conditions are possible.
 
-5.2.  Evidence Freshness
+5.3.  Evidence Freshness
 
    The Evidence carried in cmw_attestation does not require an
-   additional freshness mechanism, such as a nonce or timestamp, since
-   freshness is inherently provided by the certificate_request_context
-   in the authenticator request.
+   additional freshness mechanism, such as a nonce [RA-TLS] or
+   timestamp, since freshness is inherently provided by the
+   certificate_request_context in the authenticator request.
 
    The evidence presented in this protocol is valid only at the time it
    is generated and presented.  To ensure that the attested peer remains
@@ -521,12 +556,57 @@ Table of Contents
    authentication exchange, which will generate a new
    certificate_request_context to maintain freshness.
 
-6.  IANA Considerations
+6.  Privacy Considerations
+
+6.1.  Client as Attester
+
+   In this section, we are assuming that the Attester is a TLS client,
+   representing an individual person.  We are concerned about the
+   potential leakage of privacy-sensitive information about that person,
+   such as the correlation of different connections initiated by them.
+
+   In background-check model, the Verifier not only has access to
+   detailed information about the Attester's TCB through Evidence, but
+   it also knows the exact time and the party (i.e., the RP) with whom
+   the secure channel establishment is attempted [RA-TLS].  The privacy
+   implications are similar to OCSP [RFC6960].  While the RP may trust
+   the Verifier not to disclose any information it receives, the same
+   cannot be assumed for the Attester, which generally has no prior
+   relationship with the Verifier.  Some ways to address this include:
+
+   *  Attester-side redaction of privacy-sensitive evidence claims,
+
+   *  Using selective disclosure (e.g., SD-JWT
+      [I-D.ietf-oauth-selective-disclosure-jwt] with EAT [RFC9711]),
+
+   *  Co-locating the Verifier role with the RP,
+
+   *  Utilizing privacy-preserving attestation schemes (e.g., DAA
+      [I-D.ietf-rats-daa]), or
+
+   *  Utilizing Attesters manufactured with group identities (e.g.,
+      Requirement 4.1 of [FIDO-REQS]).
+
+   The last two also have the property of hiding the peer's identity
+   from the RP.
+
+   Note that the equivalent of OCSP "stapling" involves using a passport
+   topology where the Verifier's involvement is unrelated to the TLS
+   session.
+
+6.2.  Server as Attester
+
+   For the case of the TLS server as the Attester, the server can ask
+   for client authentication and only send the Evidence after successful
+   client authentication.  This limits the exposure of server's
+   hardware-level Claims to be revealed only to authorized clients.
+
+7.  IANA Considerations
 
    // Note to RFC Editor: in this section, please replace RFCthis with
    the RFC number assigned to this document and remove this note.
 
-6.1.  TLS Extension Type Registration
+7.1.  TLS Extension Type Registration
 
    IANA is requested to register the following new extension type in the
    "TLS ExtensionType Values" registry [IANA.tls-extensiontype-values]:
@@ -540,7 +620,7 @@ Table of Contents
 
                                   Table 1
 
-6.2.  TLS Flags Extension Registry
+7.2.  TLS Flags Extension Registry
 
    IANA is requested to add the following entry to the "TLS Flags"
    extension registry established by [I-D.ietf-tls-tlsflags]:
@@ -555,9 +635,9 @@ Table of Contents
 
    *  Reference: RFCthis
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [I-D.ietf-rats-msg-wrap]
               Birkholz, H., Smith, N., Fossati, T., Tschofenig, H., and
@@ -605,7 +685,13 @@ Table of Contents
               Architecture", RFC 9334, DOI 10.17487/RFC9334, January
               2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
-7.2.  Informative References
+8.2.  Informative References
+
+   [FIDO-REQS]
+              Peirani, B. and J. Verrept, "FIDO Authenticator Security
+              and Privacy Requirements", March 2025,
+              <https://fidoalliance.org/specs/fido-security-
+              requirements/>.
 
    [I-D.ietf-lamps-csr-attestation]
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
@@ -615,11 +701,70 @@ Table of Contents
               October 2025, <https://datatracker.ietf.org/doc/html/
               draft-ietf-lamps-csr-attestation-21>.
 
-Appendix A.  Acknowledgements
+   [I-D.ietf-oauth-selective-disclosure-jwt]
+              Fett, D., Yasuda, K., and B. Campbell, "Selective
+              Disclosure for JWTs (SD-JWT)", Work in Progress, Internet-
+              Draft, draft-ietf-oauth-selective-disclosure-jwt-22, 29
+              May 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-oauth-selective-disclosure-jwt-22>.
+
+   [I-D.ietf-rats-daa]
+              Birkholz, H., Newton, C., Chen, L., Giannetsos, T., and D.
+              Thaler, "Direct Anonymous Attestation for the Remote
+              Attestation Procedures Architecture", Work in Progress,
+              Internet-Draft, draft-ietf-rats-daa-08, 3 September 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-rats-
+              daa-08>.
+
+   [RA-TLS]   Sardar, M. U., Niemi, A., Tschofenig, H., and T. Fossati,
+              "Towards Validation of TLS 1.3 Formal Model and
+              Vulnerabilities in Intel's RA-TLS Protocol", November
+              2024, <https://ieeexplore.ieee.org/document/10752524>.
+
+   [RFC6960]  Santesson, S., Myers, M., Ankney, R., Malpani, A.,
+              Galperin, S., and C. Adams, "X.509 Internet Public Key
+              Infrastructure Online Certificate Status Protocol - OCSP",
+              RFC 6960, DOI 10.17487/RFC6960, June 2013,
+              <https://www.rfc-editor.org/rfc/rfc6960>.
+
+   [RFC9711]  Lundblade, L., Mandyam, G., O'Donoghue, J., and C.
+              Wallace, "The Entity Attestation Token (EAT)", RFC 9711,
+              DOI 10.17487/RFC9711, April 2025,
+              <https://www.rfc-editor.org/rfc/rfc9711>.
+
+   [TLS-Ext-Registry]
+              IANA, "Transport Layer Security (TLS) Extensions",
+              November 2023, <https://www.iana.org/assignments/tls-
+              extensiontype-values>.
+
+Acknowledgements
 
    We would like to thank Chris Patton for his proposal to explore RFC
-   9261 for attested TLS.  We would also like to thank Paul Howard and
-   Yogesh Deshpande for their input.
+   9261 for attested TLS.  We would also like to thank Eric Rescorla,
+   Paul Howard, and Yogesh Deshpande for their input.
+
+Post-handshake vs Intra-handshake Privacy
+
+   From the view of the TLS server, post-handshake attestation offers
+   better privacy than intra-handshake attestation when the server acts
+   as the Attester.  In intra-handshake attestation, due to the inherent
+   asymmetry of the TLS protocol, a malicious TLS client could
+   potentially retrieve sensitive information from the Evidence without
+   the client's trustworthiness first being established by the server.
+   In post-handshake attestation, the server can ask for client
+   authentication and only send the Evidence after successful client
+   authentication.
+
+Document History
+
+   -03
+
+   *  Expanded security considerations, in particular added security
+      guarantees
+
+   *  Added privacy considerations
+
+   *  Corrected Figure 1
 
 Authors' Addresses
 
