@@ -61,7 +61,7 @@ normative:
   RFC9261:
   RFC8446: tls13
   I-D.ietf-rats-msg-wrap:
-  I-D.ietf-tls-tlsflags:
+  I-D.ietf-tls-tlsflags: tls-flags
 
 informative:
   I-D.ietf-lamps-csr-attestation:
@@ -72,7 +72,7 @@ informative:
      target: https://www.iana.org/assignments/tls-extensiontype-values
      date: November 2023
   RA-TLS:
-       title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel’s RA-TLS Protocol"
+       title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
        date: 13 November 2024,
        target: https://ieeexplore.ieee.org/document/10752524
        author:
@@ -91,6 +91,9 @@ informative:
     date: March 2025
   I-D.ietf-rats-daa: rats-daa
   I-D.ietf-oauth-selective-disclosure-jwt: sd-jwt
+
+entity:
+  SELF: "RFCthis"
 
 --- abstract
 
