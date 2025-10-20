@@ -3,25 +3,25 @@ title: "Remote Attestation with Exported Authenticators"
 abbrev: "Application Layer Attestation"
 category: std
 
-docname: draft-fossati-tls-exported-attestation-latest
+docname: draft-fossati-seat-expat-latest
 submissiontype: IETF
 number:
 date:
 consensus: true
 v: 3
-area: Security
-workgroup: TLS
+# area: Security
+# workgroup: Secure Evidence and Attestation Transport (SEAT) Working Group
 keyword:
  - Attestation
  - TLS
  - Exported Authenticators
 venue:
-  group: tls
-  type: Working Group
-  mail: tls@ietf.org
-  arch: https://datatracker.ietf.org/wg/tls/about/
+#  group: SEAT
+#  type: Working Group
+#  mail: seat@ietf.org
+#  arch: https://datatracker.ietf.org/wg/seat/about/
   github: "tls-attestation/exported-attestation"
-  latest: "https://tls-attestation.github.io/exported-attestation/draft-fossati-tls-exported-attestation.html"
+  latest: "https://tls-attestation.github.io/exported-attestation/draft-fossati-seat-expat.html"
 
 author:
   -
