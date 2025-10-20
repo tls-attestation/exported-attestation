@@ -375,8 +375,10 @@ We would also like to thank Eric Rescorla, Paul Howard, and Yogesh Deshpande for
 
 From the view of the TLS server, post-handshake attestation offers better privacy than intra-handshake attestation when the server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
 
-# Change log
+# Document History
 {:unnumbered}
+
+-03 
 
 * Expanded security considerations, in particular added security guarantees
 * Added privacy considerations
