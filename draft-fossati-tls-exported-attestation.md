@@ -58,39 +58,12 @@ normative:
   RFC9334:
   RFC2119:
   RFC8174:
-  RFC9261:
   RFC8446: tls13
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags: tls-flags
 
 informative:
   I-D.ietf-lamps-csr-attestation:
-  TLS-Ext-Registry:
-     author:
-        org: IANA
-     title: Transport Layer Security (TLS) Extensions
-     target: https://www.iana.org/assignments/tls-extensiontype-values
-     date: November 2023
-  RA-TLS:
-       title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
-       date: 13 November 2024,
-       target: https://ieeexplore.ieee.org/document/10752524
-       author:
-       - ins: M. U. Sardar
-       - ins: A. Niemi
-       - ins: H. Tschofenig
-       - ins: T. Fossati
-  RFC9711: rats-eat
-  RFC6960: ocsp
-  FIDO-REQS:
-    target: https://fidoalliance.org/specs/fido-security-requirements/
-    title: "FIDO Authenticator Security and Privacy Requirements"
-    author:
-    - ins: B. Peirani
-    - ins: J. Verrept
-    date: March 2025
-  I-D.ietf-rats-daa: rats-daa
-  I-D.ietf-oauth-selective-disclosure-jwt: sd-jwt
 
 entity:
   SELF: "RFCthis"
@@ -356,14 +329,26 @@ For the case of the TLS server as the Attester, the server can ask for client au
 
 # IANA Considerations
 
+// Note to RFC Editor: in this section, please replace {{&SELF}} with the RFC number assigned to this document and remove this note.
+
 ## TLS Extension Type Registration
 
-IANA is requested to register the following new extension type in the "TLS ExtensionType Values" registry:
+IANA is requested to register the following new extension type in the "TLS ExtensionType Values" registry {{!IANA.tls-extensiontype-values}}:
 
-| Value | Extension Name    | TLS 1.3 | DTLS 1.3 | Recommended | Reference      |
-|-------|-------------------|---------|----------|-------------|----------------|
-| TBD   | cmw_attestation   | CT      | Y        | Yes         | This Document  |
+| Value | Extension Name    | TLS 1.3 | DTLS-Only | Recommended | Reference |
+|-------|-------------------|---------|-----------|-------------|-----------|
+| TBD   | cmw_attestation   | CT      | N         | Yes         | {{&SELF}} |
 
+
+## TLS Flags Extension Registry
+
+IANA is requested to add the following entry to the "TLS Flags" extension registry established by {{-tls-flags}}:
+
+- Value: TBD1
+- Flag Name: CMW_Attestation
+- Messages: CH, EE
+- Recommended: Y
+- Reference: {{&SELF}}
 
 --- back
 
