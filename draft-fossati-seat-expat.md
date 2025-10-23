@@ -25,13 +25,13 @@ venue:
 
 author:
   -
-    name: Thomas Fossati
-    organization: Linaro
-    email: thomas.fossati@linaro.org
-  -
     name: Muhammad Usama Sardar
     organization: TU Dresden
     email: muhammad_usama.sardar@tu-dresden.de
+  -
+    name: Thomas Fossati
+    organization: Linaro
+    email: thomas.fossati@linaro.org
   -
     fullname: Tirumaleswar Reddy
     organization: Nokia
