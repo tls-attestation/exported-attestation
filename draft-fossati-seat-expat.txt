@@ -2,10 +2,10 @@
 
 
 
-Secure Evidence and Attestation Transport (SEAT) Working GroupT. Fossati
-Internet-Draft                                                    Linaro
-Intended status: Standards Track                            M. U. Sardar
-Expires: 23 April 2026                                        TU Dresden
+Secure Evidence and Attestation Transport (SEAT) Working GroupM. U. Sardar
+Internet-Draft                                                TU Dresden
+Intended status: Standards Track                              T. Fossati
+Expires: 27 April 2026                                            Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 23 April 2026                                        TU Dresden
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         20 October 2025
+                                                         24 October 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2026.
+   This Internet-Draft will expire on 27 April 2026.
 
 Copyright Notice
 
@@ -768,14 +768,14 @@ Document History
 
 Authors' Addresses
 
-   Thomas Fossati
-   Linaro
-   Email: thomas.fossati@linaro.org
-
-
    Muhammad Usama Sardar
    TU Dresden
    Email: muhammad_usama.sardar@tu-dresden.de
+
+
+   Thomas Fossati
+   Linaro
+   Email: thomas.fossati@linaro.org
 
 
    Tirumaleswar Reddy
