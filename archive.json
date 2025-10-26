@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-21T01:19:30.390689+00:00",
+  "timestamp": "2025-10-26T01:23:43.776356+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -2948,6 +2948,74 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 34,
+      "id": "PR_kwDON6zrys6vYCp9",
+      "title": "Update author order (as discussed)",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/34",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-10-23T22:05:18Z",
+      "updatedAt": "2025-10-24T09:26:34Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "deb10f3fa8f8439cc30cd2d845d9fb35cf84ae3d",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "author-order",
+      "headRefOid": "e4ab30db01f23b4c8482e4e6c9751e559cfd61a6",
+      "closedAt": "2025-10-24T09:26:34Z",
+      "mergedAt": "2025-10-24T09:26:34Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "b40fcd27201c0efbb757fa899d5066723027adef"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7JJG00",
+          "commit": {
+            "abbreviatedOid": "e4ab30d"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-24T05:21:09Z",
+          "updatedAt": "2025-10-24T05:21:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7JKZ2p",
+          "commit": {
+            "abbreviatedOid": "e4ab30d"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-24T07:50:03Z",
+          "updatedAt": "2025-10-24T07:50:03Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7JLjLh",
+          "commit": {
+            "abbreviatedOid": "e4ab30d"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-24T08:59:03Z",
+          "updatedAt": "2025-10-24T08:59:03Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
