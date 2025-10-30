@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-26T01:23:43.776356+00:00",
+  "timestamp": "2025-10-30T01:22:24.442552+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -491,6 +491,102 @@
           "updatedAt": "2025-10-15T17:01:21Z"
         }
       ]
+    },
+    {
+      "number": 35,
+      "id": "I_kwDON6zrys7UT0GK",
+      "title": "When to start post-handshake",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/35",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\"Both peers can send an authenticator request message at any point after the handshake\" - so this doesn't have to happen immediately? As a profile of 9261, we can say that we require the post-handshake exchange to start immediately after the TLS handshake completes.\n\n",
+      "createdAt": "2025-10-28T14:51:15Z",
+      "updatedAt": "2025-10-28T14:51:15Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 36,
+      "id": "I_kwDON6zrys7UT0Hz",
+      "title": "Top of Sec. 3 is confusing",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/36",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The first sentences of Sec. 3 are very confusing with respect to TLS messages. It is never clear when we are referring to in-handshake messages (e.g. Certificate) or post-handshake. Yes, we do mention the \"Authenticator message\" but we could still make it clearer.\n\n",
+      "createdAt": "2025-10-28T14:51:17Z",
+      "updatedAt": "2025-10-28T14:51:17Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 37,
+      "id": "I_kwDON6zrys7UT0JR",
+      "title": "What certificate chain?",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/37",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Sec. 3.2 assumes that there is always a certificate chain ready to be sent in the post-handshake exchange. Is it an exact copy of the TLS handshake's chain? If so, we should say so and mandate that the peer bitwise compares the two chains.\n\n",
+      "createdAt": "2025-10-28T14:51:18Z",
+      "updatedAt": "2025-10-28T14:51:18Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 38,
+      "id": "I_kwDON6zrys7UT0Kw",
+      "title": "Negotiation of the expat extension",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/38",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Shouldn't `cmw_attestation` be negotiated in the initial handshake? It's a completely legitimate policy not to allow any traffic before the post-handshake exchange is complete. But to ensure it, you need earlier negotiation.\n\nNlte that the IANA section defines a flag but there's no text that uses it.\n\nIMO we need to re-add text on flag-based negotiation in the TLS handshake, possibly followed by more detailed negotiation in the post-handshake.\n\n",
+      "createdAt": "2025-10-28T14:51:20Z",
+      "updatedAt": "2025-10-28T14:51:20Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 39,
+      "id": "I_kwDON6zrys7UT0MS",
+      "title": "Format Negotiation",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/39",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> However, applications using this mechanism still need to negotiate the encoding format (e.g., JOSE or COSE) and specify how attestation credentials are processed. This negotiation can be done via application-layer signaling or predefined profiles. Future specifications may define mechanisms to streamline this negotiation.\n\nWe are punting on format negotiation, but I think without even basic negotiation (JOSE vs COSE), it'll be hard to get basic interoperability. Per @thomas-fossati there are projects that have a way to do it, I guess we need to formalize the negotiation details.\n\n",
+      "createdAt": "2025-10-28T14:51:21Z",
+      "updatedAt": "2025-10-28T14:51:21Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 40,
+      "id": "I_kwDON6zrys7UT0Nm",
+      "title": "Attested CSR as a prerequisite",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/40",
+      "state": "OPEN",
+      "author": "yaronf",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Sec. 5 (Security Considerations): do we really require [I-D.ietf-lamps-csr-attestation] as a prerequisite? If so then we are again in a place where freshness of the Evidence depends on the CA's latency. Note that the document says twice that we don't want CA-style latency.\n\n",
+      "createdAt": "2025-10-28T14:51:23Z",
+      "updatedAt": "2025-10-28T14:51:23Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
