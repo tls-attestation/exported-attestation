@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-30T01:22:24.442552+00:00",
+  "timestamp": "2025-11-02T01:24:56.292846+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -536,9 +536,31 @@
       "labels": [],
       "body": "Sec. 3.2 assumes that there is always a certificate chain ready to be sent in the post-handshake exchange. Is it an exact copy of the TLS handshake's chain? If so, we should say so and mandate that the peer bitwise compares the two chains.\n\n",
       "createdAt": "2025-10-28T14:51:18Z",
-      "updatedAt": "2025-10-28T14:51:18Z",
+      "updatedAt": "2025-10-30T12:50:07Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We need to make it explicit that there are multiple possible options here:\n* attester only has one identity, so the same certs are used; RP must verify they're identical (Need to spell out if the full chain from TLS handshake, or just the leaf cert)\n* attester has multiple identities, other cert can be used, but the RP must be able to verify that identity\n\nHowever this needs to be negotiated.",
+          "createdAt": "2025-10-30T12:27:48Z",
+          "updatedAt": "2025-10-30T12:49:24Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Regarding negotiation, the CertificateVerify in post-handshake should use the same signing alg as the main TLS handshake, which can limit what other identities are used post-handshake.",
+          "createdAt": "2025-10-30T12:32:23Z",
+          "updatedAt": "2025-10-30T12:32:23Z"
+        },
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Note: the secondary cert chain is not going to be for anchoring the AK, because that's bundled in the evidence wrapper.\n\nRe. formal verification of multiple identities being served by same server, see Sec. cons section in RFC9261.",
+          "createdAt": "2025-10-30T12:47:07Z",
+          "updatedAt": "2025-10-30T12:47:07Z"
+        }
+      ]
     },
     {
       "number": 38,
@@ -552,9 +574,17 @@
       "labels": [],
       "body": "Shouldn't `cmw_attestation` be negotiated in the initial handshake? It's a completely legitimate policy not to allow any traffic before the post-handshake exchange is complete. But to ensure it, you need earlier negotiation.\n\nNlte that the IANA section defines a flag but there's no text that uses it.\n\nIMO we need to re-add text on flag-based negotiation in the TLS handshake, possibly followed by more detailed negotiation in the post-handshake.\n\n",
       "createdAt": "2025-10-28T14:51:20Z",
-      "updatedAt": "2025-10-28T14:51:20Z",
+      "updatedAt": "2025-10-30T13:00:42Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Would be good to discuss how we negotiate this feature so that we avoid a wasted TLS handshake (e.g., ALPN)",
+          "createdAt": "2025-10-30T13:00:26Z",
+          "updatedAt": "2025-10-30T13:00:42Z"
+        }
+      ]
     },
     {
       "number": 39,
@@ -584,9 +614,17 @@
       "labels": [],
       "body": "Sec. 5 (Security Considerations): do we really require [I-D.ietf-lamps-csr-attestation] as a prerequisite? If so then we are again in a place where freshness of the Evidence depends on the CA's latency. Note that the document says twice that we don't want CA-style latency.\n\n",
       "createdAt": "2025-10-28T14:51:23Z",
-      "updatedAt": "2025-10-28T14:51:23Z",
+      "updatedAt": "2025-10-30T12:21:27Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "body": "2nd para in sec. 5 should probably be made into a \"MAY\" and converted into a separate subsection.",
+          "createdAt": "2025-10-30T12:21:27Z",
+          "updatedAt": "2025-10-30T12:21:27Z"
+        }
+      ]
     }
   ],
   "pulls": [
