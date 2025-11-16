@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-02T01:24:56.292846+00:00",
+  "timestamp": "2025-11-16T01:26:43.137263+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -625,6 +625,22 @@
           "updatedAt": "2025-10-30T12:21:27Z"
         }
       ]
+    },
+    {
+      "number": 41,
+      "id": "I_kwDON6zrys7Xz6Wo",
+      "title": "Crypto binder definition",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/41",
+      "state": "OPEN",
+      "author": "ionut-arm",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As discovered during prototyping, it seems the draft doesn't properly document how to achieve cryptographic binding between TLS connection and attestation evidence. See [this comment](https://github.com/tls-attestation/attestation-exported-authenticators/issues/8#issuecomment-3477875917) for source, though the contents are duplicated below.\n\nThe binding we need to achieve must rely on some sort of exported keying material that gets hash-linked into the evidence. The current draft, leveraging RFC9261, presumably describes a way to do this. We probably confused some of the details of 9261:\n\n* The Handshake Context as defined in [sec. 5.1 of RFC9261](https://www.rfc-editor.org/rfc/rfc9261#name-authenticator-keys) is an exporter value meant to be used in CertificateVerify and in the Finished messages.\n* We seem to have considered [`certificate_request_context`](https://www.rfc-editor.org/rfc/rfc9261#section-4-6.2) to be that binder, but it is NOT intended to work that way. It's just a nonce or, in any case, not something the peer should be able to compute on its own (from [sec. 4](https://www.rfc-editor.org/rfc/rfc9261#name-authenticator-request): \"The certificate_request_context SHOULD be chosen to be unpredictable to the peer (e.g., by randomly generating it)\").\n\nWe likely mashed them up and considered `certificate_request_context` as an avenue through which an exported value is carried to the attester ([sec. 3.2 of expat draft](https://datatracker.ietf.org/doc/html/draft-fossati-seat-expat-00#name-usage-in-exported-authentic)). There are two options to rectify this:\n\n1. use `Handshake Context` for TLS <-> RA binding as well.\n2. define a new exporter value with its own context and label.\n\nOption (1) would be easier, but I'm not sure if that's good practice for a cryptographic value that's clearly scoped in the original doc.\n\n@jhoyla - do you have any an opinion regarding these two options?",
+      "createdAt": "2025-11-13T11:01:51Z",
+      "updatedAt": "2025-11-13T11:01:51Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
