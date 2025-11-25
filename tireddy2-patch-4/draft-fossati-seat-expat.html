@@ -1369,6 +1369,7 @@ invocation uses:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 exporter value using the same exporter invocation described for the attester. The RP compares the recomputed
 value with the value included in the attestation evidence; if they differ, the attestation evidence MUST be
 rejected.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. This value is then provided to the Relying Party (RP) as part of the attestation validation. The RP compares the value supplied by the TLS endpoint with the value included in the attestation evidence; if they differ, the attestation evidence MUST be rejected.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ensuring-compatibility-with-x509-certificate-validation">
