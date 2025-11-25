@@ -168,6 +168,22 @@ To maintain a cryptographic binding between the Evidence and the authentication 
 - The Evidence is specific to the authentication event and cannot be replayed across different TLS sessions.
 - The Evidence remains tied to the cryptographic context of the TLS session.
 
+## Cryptographic Binding of the Evidence to the TLS Session
+
+The attester MUST bind the attestation evidence to the active TLS session. To do so, the attester derives a
+binding value using the TLS exporter and the exporter_master_secret of the current TLS connection. The exporter
+invocation uses:
+
+* the label "Attestation Binding", and
+* the certificate_request_context from the CertificateRequest message as the exporter context.
+
+The attester MUST include the exporter value exactly as produced in the attestation evidence.
+
+To verify that the attestation evidence is bound to the active TLS session, the relying party recomputes the
+exporter value using the same exporter invocation described for the attester. The RP compares the recomputed
+value with the value included in the attestation evidence; if they differ, the attestation evidence MUST be
+rejected.
+
 ## Ensuring Compatibility with X.509 Certificate Validation
 
 The `cmw_attestation` extension does not modify or replace X.509 certificate validation mechanisms. It serves as an additional source of authentication data rather than altering the trust model of PKI-based authentication. Specifically:
