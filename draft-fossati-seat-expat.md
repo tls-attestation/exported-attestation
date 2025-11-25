@@ -184,6 +184,8 @@ exporter value using the same exporter invocation described for the attester. Th
 value with the value included in the attestation evidence; if they differ, the attestation evidence MUST be
 rejected.
 
+To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. This value is then provided to the Relying Party (RP) as part of the attestation validation. The RP compares the value supplied by the TLS endpoint with the value included in the attestation evidence; if they differ, the attestation evidence MUST be rejected.
+
 ## Ensuring Compatibility with X.509 Certificate Validation
 
 The `cmw_attestation` extension does not modify or replace X.509 certificate validation mechanisms. It serves as an additional source of authentication data rather than altering the trust model of PKI-based authentication. Specifically:
