@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-16T01:26:43.137263+00:00",
+  "timestamp": "2025-11-25T01:21:32.929977+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -387,7 +387,7 @@
       ],
       "body": "> \n> I've now had a chance to look at this draft.\n> \n> At a high level I have the same concerns I expressed over\n> draft-fossati-tls-attestation, which is to say that it unclear what\n> actual security properties that attestation provides. This draft is\n> even more vague about this question. I appreciate that these\n> properties are dependent on the precise configuration of the peer\n> endpoint, and so there are presumably some specific assertions which\n> need to appear in the attestation that describe that configuration,\n> but I think the responsibility of this kind of draft is to explain\n> what the implications of various choices are.\n> \n> \n> In terms of the integration with TLS, I don't think the negotiation\n> structure is quite right. Specifically, you indicate support for this\n> mechanism with a CMW_Attestation flag in CH, which is then\n> acknowledged in EE, but then you provide the actual data in a\n> different extension (cmw_attestation) in Certificate. There are\n> two problems here:\n> \n> 1. You can't use flags this way.\n> 2. CH is generally not the right place.\n> \n> For point 1, draft-ietf-tls-tlsflags explicitly prohibits the use of a\n> flag to signal an actual extension:\n> \n> >    For a flag that does require a response, the only proper response is\n> >    the same flag in a flags extension.  This extension MUST NOT be used\n> >    to specify extensions where the response is a proper extension with\n> >    content.\n> \n> On point 2, here is what S 5.2 of RFC 9261 says:\n> \n> >    ClientHello extensions are used to determine permissible extensions\n> >    in the server's unsolicited Certificate message in order to follow\n> >    the general model for extensions in (D)TLS in which extensions can\n> >    only be included as part of a Certificate message if they were\n> >    previously sent as part of a CertificateRequest message or\n> >    ClientHello message.  This ensures that the recipient will be able to\n> >    process such extensions.\n> \n> As you are sending CertificateRequest and/or ClientCertificateRequest,\n> that is where the offer has to appear. IOW, the correct design is\n> to define only one extension, \"cmw_attestation\", which appears in\n> CertificateRequest or ClientCertificateRequest respectively.\n> \n> One more editorial point: you repeatedly refer to this as\n> \"post-handshake\", but that's more properly used to refer to the\n> mechanism in S 4.6.2 of RFC 8446. This mechanism isn't in TLS\n> at all, but rather in the application protocol but bound to\n> TLS.\n> \n> -Ekr",
       "createdAt": "2025-07-18T18:56:32Z",
-      "updatedAt": "2025-10-19T19:15:34Z",
+      "updatedAt": "2025-11-24T17:44:41Z",
       "closedAt": null,
       "comments": [
         {
@@ -396,6 +396,13 @@
           "body": "> At a high level I have the same concerns I expressed over\ndraft-fossati-tls-attestation, which is to say that it unclear what\nactual security properties that attestation provides. \n\nAs a starting point, the security considerations section can add a reference to the [paper](https://ieeexplore.ieee.org/document/10373038), which covers two relevant Confidential Computing technologies in our context: Arm CCA and Intel TDX.",
           "createdAt": "2025-09-10T15:31:08Z",
           "updatedAt": "2025-09-10T15:31:08Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The work has started [here](https://datatracker.ietf.org/doc/draft-rats-sardar-sec-cons/).",
+          "createdAt": "2025-11-24T17:44:41Z",
+          "updatedAt": "2025-11-24T17:44:41Z"
         }
       ]
     },
@@ -639,6 +646,24 @@
       "body": "As discovered during prototyping, it seems the draft doesn't properly document how to achieve cryptographic binding between TLS connection and attestation evidence. See [this comment](https://github.com/tls-attestation/attestation-exported-authenticators/issues/8#issuecomment-3477875917) for source, though the contents are duplicated below.\n\nThe binding we need to achieve must rely on some sort of exported keying material that gets hash-linked into the evidence. The current draft, leveraging RFC9261, presumably describes a way to do this. We probably confused some of the details of 9261:\n\n* The Handshake Context as defined in [sec. 5.1 of RFC9261](https://www.rfc-editor.org/rfc/rfc9261#name-authenticator-keys) is an exporter value meant to be used in CertificateVerify and in the Finished messages.\n* We seem to have considered [`certificate_request_context`](https://www.rfc-editor.org/rfc/rfc9261#section-4-6.2) to be that binder, but it is NOT intended to work that way. It's just a nonce or, in any case, not something the peer should be able to compute on its own (from [sec. 4](https://www.rfc-editor.org/rfc/rfc9261#name-authenticator-request): \"The certificate_request_context SHOULD be chosen to be unpredictable to the peer (e.g., by randomly generating it)\").\n\nWe likely mashed them up and considered `certificate_request_context` as an avenue through which an exported value is carried to the attester ([sec. 3.2 of expat draft](https://datatracker.ietf.org/doc/html/draft-fossati-seat-expat-00#name-usage-in-exported-authentic)). There are two options to rectify this:\n\n1. use `Handshake Context` for TLS <-> RA binding as well.\n2. define a new exporter value with its own context and label.\n\nOption (1) would be easier, but I'm not sure if that's good practice for a cryptographic value that's clearly scoped in the original doc.\n\n@jhoyla - do you have any an opinion regarding these two options?",
       "createdAt": "2025-11-13T11:01:51Z",
       "updatedAt": "2025-11-13T11:01:51Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 42,
+      "id": "I_kwDON6zrys7aJY8K",
+      "title": "Pre-/intra- vs. post-handshake attestation",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/42",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/HE9QcPGrTArC0cKPcVw7tFnkh5U/)\nAdd a pointer to the paper in the Appendix to reason why we are standardizing post-handshake rather than intra-handshake",
+      "createdAt": "2025-11-24T17:43:30Z",
+      "updatedAt": "2025-11-24T17:43:30Z",
       "closedAt": null,
       "comments": []
     }
