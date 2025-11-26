@@ -299,8 +299,8 @@ Table of Contents
    the exporter binding directly; if it does, it MUST reject the
    attestation evidence when the values do not match.  If the TLS
    endpoint does not perform this check itself, it MUST convey the
-   computed exporter value to the Relying Party (RP) so that the RP can
-   perform the comparison as part of attestation validation.
+   computed exporter value to the verifier so that it can perform the
+   comparison as part of attestation validation.
 
 3.4.  Ensuring Compatibility with X.509 Certificate Validation
 
