@@ -179,7 +179,7 @@ invocation uses:
 
 The attester MUST include the exporter value exactly as produced in the attestation evidence.
 
-To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. The TLS endpoint can verify the exporter binding directly; if it does, it MUST reject the attestation evidence when the values do not match. If the TLS endpoint does not perform this check itself, it MUST convey the computed exporter value to the Relying Party (RP) so that the RP can perform the comparison as part of attestation validation.
+To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. The TLS endpoint can verify the exporter binding directly; if it does, it MUST reject the attestation evidence when the values do not match. If the TLS endpoint does not perform this check itself, it MUST convey the computed exporter value to the verifier so that it can perform the comparison as part of attestation validation.
 
 ## Ensuring Compatibility with X.509 Certificate Validation
 
