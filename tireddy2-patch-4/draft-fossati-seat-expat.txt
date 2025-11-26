@@ -5,7 +5,7 @@
 Secure Evidence and Attestation Transport (SEAT) Working GroupM. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 29 May 2026                                              Linaro
+Expires: 30 May 2026                                              Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 29 May 2026                                              Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                        25 November 2025
+                                                        26 November 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 May 2026.
+   This Internet-Draft will expire on 30 May 2026.
 
 Copyright Notice
 
@@ -293,19 +293,14 @@ Table of Contents
    The attester MUST include the exporter value exactly as produced in
    the attestation evidence.
 
-   To verify that the attestation evidence is bound to the active TLS
-   session, the relying party recomputes the exporter value using the
-   same exporter invocation described for the attester.  The RP compares
-   the recomputed value with the value included in the attestation
-   evidence; if they differ, the attestation evidence MUST be rejected.
-
    To allow verification, the TLS endpoint that receives the attestation
    evidence MUST compute the exporter value using the same exporter
-   invocation described for the attester.  This value is then provided
-   to the Relying Party (RP) as part of the attestation validation.  The
-   RP compares the value supplied by the TLS endpoint with the value
-   included in the attestation evidence; if they differ, the attestation
-   evidence MUST be rejected.
+   invocation described for the attester.  The TLS endpoint can verify
+   the exporter binding directly; if it does, it MUST reject the
+   attestation evidence when the values do not match.  If the TLS
+   endpoint does not perform this check itself, it MUST convey the
+   computed exporter value to the Relying Party (RP) so that the RP can
+   perform the comparison as part of attestation validation.
 
 3.4.  Ensuring Compatibility with X.509 Certificate Validation
 
