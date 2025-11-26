@@ -179,12 +179,7 @@ invocation uses:
 
 The attester MUST include the exporter value exactly as produced in the attestation evidence.
 
-To verify that the attestation evidence is bound to the active TLS session, the relying party recomputes the
-exporter value using the same exporter invocation described for the attester. The RP compares the recomputed
-value with the value included in the attestation evidence; if they differ, the attestation evidence MUST be
-rejected.
-
-To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. This value is then provided to the Relying Party (RP) as part of the attestation validation. The RP compares the value supplied by the TLS endpoint with the value included in the attestation evidence; if they differ, the attestation evidence MUST be rejected.
+To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. The TLS endpoint can verify the exporter binding directly; if it does, it MUST reject the attestation evidence when the values do not match. If the TLS endpoint does not perform this check itself, it MUST convey the computed exporter value to the Relying Party (RP) so that the RP can perform the comparison as part of attestation validation.
 
 ## Ensuring Compatibility with X.509 Certificate Validation
 
