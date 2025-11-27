@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-25T01:21:32.929977+00:00",
+  "timestamp": "2025-11-27T01:20:40.150938+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -3189,6 +3189,337 @@
           "createdAt": "2025-10-24T08:59:03Z",
           "updatedAt": "2025-10-24T08:59:03Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "id": "PR_kwDON6zrys61XAzS",
+      "title": "Cryptographic Binding of the Evidence to the TLS Session",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/43",
+      "state": "OPEN",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address https://github.com/tls-attestation/exported-attestation/issues/41",
+      "createdAt": "2025-11-25T08:06:12Z",
+      "updatedAt": "2025-11-26T16:20:01Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "b40fcd27201c0efbb757fa899d5066723027adef",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "tireddy2-patch-4",
+      "headRefOid": "4ecbaccde1f695fbb6b4519a0e02e3dc71c7dc58",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7Q4LYc",
+          "commit": {
+            "abbreviatedOid": "e2cd854"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T10:27:38Z",
+          "updatedAt": "2025-11-25T10:32:04Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "I think this needs some expanding:\r\n```suggestion\r\nThe attester MUST include the exporter value in the attestation evidence, either exactly as produced or hash-linked along with other claims if needed.\r\n```\r\n... but given this ambiguity, I wonder if we should explicitly define how that hash-linking must look.",
+              "createdAt": "2025-11-25T10:27:38Z",
+              "updatedAt": "2025-11-25T10:32:04Z"
+            },
+            {
+              "originalPosition": 18,
+              "body": "hmm, not sure how this should work. RP ideally doesn't dig into attestation evidence, and if the binder and nonce (which might be coming from the Verifier) have to be hash-linked, then the Verifier needs the binder to check that the nonce is correct. Will mull it over, I think we had some text describing something similar in the intra- draft.",
+              "createdAt": "2025-11-25T10:31:49Z",
+              "updatedAt": "2025-11-25T10:32:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Q7Jqp",
+          "commit": {
+            "abbreviatedOid": "e2cd854"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T13:48:14Z",
+          "updatedAt": "2025-11-25T13:48:14Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "I fixed text as follows:\r\nTo allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. This value is then provided to the Relying Party as part of the attestation validation. The RP compares the value supplied by the TLS endpoint with the value included in the attestation evidence; if they differ, the attestation evidence MUST be rejected.",
+              "createdAt": "2025-11-25T13:48:14Z",
+              "updatedAt": "2025-11-25T13:48:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Q7Lco",
+          "commit": {
+            "abbreviatedOid": "e2cd854"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T13:49:59Z",
+          "updatedAt": "2025-11-25T13:49:59Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "I did not specify hashing of the exporter value because it would require defining a hash algorithm and add unnecessary complexity. Using the exporter value exactly as produced keeps the mechanism simple and ensures straightforward verification.",
+              "createdAt": "2025-11-25T13:49:59Z",
+              "updatedAt": "2025-11-25T13:49:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Q8PuC",
+          "commit": {
+            "abbreviatedOid": "e2cd854"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T14:50:42Z",
+          "updatedAt": "2025-11-25T14:50:43Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Agree with that when it's possible, but lots of platforms and attestation interfaces only provide you with one input value that gets baked into the attestation evidence (e.g., TPM2.0 Quotes, Arm CCA realm tokens, Intel TDX too IIRC), which means if you have both this binder and a nonce from the verifier for freshness you can't fulfil both.\r\n\r\nThe hash algo shouldn't be a problem - we can just take whatever was negotiated at TLS handshake level.",
+              "createdAt": "2025-11-25T14:50:42Z",
+              "updatedAt": "2025-11-25T14:51:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7Q8sOq",
+          "commit": {
+            "abbreviatedOid": "e2cd854"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T15:13:12Z",
+          "updatedAt": "2025-11-25T15:13:13Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "We can use the exporter value as the sole freshness and binding input. This avoids requiring both a binder and a separate nonce. The exporter value is already derived using the hash function, see RFC 8446, Section 7.5, so hashing it again does not provide any additional benefit and adds complexity.",
+              "createdAt": "2025-11-25T15:13:12Z",
+              "updatedAt": "2025-11-25T15:13:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RPPTV",
+          "commit": {
+            "abbreviatedOid": "0abcf43"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-11-26T11:18:18Z",
+          "updatedAt": "2025-11-26T11:18:29Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "> If the TLS endpoint does not perform this check itself, it MUST convey the computed exporter value to the Relying Party (RP) so that the RP can perform the comparison as part of attestation validation.\n\nConfused: isn't the TLS endpoint here the same entity as the RP? Also, I'm not sure it's secure to convey the exporter (to a Verifier) as-is, you probably want one more round of hashing.",
+              "createdAt": "2025-11-26T11:18:18Z",
+              "updatedAt": "2025-11-26T11:18:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RPpHn",
+          "commit": {
+            "abbreviatedOid": "0abcf43"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T11:48:22Z",
+          "updatedAt": "2025-11-26T11:48:22Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "I meant the verifier which validates the attestation evidence, replaced RP with \"verifier\". The exporter value is hashed based on the inputs \r\na) label which is set to \"Attestation Binding\" \r\nb) context is set to certificate_request_context \r\nc) exporter_master_secret\r\nBecause this value is the output of a one-way hash function, it cannot be used to recover the exporter_master_secret.",
+              "createdAt": "2025-11-26T11:48:22Z",
+              "updatedAt": "2025-11-26T11:48:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RP27y",
+          "commit": {
+            "abbreviatedOid": "e2cd854"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T12:02:01Z",
+          "updatedAt": "2025-11-26T12:02:01Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "We can use the exporter value as the sole freshness and binding input. This avoids requiring both a binder and a nonce and ensures the mechanism works across platforms. The exporter value is derived using a hash function, see https://datatracker.ietf.org/doc/html/rfc8446#section-7.5) for details. I don't see a need to do hashing of the exporter value again.\r\n",
+              "createdAt": "2025-11-26T12:02:01Z",
+              "updatedAt": "2025-11-26T12:02:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RRMJs",
+          "commit": {
+            "abbreviatedOid": "4ecbacc"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "needs some clarity on key name and `rdata`",
+          "createdAt": "2025-11-26T13:21:16Z",
+          "updatedAt": "2025-11-26T13:37:27Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "There is no key with the name `exporter_master_secret` in TLS specs. Please be precise on that from RFC8446bis.",
+              "createdAt": "2025-11-26T13:21:16Z",
+              "updatedAt": "2025-11-26T13:37:27Z"
+            },
+            {
+              "originalPosition": 10,
+              "body": "Prefer a shorter label \"ra binder\"",
+              "createdAt": "2025-11-26T13:22:48Z",
+              "updatedAt": "2025-11-26T13:37:27Z"
+            },
+            {
+              "originalPosition": 13,
+              "body": "Userdata such as (`rdata` field of TEEs like SGX, TDX, and others) seems to be missing in this proposal. ",
+              "createdAt": "2025-11-26T13:30:53Z",
+              "updatedAt": "2025-11-26T13:37:27Z"
+            },
+            {
+              "originalPosition": 15,
+              "body": "Can be phrased better. Will think about some text.",
+              "createdAt": "2025-11-26T13:33:17Z",
+              "updatedAt": "2025-11-26T13:37:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RRjKK",
+          "commit": {
+            "abbreviatedOid": "4ecbacc"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T13:43:00Z",
+          "updatedAt": "2025-11-26T13:43:01Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "Particularly `The TLS endpoint can verify the exporter binding directly` is not good statement. Only after reading the whole text, the reader sees that the `can` is because it can offload it to a verifier.",
+              "createdAt": "2025-11-26T13:43:00Z",
+              "updatedAt": "2025-11-26T13:43:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RSfkC",
+          "commit": {
+            "abbreviatedOid": "4ecbacc"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T14:39:14Z",
+          "updatedAt": "2025-11-26T14:39:14Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Our draft refers to RFC8446, it needs to be updated to refer to RFC8446bis in a separate PR. ",
+              "createdAt": "2025-11-26T14:39:14Z",
+              "updatedAt": "2025-11-26T14:39:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RSldw",
+          "commit": {
+            "abbreviatedOid": "4ecbacc"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T14:44:36Z",
+          "updatedAt": "2025-11-26T14:44:36Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "TLS 1.3 allows a maximum size of 255 for label.",
+              "createdAt": "2025-11-26T14:44:36Z",
+              "updatedAt": "2025-11-26T14:44:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RSwj_",
+          "commit": {
+            "abbreviatedOid": "4ecbacc"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T14:54:41Z",
+          "updatedAt": "2025-11-26T14:54:41Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "Sure, go ahead and propose text. However, \"rdata\" is not relevant for the cryptographic binding defined in the draft. The binding mechanism operates over the attestation evidence as an opaque blob, regardless of whether a specific TEE includes fields like rdata.",
+              "createdAt": "2025-11-26T14:54:41Z",
+              "updatedAt": "2025-11-26T14:54:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RUPDB",
+          "commit": {
+            "abbreviatedOid": "0abcf43"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T16:20:01Z",
+          "updatedAt": "2025-11-26T16:20:01Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "I'm surprised. While RFC 9261 does not define its own exporter, I thought we would be using something that's readily available at the application layer (namely, the Authenticator) rather than defining our own exporter, which would require a change to the TLS stack.",
+              "createdAt": "2025-11-26T16:20:01Z",
+              "updatedAt": "2025-11-26T16:20:01Z"
+            }
+          ]
         }
       ]
     }
