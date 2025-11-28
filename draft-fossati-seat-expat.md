@@ -58,7 +58,7 @@ normative:
   RFC9334:
   RFC2119:
   RFC8174:
-  RFC8446: tls13
+  I-D.ietf-tls-rfc8446bis: tls13
   RFC9261:
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-tlsflags: tls-flags
@@ -156,28 +156,25 @@ Endpoints that wish to receive attestation credentials using Exported Authentica
 The presence of this empty extension indicates that the requester understands this specification and is willing to process an attestation credential in the peer's Certificate message.
 
 An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the `cmw_attestation` extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. As specified in {{Section 9.3 of
-RFC8446}}, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or
+tls13}}, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or
 ClientCertificateRequest MUST ignore it and continue processing the message as if the extension were absent.
 
 ## Usage in Exported Authenticator-based Post-Handshake Authentication
 
 The `cmw_attestation` extension is designed to be used exclusively in Exported Authenticator-based post-handshake authentication as defined in {{RFC9261}}. It allows attestation credentials to be transmitted in the Authenticator's Certificate message only in response to an Authenticator Request. This ensures that attestation credentials are provided on demand rather than being included in the initial TLS handshake.
 
-To maintain a cryptographic binding between the Evidence and the authentication request, the `cmw_attestation` extension MUST be associated with the `certificate_request_context` of the corresponding CertificateRequest or ClientCertificateRequest message (from the Server or Client, respectively). This binding ensures that:
-
-- The Evidence is specific to the authentication event and cannot be replayed across different TLS sessions.
-- The Evidence remains tied to the cryptographic context of the TLS session.
+To maintain a cryptographic binding between the Evidence and the authentication request, the `cmw_attestation` extension MUST be associated with the `certificate_request_context` of the corresponding CertificateRequest or ClientCertificateRequest message (from the Server or Client, respectively). This association ensures that the Evidence is specific to the authentication event.
 
 ## Cryptographic Binding of the Evidence to the TLS Session
 
 The attester MUST bind the attestation evidence to the active TLS session. To do so, the attester derives a
-binding value using the TLS exporter and the exporter_master_secret of the current TLS connection. The exporter
+binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
 invocation uses:
 
 * the label "Attestation Binding", and
 * the certificate_request_context from the CertificateRequest message as the exporter context.
 
-The attester MUST include the exporter value exactly as produced in the attestation evidence.
+The attester MUST include the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
 
 To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. The TLS endpoint can verify the exporter binding directly; if it does, it MUST reject the attestation evidence when the values do not match. If the TLS endpoint does not perform this check itself, it MUST convey the computed exporter value to the verifier so that it can perform the comparison as part of attestation validation.
 
@@ -220,7 +217,7 @@ Upon receipt of a Certificate message containing the `cmw_attestation` extension
 
 - Background Check Model:
   - Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.
-  - Ensure Certificate Binding and Freshness: The Evidence must be explicitly associated with the `certificate_request_context` in the authenticator request to ensure relevance, freshness, and protection against replay.
+  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS session by verifying that the exporter value in the Evidence matches the exporter value computed using the label "Attestation Binding" and the certificate_request_context as the exporter context. This verification ensures correct session binding, provides freshness, and prevents replay.
   - Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
 
 - Passport Model:
@@ -297,12 +294,8 @@ To enable attestation workflows, implementations of the Exported Authenticator A
 1. Authenticator Generation
    - The API MUST support the inclusion of attestation credentials within the Certificate message provided as input.
 
-2. Context Retrieval
-   - The certificate_request_context MUST be provided in all cases to ensure proper validation of Evidence.
-   - The receiving endpoint MUST use the "get context" API to retrieve the `certificate_request_context` associated with the exported authenticator as attestation-based authentication requires strict enforcement of the request context. This ensures that the freshness of Evidence can be verified.
-
-3. Authenticator Validation
-   - The API MUST verify that the Evidence within the Certificate message is cryptographically valid and bound to the certificate_request_context.
+2. Authenticator Validation
+   - The API MUST support verification that the Evidence in the Certificate message is cryptographically valid and correctly bound to the TLS session and the associated certificate_request_context.
 
 
 # Security Considerations
@@ -337,9 +330,9 @@ session has already completed remote attestation before the session can be used 
 
 ## Evidence Freshness
 
-The Evidence carried in cmw_attestation does not require an additional freshness mechanism, such as a nonce {{RA-TLS}} or timestamp, since freshness is inherently provided by the certificate_request_context in the authenticator request.
+The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in the previous section. Because this value is bound to the active TLS session, the Evidence is guaranteed to be fresh for the session in which it is generated.
 
-The evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer remains in a secure state, remote attestation may be re-initiated periodically. In the current protocol, this can be achieved by initiating a new Exported Authenticator-based post-handshake authentication exchange, which will generate a new certificate_request_context to maintain freshness.
+The Evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator–based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.
 
 # Privacy Considerations
 
