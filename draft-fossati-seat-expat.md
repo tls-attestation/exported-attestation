@@ -156,7 +156,7 @@ Endpoints that wish to receive attestation credentials using Exported Authentica
 The presence of this empty extension indicates that the requester understands this specification and is willing to process an attestation credential in the peer's Certificate message.
 
 An endpoint that supports this extension and receives a request containing it MAY include the cmw_attestation extension in its Certificate message, populated with attestation data. If the `cmw_attestation` extension appears in a Certificate message without it having been previously offered in the corresponding request, the receiver MUST abort the authenticator verification with an "unsupported_extension" alert. As specified in {{Section 9.3 of
-tls13}}, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or
+ -tls13}}, endpoints that do not recognize the cmw_attestation extension in a CertificateRequest or
 ClientCertificateRequest MUST ignore it and continue processing the message as if the extension were absent.
 
 ## Usage in Exported Authenticator-based Post-Handshake Authentication
@@ -165,7 +165,7 @@ The `cmw_attestation` extension is designed to be used exclusively in Exported A
 
 To maintain a cryptographic binding between the Evidence and the authentication request, the `cmw_attestation` extension MUST be associated with the `certificate_request_context` of the corresponding CertificateRequest or ClientCertificateRequest message (from the Server or Client, respectively). This association ensures that the Evidence is specific to the authentication event.
 
-## Cryptographic Binding of the Evidence to the TLS Session
+## Cryptographic Binding of the Evidence to the TLS Session {#binding}
 
 The attester MUST bind the attestation evidence to the active TLS session. To do so, the attester derives a
 binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
@@ -330,7 +330,7 @@ session has already completed remote attestation before the session can be used 
 
 ## Evidence Freshness
 
-The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in the previous section. Because this value is bound to the active TLS session, the Evidence is guaranteed to be fresh for the session in which it is generated.
+The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in {{binding}}. Because this value is bound to the active TLS session, the Evidence is guaranteed to be fresh for the session in which it is generated.
 
 The Evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator–based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.
 
