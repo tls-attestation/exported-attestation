@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-27T01:20:40.150938+00:00",
+  "timestamp": "2025-11-30T01:39:31.980094+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -3204,13 +3204,13 @@
       "labels": [],
       "body": "Address https://github.com/tls-attestation/exported-attestation/issues/41",
       "createdAt": "2025-11-25T08:06:12Z",
-      "updatedAt": "2025-11-26T16:20:01Z",
+      "updatedAt": "2025-11-29T19:20:27Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "b40fcd27201c0efbb757fa899d5066723027adef",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-4",
-      "headRefOid": "4ecbaccde1f695fbb6b4519a0e02e3dc71c7dc58",
+      "headRefOid": "e2914a30df0f124f05b981b0026704b5b3fd10d8",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -3495,9 +3495,9 @@
           "comments": [
             {
               "originalPosition": 15,
-              "body": "Sure, go ahead and propose text. However, \"rdata\" is not relevant for the cryptographic binding defined in the draft. The binding mechanism operates over the attestation evidence as an opaque blob, regardless of whether a specific TEE includes fields like rdata.",
+              "body": "Sure, go ahead and propose text. ",
               "createdAt": "2025-11-26T14:54:41Z",
-              "updatedAt": "2025-11-26T14:54:42Z"
+              "updatedAt": "2025-11-27T05:17:19Z"
             }
           ]
         },
@@ -3520,8 +3520,147 @@
               "updatedAt": "2025-11-26T16:20:01Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RbPxt",
+          "commit": {
+            "abbreviatedOid": "e2cd854"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-27T05:17:42Z",
+          "updatedAt": "2025-11-27T05:17:42Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "\"rdata\" is not relevant for the cryptographic binding defined in the draft. The binding mechanism operates over the attestation evidence as an opaque blob, regardless of whether a specific TEE includes fields like rdata.",
+              "createdAt": "2025-11-27T05:17:42Z",
+              "updatedAt": "2025-11-27T05:17:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RbVCi",
+          "commit": {
+            "abbreviatedOid": "0abcf43"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-27T05:30:50Z",
+          "updatedAt": "2025-11-27T05:30:50Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "RFC 9261 also invokes the existing TLS exporter API using its own label and context to derive the handshake context. We are simply using the standard exporter interface with a different label, exactly the same approach that RFC 9261 follows.",
+              "createdAt": "2025-11-27T05:30:50Z",
+              "updatedAt": "2025-11-27T05:30:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RgT0C",
+          "commit": {
+            "abbreviatedOid": "4ecbacc"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-27T12:01:05Z",
+          "updatedAt": "2025-11-27T12:01:05Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "RFC8446bis has agreement and is in final stages. So preferably move it to RFC8446bis within this. ",
+              "createdAt": "2025-11-27T12:01:05Z",
+              "updatedAt": "2025-11-27T12:01:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RrGt7",
+          "commit": {
+            "abbreviatedOid": "4ecbacc"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-28T07:16:49Z",
+          "updatedAt": "2025-11-28T07:16:49Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Done.",
+              "createdAt": "2025-11-28T07:16:49Z",
+              "updatedAt": "2025-11-28T07:16:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7R2yHQ",
+          "commit": {
+            "abbreviatedOid": "e2914a3"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-29T19:18:15Z",
+          "updatedAt": "2025-11-29T19:18:15Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "```suggestion\r\nTo allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. The TLS endpoint MUST either verify the exporter binding directly or offload it to Verifier. For the former, it MUST reject the attestation evidence when the values do not match. For the latter, it MUST convey the computed exporter value to the verifier so that it can perform the comparison as part of attestation validation.\r\n```\r\n\r\nwhat about this?",
+              "createdAt": "2025-11-29T19:18:15Z",
+              "updatedAt": "2025-11-29T19:18:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7R2yQZ",
+          "commit": {
+            "abbreviatedOid": "e2914a3"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Small rephrase; rest we can discuss on Monday.",
+          "createdAt": "2025-11-29T19:20:27Z",
+          "updatedAt": "2025-11-29T19:20:27Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 44,
+      "id": "PR_kwDON6zrys62JCDx",
+      "title": "Rename and some cleanup",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/44",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- File rename\r\n- Fixed a couple of warnings",
+      "createdAt": "2025-11-29T19:10:11Z",
+      "updatedAt": "2025-11-29T19:10:13Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "b40fcd27201c0efbb757fa899d5066723027adef",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "author-order",
+      "headRefOid": "06c55a7450634df332534084f0666c504ce0777d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
