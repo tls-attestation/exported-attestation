@@ -1345,7 +1345,7 @@ ClientCertificateRequest MUST ignore it and continue processing the message as i
         <h3 id="name-cryptographic-binding-of-th">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-cryptographic-binding-of-th" class="section-name selfRef">Cryptographic Binding of the Evidence to the TLS Session</a>
         </h3>
-<p id="section-3.3-1">The attester MUST bind the attestation evidence to the active TLS session. To do so, the attester derives a
+<p id="section-3.3-1">The attester binds the attestation evidence to the active TLS session. To do so, the attester derives a
 binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
 invocation uses:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1353,11 +1353,24 @@ invocation uses:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
             <p id="section-3.3-2.1.1">the label "Attestation Binding", and<a href="#section-3.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-2.2">
-            <p id="section-3.3-2.2.1">the certificate_request_context from the CertificateRequest message as the exporter context.<a href="#section-3.3-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-2.2.1">the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-rfc8446bis-14#section-7.5" class="relref">Section 7.5</a> of [<a href="#I-D.ietf-tls-rfc8446bis" class="cite xref">I-D.ietf-tls-rfc8446bis</a>]</span>), and<a href="#section-3.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-2.3">
+            <p id="section-3.3-2.3.1">a key_length set to 256-bit.<a href="#section-3.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.3-3">The attester MUST include the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
-<p id="section-3.3-4">To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. The TLS endpoint MUST either verify the exporter binding directly or offload it to Verifier. For the former, it MUST reject the attestation evidence when the values do not match. For the latter, it MUST convey the computed exporter value to the verifier so that it can perform the comparison as part of attestation validation.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3-3">
+<pre>
+   TLS-Exporter("Attestation Binding", certificate_request_context, 32) =
+       HKDF-Expand-Label(Derive-Secret(Secret, label, ""),
+                         "exporter", Hash(context_value), key_length)
+</pre><a href="#section-3.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3-4">The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
+itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
+the Verifier so that the comparison can be carried out during attestation validation.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ensuring-compatibility-with-x509-certificate-validation">
