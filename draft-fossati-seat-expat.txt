@@ -2,7 +2,7 @@
 
 
 
-SEAT Working Group                                          M. U. Sardar
+Secure Evidence and Attestation Transport (SEAT) Working GroupM. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
 Expires: 4 June 2026                                              Linaro
@@ -18,7 +18,7 @@ Expires: 4 June 2026                                              Linaro
 
 
             Remote Attestation with Exported Authenticators
-                     draft-sardar-seat-expat-latest
+                    draft-fossati-seat-expat-latest
 
 Abstract
 
@@ -40,7 +40,7 @@ About This Document
    The latest revision of this draft can be found at https://tls-
    attestation.github.io/exported-attestation/draft-fossati-seat-
    expat.html.  Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-sardar-seat-expat/.
+   https://datatracker.ietf.org/doc/draft-fossati-seat-expat/.
 
    Discussion of this document takes place on the SEAT Working Group
    mailing list (mailto:seat@ietf.org), which is archived at
@@ -731,6 +731,11 @@ Table of Contents
               Wallace, "The Entity Attestation Token (EAT)", RFC 9711,
               DOI 10.17487/RFC9711, April 2025,
               <https://www.rfc-editor.org/rfc/rfc9711>.
+
+   [TLS-Ext-Registry]
+              IANA, "Transport Layer Security (TLS) Extensions",
+              November 2023, <https://www.iana.org/assignments/tls-
+              extensiontype-values>.
 
 Acknowledgements
 
