@@ -5,7 +5,7 @@
 Secure Evidence and Attestation Transport (SEAT) Working GroupM. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 1 June 2026                                              Linaro
+Expires: 4 June 2026                                              Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 1 June 2026                                              Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                        28 November 2025
+                                                         1 December 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 June 2026.
+   This Internet-Draft will expire on 4 June 2026.
 
 Copyright Notice
 
@@ -291,12 +291,12 @@ Table of Contents
 
    To allow verification, the TLS endpoint that receives the attestation
    evidence MUST compute the exporter value using the same exporter
-   invocation described for the attester.  The TLS endpoint can verify
-   the exporter binding directly; if it does, it MUST reject the
-   attestation evidence when the values do not match.  If the TLS
-   endpoint does not perform this check itself, it MUST convey the
-   computed exporter value to the verifier so that it can perform the
-   comparison as part of attestation validation.
+   invocation described for the attester.  The TLS endpoint MUST either
+   verify the exporter binding directly or offload it to Verifier.  For
+   the former, it MUST reject the attestation evidence when the values
+   do not match.  For the latter, it MUST convey the computed exporter
+   value to the verifier so that it can perform the comparison as part
+   of attestation validation.
 
 3.4.  Ensuring Compatibility with X.509 Certificate Validation
 
