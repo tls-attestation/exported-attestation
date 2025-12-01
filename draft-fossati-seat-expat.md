@@ -167,16 +167,26 @@ To maintain a cryptographic binding between the Evidence and the authentication 
 
 ## Cryptographic Binding of the Evidence to the TLS Session {#binding}
 
-The attester MUST bind the attestation evidence to the active TLS session. To do so, the attester derives a
+The attester binds the attestation evidence to the active TLS session. To do so, the attester derives a
 binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
 invocation uses:
 
 * the label "Attestation Binding", and
-* the certificate_request_context from the CertificateRequest message as the exporter context.
+* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in   
+  {{Section 7.5 of -tls13}}), and
+* a key_length set to 256-bit.
 
-The attester MUST include the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
+~~~
+   TLS-Exporter("Attestation Binding", certificate_request_context, 32) =
+       HKDF-Expand-Label(Derive-Secret(Secret, label, ""),
+                         "exporter", Hash(context_value), key_length)
+~~~
 
-To allow verification, the TLS endpoint that receives the attestation evidence MUST compute the exporter value using the same exporter invocation described for the attester. The TLS endpoint MUST either verify the exporter binding directly or offload it to Verifier. For the former, it MUST reject the attestation evidence when the values do not match. For the latter, it MUST convey the computed exporter value to the verifier so that it can perform the comparison as part of attestation validation.
+The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
+ 
+To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
+itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
+the Verifier so that the comparison can be carried out during attestation validation.
 
 ## Ensuring Compatibility with X.509 Certificate Validation
 
