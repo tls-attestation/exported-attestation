@@ -3,14 +3,14 @@ title: "Remote Attestation with Exported Authenticators"
 abbrev: "Application Layer Attestation"
 category: std
 
-docname: draft-sardar-seat-expat-latest
+docname: draft-fossati-seat-expat-latest
 submissiontype: IETF
 number:
 date:
 consensus: true
 v: 3
 area: Security
-workgroup: SEAT Working Group
+workgroup: Secure Evidence and Attestation Transport (SEAT) Working Group
 keyword:
  - Attestation
  - TLS
@@ -65,6 +65,12 @@ normative:
 
 informative:
   I-D.ietf-lamps-csr-attestation:
+  TLS-Ext-Registry:
+    author:
+      org: IANA
+    title: Transport Layer Security (TLS) Extensions
+    target: https://www.iana.org/assignments/tls-extensiontype-values
+    date: November 2023
   RA-TLS:
     title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
     date: 13 November 2024,
