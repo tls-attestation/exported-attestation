@@ -172,7 +172,7 @@ binding value using the TLS exporter and the exporter_secret of the current TLS 
 invocation uses:
 
 * the label "Attestation Binding", and
-* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in   
+* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in
   {{Section 7.5 of -tls13}}), and
 * a key_length set to 256-bit.
 
@@ -183,7 +183,7 @@ invocation uses:
 ~~~
 
 The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
- 
+
 To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
 itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
 the Verifier so that the comparison can be carried out during attestation validation.
