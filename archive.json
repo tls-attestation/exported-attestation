@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-30T01:39:31.980094+00:00",
+  "timestamp": "2025-12-02T01:23:22.464938+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -664,6 +664,22 @@
       "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/HE9QcPGrTArC0cKPcVw7tFnkh5U/)\nAdd a pointer to the paper in the Appendix to reason why we are standardizing post-handshake rather than intra-handshake",
       "createdAt": "2025-11-24T17:43:30Z",
       "updatedAt": "2025-11-24T17:43:30Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 45,
+      "id": "I_kwDON6zrys7bOOyO",
+      "title": "Yuning's questions",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/45",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/IuTQMmtOZw5McBYYuLhOb3sNHhY/)\n\n> I\u2019ve been reading both this draft [1] and the use case draft [2], and I have a few technical questions about how you envision some of the use cases to be realized using procedures mentioned in [1]:\n> \n> - In Section 3.2 of the use-cases draft (\u201cHigh-Assurance Command Execution\u201d), the requirement is that the remote system must provide fresh attestation Evidence before a critical command is dispatched. Do you see this being realized purely by the application issuing an Exported Authenticator request on the existing TLS connection just before such commands, or do you expect any more fine-grained binding, e.g., including an operation/command identifier in certificate_request_context so that the attestation can be tied to a specific operation rather than only to the connection?\n> \n>  - Across the three use cases in [2], where do you imagine the logic that decides when to trigger an EA-based attestation exchange typically residing?\n> \n>     - inside the TLS stack or EA API implementation,\n>     - in an application-layer middleware (e.g., a policy engine around the TLS exporter API), or\n>     - in a higher-level orchestrator (e.g., a workload / network controller that coordinates several TLS connections)?",
+      "createdAt": "2025-11-30T15:46:00Z",
+      "updatedAt": "2025-11-30T15:46:00Z",
       "closedAt": null,
       "comments": []
     }
@@ -3204,13 +3220,13 @@
       "labels": [],
       "body": "Address https://github.com/tls-attestation/exported-attestation/issues/41",
       "createdAt": "2025-11-25T08:06:12Z",
-      "updatedAt": "2025-11-29T19:20:27Z",
+      "updatedAt": "2025-12-01T17:00:47Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
-      "baseRefOid": "b40fcd27201c0efbb757fa899d5066723027adef",
+      "baseRefOid": "c773dcfea580cc55452294df28a95878030a3d2a",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-4",
-      "headRefOid": "e2914a30df0f124f05b981b0026704b5b3fd10d8",
+      "headRefOid": "335285c4cc1e62729f930e01f1127c86ad9d19ef",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -3633,6 +3649,99 @@
           "createdAt": "2025-11-29T19:20:27Z",
           "updatedAt": "2025-11-29T19:20:27Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7SCfQU",
+          "commit": {
+            "abbreviatedOid": "220bfc7"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-01T08:54:16Z",
+          "updatedAt": "2025-12-01T08:54:16Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "```suggestion\r\n* the certificate_request_context from the CertificateRequest message as the context value (`context_value` as defined in Section 7.5 of RFC8446bis).\r\n```\r\n\r\nBased on meeting:  (Attendees: Ionut, Thomas, Tiru, Yuning, Carsten, Usama, Yaron, Meiling Chen)\r\n\r\nDefine key_length: Ionut may share some thoughts here. \r\n\r\nYaron's proposal: Maybe formal is better, something like:\r\n   `TLS-Exporter(\"Attestation Binding\", certificate_request_context, key_length)`\r\nSee also https://datatracker.ietf.org/doc/html/draft-fossati-tls-attestation-08#section-6.2.1\r\n\r\nYaron: MUST needs to be changed. \r\nTiru will look into MUST terminology. ",
+              "createdAt": "2025-12-01T08:54:16Z",
+              "updatedAt": "2025-12-01T10:33:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7SD4fH",
+          "commit": {
+            "abbreviatedOid": "220bfc7"
+          },
+          "author": "ionut-arm",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-01T10:17:10Z",
+          "updatedAt": "2025-12-01T10:17:11Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "Regarding the length, the place I was reading about it recently was in the epoch markers I-D, see [this](https://datatracker.ietf.org/doc/html/draft-ietf-rats-epoch-markers-02#name-nonce-requirements) section. Only gives upper and lower bound, not sure I have much of a recommendation beyond that.",
+              "createdAt": "2025-12-01T10:17:10Z",
+              "updatedAt": "2025-12-01T10:17:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7RuTeh",
+          "commit": {
+            "abbreviatedOid": "220bfc7"
+          },
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-11-28T11:16:44Z",
+          "updatedAt": "2025-12-01T12:00:13Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "Formally, I think this depends on exactly which hash function you're using in the TEE. Practically, you can't go wrong with 32 bytes.",
+              "createdAt": "2025-12-01T11:59:20Z",
+              "updatedAt": "2025-12-01T12:00:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7SGpQ7",
+          "commit": {
+            "abbreviatedOid": "220bfc7"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-01T13:19:22Z",
+          "updatedAt": "2025-12-01T13:19:22Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "Agreed, updated draft to use 32 bytes. ",
+              "createdAt": "2025-12-01T13:19:22Z",
+              "updatedAt": "2025-12-01T13:19:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7SK40n",
+          "commit": {
+            "abbreviatedOid": "335285c"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM as discussed in meeting.",
+          "createdAt": "2025-12-01T17:00:47Z",
+          "updatedAt": "2025-12-01T17:00:47Z",
+          "comments": []
         }
       ]
     },
@@ -3641,25 +3750,105 @@
       "id": "PR_kwDON6zrys62JCDx",
       "title": "Rename and some cleanup",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/44",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- File rename\r\n- Fixed a couple of warnings",
       "createdAt": "2025-11-29T19:10:11Z",
-      "updatedAt": "2025-11-29T19:10:13Z",
+      "updatedAt": "2025-12-01T16:37:15Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "b40fcd27201c0efbb757fa899d5066723027adef",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "author-order",
       "headRefOid": "06c55a7450634df332534084f0666c504ce0777d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2025-12-01T13:09:01Z",
+      "mergedAt": "2025-12-01T13:09:01Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "c773dcfea580cc55452294df28a95878030a3d2a"
+      },
+      "comments": [
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Has this been discussed?  If not, I suggest to revert.  If it\u2019s been discussed and I wasn\u2019t present, I think this is only good for creating confusion.",
+          "createdAt": "2025-12-01T14:25:10Z",
+          "updatedAt": "2025-12-01T14:25:10Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Has this been discussed? If not, I suggest to revert. \r\n\r\nI thought it implies automatically from #34, no? Anyway, reverted and merged in #46.\r\n\r\n> If it\u2019s been discussed and I wasn\u2019t present, I think this is only good for creating confusion.\r\n\r\nI believe what's creating more confusion is which draft is vulnerable, and which one is not. But if you are fine with that compared to small history that this document has, I am fine with it.",
+          "createdAt": "2025-12-01T16:37:15Z",
+          "updatedAt": "2025-12-01T16:37:15Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7R_1Ii",
+          "commit": {
+            "abbreviatedOid": "06c55a7"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-12-01T05:15:30Z",
+          "updatedAt": "2025-12-01T05:15:30Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7SJ4XM",
+          "commit": {
+            "abbreviatedOid": "06c55a7"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I don\u2019t approve it, and not because it\u2019s my name or someone else's, but because there is no reason to do that and it will only create confusion (with searches, tracking doc history, etc.)",
+          "createdAt": "2025-12-01T16:06:05Z",
+          "updatedAt": "2025-12-01T16:06:05Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "PR_kwDON6zrys62Y-EW",
+      "title": "Revert \"Rename and some cleanup\"",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/46",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-01T16:28:16Z",
+      "updatedAt": "2025-12-01T16:33:59Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "c773dcfea580cc55452294df28a95878030a3d2a",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "revert-44-author-order",
+      "headRefOid": "cffee8c9d7831d126aa435ad051e554004fb0b4e",
+      "closedAt": "2025-12-01T16:33:59Z",
+      "mergedAt": "2025-12-01T16:33:59Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "ea572111e5de0bd3dcb8906c40a8fbc857a4cd0b"
+      },
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Self-merging based on [this](https://github.com/tls-attestation/exported-attestation/pull/44#pullrequestreview-3525805516)",
+          "createdAt": "2025-12-01T16:33:28Z",
+          "updatedAt": "2025-12-01T16:33:28Z"
+        }
+      ],
       "reviews": []
     }
   ]
