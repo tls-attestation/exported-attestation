@@ -2,10 +2,10 @@
 
 
 
-Secure Evidence and Attestation Transport (SEAT) Working GroupM. U. Sardar
+SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 4 June 2026                                              Linaro
+Expires: 5 June 2026                                              Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 4 June 2026                                              Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         1 December 2025
+                                                         2 December 2025
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 June 2026.
+   This Internet-Draft will expire on 5 June 2026.
 
 Copyright Notice
 
@@ -90,8 +90,9 @@ Table of Contents
      3.1.  Negotiation of the cmw_attestation Extension
      3.2.  Usage in Exported Authenticator-based Post-Handshake
            Authentication
-     3.3.  Ensuring Compatibility with X.509 Certificate Validation
-     3.4.  Applicability to Client and Server Authentication
+     3.3.  Cryptographic Binding of the Evidence to the TLS Session
+     3.4.  Ensuring Compatibility with X.509 Certificate Validation
+     3.5.  Applicability to Client and Server Authentication
    4.  Architecture
      4.1.  API Requirements for Attestation Support
    5.  Security Considerations
@@ -193,16 +194,16 @@ Table of Contents
    Evidence or Attestation Results to be included in the extensions
    field of the end-entity certificate in the TLS Certificate message.
 
-   As defined in Section 4.4.2 of [RFC8446], the TLS Certificate message
-   consists of a certificate_list, which is a sequence of
-   CertificateEntry structures.  Each CertificateEntry contains a
-   certificate and a set of associated extensions.  The cmw_attestation
-   extension MUST appear only in the first CertificateEntry of the
-   Certificate message and applies exclusively to the end-entity
-   certificate.  It MUST NOT be included in entries corresponding to
-   intermediate or trust anchor certificates.  This design ensures that
-   attestation information is tightly bound to the entity being
-   authenticated.
+   As defined in Section 4.4.2 of [I-D.ietf-tls-rfc8446bis], the TLS
+   Certificate message consists of a certificate_list, which is a
+   sequence of CertificateEntry structures.  Each CertificateEntry
+   contains a certificate and a set of associated extensions.  The
+   cmw_attestation extension MUST appear only in the first
+   CertificateEntry of the Certificate message and applies exclusively
+   to the end-entity certificate.  It MUST NOT be included in entries
+   corresponding to intermediate or trust anchor certificates.  This
+   design ensures that attestation information is tightly bound to the
+   entity being authenticated.
 
    The cmw_attestation extension is only included in the Certificate
    message during Exported Authenticator-based post-handshake
@@ -249,10 +250,10 @@ Table of Contents
    having been previously offered in the corresponding request, the
    receiver MUST abort the authenticator verification with an
    "unsupported_extension" alert.  As specified in Section 9.3 of
-   [RFC8446], endpoints that do not recognize the cmw_attestation
-   extension in a CertificateRequest or ClientCertificateRequest MUST
-   ignore it and continue processing the message as if the extension
-   were absent.
+   [I-D.ietf-tls-rfc8446bis], endpoints that do not recognize the
+   cmw_attestation extension in a CertificateRequest or
+   ClientCertificateRequest MUST ignore it and continue processing the
+   message as if the extension were absent.
 
 3.2.  Usage in Exported Authenticator-based Post-Handshake
       Authentication
@@ -269,15 +270,42 @@ Table of Contents
    authentication request, the cmw_attestation extension MUST be
    associated with the certificate_request_context of the corresponding
    CertificateRequest or ClientCertificateRequest message (from the
-   Server or Client, respectively).  This binding ensures that:
+   Server or Client, respectively).  This association ensures that the
+   Evidence is specific to the authentication event.
 
-   *  The Evidence is specific to the authentication event and cannot be
-      replayed across different TLS sessions.
+3.3.  Cryptographic Binding of the Evidence to the TLS Session
 
-   *  The Evidence remains tied to the cryptographic context of the TLS
-      session.
+   The attester binds the attestation evidence to the active TLS
+   session.  To do so, the attester derives a binding value using the
+   TLS exporter and the exporter_secret of the current TLS connection.
+   The exporter invocation uses:
 
-3.3.  Ensuring Compatibility with X.509 Certificate Validation
+   *  the label "Attestation Binding", and
+
+   *  the certificate_request_context from the CertificateRequest
+      message as the "context_value" (as defined in Section 7.5 of
+      [I-D.ietf-tls-rfc8446bis]), and
+
+   *  a key_length set to 256-bit.
+
+   TLS-Exporter("Attestation Binding", certificate_request_context, 32) =
+       HKDF-Expand-Label(Derive-Secret(Secret, label, ""),
+                         "exporter", Hash(context_value), key_length)
+
+   The attester includes the exporter value exactly as produced in the
+   attestation evidence.  The computed exporter value also ensures the
+   freshness of Evidence.
+
+   To allow verification, the TLS endpoint that receives the attestation
+   evidence computes the exporter value using the same exporter
+   invocation described for the attester.  The endpoint either verifies
+   the exporter binding itself or delegates this check to the Verifier.
+   If it performs the check locally and the values do not match, the
+   attestation evidence is rejected.  If the check is delegated, the
+   endpoint conveys the computed exporter value to the Verifier so that
+   the comparison can be carried out during attestation validation.
+
+3.4.  Ensuring Compatibility with X.509 Certificate Validation
 
    The cmw_attestation extension does not modify or replace X.509
    certificate validation mechanisms.  It serves as an additional source
@@ -285,8 +313,8 @@ Table of Contents
    based authentication.  Specifically:
 
    *  Certificate validation (e.g., signature verification, revocation
-      checks) MUST still be performed according to TLS [RFC8446] and
-      PKIX [RFC5280].
+      checks) MUST still be performed according to TLS
+      [I-D.ietf-tls-rfc8446bis] and PKIX [RFC5280].
 
    *  The attestation credentials carried in cmw_attestation MUST NOT be
       used as a substitute for X.509 certificate validation but can be
@@ -297,7 +325,7 @@ Table of Contents
       valid but the attestation credentials is missing or does not meet
       security policy.
 
-3.4.  Applicability to Client and Server Authentication
+3.5.  Applicability to Client and Server Authentication
 
    The cmw_attestation extension is applicable to both client and server
    authentication in Exported Authenticator-based post-handshake
@@ -362,10 +390,13 @@ Table of Contents
          cryptographically verified against a known trust anchor,
          typically provided by the hardware manufacturer.
 
-      -  Ensure Certificate Binding and Freshness: The Evidence must be
-         explicitly associated with the certificate_request_context in
-         the authenticator request to ensure relevance, freshness, and
-         protection against replay.
+      -  Verify Certificate Request Binding and Freshness: The Evidence
+         must be bound to the active TLS session by verifying that the
+         exporter value in the Evidence matches the exporter value
+         computed using the label "Attestation Binding" and the
+         certificate_request_context as the exporter context.  This
+         verification ensures correct session binding, provides
+         freshness, and prevents replay.
 
       -  Evaluate Security Policy Compliance: The Evidence must be
          evaluated against the Relying Party's security policies to
@@ -457,21 +488,11 @@ Table of Contents
        *  The API MUST support the inclusion of attestation credentials
           within the Certificate message provided as input.
 
-   2.  Context Retrieval
+   2.  Authenticator Validation
 
-       *  The certificate_request_context MUST be provided in all cases
-          to ensure proper validation of Evidence.
-
-       *  The receiving endpoint MUST use the "get context" API to
-          retrieve the certificate_request_context associated with the
-          exported authenticator as attestation-based authentication
-          requires strict enforcement of the request context.  This
-          ensures that the freshness of Evidence can be verified.
-
-   3.  Authenticator Validation
-
-       *  The API MUST verify that the Evidence within the Certificate
-          message is cryptographically valid and bound to the
+       *  The API MUST support verification that the Evidence in the
+          Certificate message is cryptographically valid and correctly
+          bound to the TLS session and the associated
           certificate_request_context.
 
 5.  Security Considerations
@@ -544,17 +565,21 @@ Table of Contents
 5.3.  Evidence Freshness
 
    The Evidence carried in cmw_attestation does not require an
-   additional freshness mechanism, such as a nonce [RA-TLS] or
-   timestamp, since freshness is inherently provided by the
-   certificate_request_context in the authenticator request.
+   additional freshness mechanism (such as a nonce [RA-TLS] or a
+   timestamp).  Freshness is already ensured by the exporter value
+   derived using the certificate_request_context, as described in
+   Section 3.3.  Because this value is bound to the active TLS session,
+   the Evidence is guaranteed to be fresh for the session in which it is
+   generated.
 
-   The evidence presented in this protocol is valid only at the time it
-   is generated and presented.  To ensure that the attested peer remains
-   in a secure state, remote attestation may be re-initiated
-   periodically.  In the current protocol, this can be achieved by
-   initiating a new Exported Authenticator-based post-handshake
-   authentication exchange, which will generate a new
-   certificate_request_context to maintain freshness.
+   The Evidence presented in this protocol is valid only at the time it
+   is generated and presented.  To ensure that the attested peer
+   continues to operate in a secure state, remote attestation may be re-
+   initiated periodically.  In this protocol, this can be accomplished
+   by initiating a new Exported-Authenticator–based post-handshake
+   authentication exchange, which results in a new
+   certificate_request_context and therefore a newly derived exporter
+   value to maintain freshness.
 
 6.  Privacy Considerations
 
@@ -646,6 +671,13 @@ Table of Contents
               18 November 2025, <https://datatracker.ietf.org/doc/html/
               draft-ietf-rats-msg-wrap-21>.
 
+   [I-D.ietf-tls-rfc8446bis]
+              Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", Work in Progress, Internet-Draft, draft-
+              ietf-tls-rfc8446bis-14, 13 September 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
+              rfc8446bis-14>.
+
    [I-D.ietf-tls-tlsflags]
               Nir, Y., "A Flags Extension for TLS 1.3", Work in
               Progress, Internet-Draft, draft-ietf-tls-tlsflags-16, 14
@@ -671,10 +703,6 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
-
-   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
-              <https://www.rfc-editor.org/rfc/rfc8446>.
 
    [RFC9261]  Sullivan, N., "Exported Authenticators in TLS", RFC 9261,
               DOI 10.17487/RFC9261, July 2022,
@@ -731,11 +759,6 @@ Table of Contents
               Wallace, "The Entity Attestation Token (EAT)", RFC 9711,
               DOI 10.17487/RFC9711, April 2025,
               <https://www.rfc-editor.org/rfc/rfc9711>.
-
-   [TLS-Ext-Registry]
-              IANA, "Transport Layer Security (TLS) Extensions",
-              November 2023, <https://www.iana.org/assignments/tls-
-              extensiontype-values>.
 
 Acknowledgements
 
