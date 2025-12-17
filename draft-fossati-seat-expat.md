@@ -346,8 +346,8 @@ To ensure interoperability and provide cryptographic assurance that the AIK is g
 
   1. the attestation binding value defined in {{binding}}, and
   2. the AIK public key.
-  
-The signature MUST use the same signature algorithm that the peer used in the CertificateVerify message, ensuring that the attestation binding is tied to the exact cryptographic identity demonstrated during the exported-authenticator exchange.
+
+The signature MUST use the same signature algorithm used in the CertificateVerify message, ensuring that the attestation binding is tied to the exact cryptographic identity demonstrated during the exported-authenticator exchange.
 
 The TEE MUST compute this signature internally and MUST NOT accept externally supplied signatures for inclusion in Evidence.
 
@@ -360,7 +360,7 @@ The TEE includes Sig_AIK inside the Evidence and then signs the overall attestat
 Relying Parties MUST verify both:
   1. Sig_AIK, proving that the AIK private key was used and is therefore under the TEE’s control, and
   2. the TEE’s attestation signature, proving that the TEE endorses the AIK and the associated platform state.
-  
+
 This construction prevents attestation of non-TEE-resident private keys and ensures that evidence conveyed through the exported-authenticator mechanism is cryptographically bound to the same AIK used in the CertificateVerify message.
 
 # Privacy Considerations
