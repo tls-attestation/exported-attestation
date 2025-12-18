@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-04T01:23:39.965532+00:00",
+  "timestamp": "2025-12-18T01:22:38.871275+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -3867,6 +3867,32 @@
           "updatedAt": "2025-12-01T16:33:28Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 47,
+      "id": "PR_kwDON6zrys65FI76",
+      "title": "Address replay attack",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/47",
+      "state": "OPEN",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR addresses https://github.com/tls-attestation/exported-attestation/issues/15. ",
+      "createdAt": "2025-12-16T06:33:22Z",
+      "updatedAt": "2025-12-17T06:09:56Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "39fbc93880e64657d67f93f8fe2ccfc83344b1a1",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "tireddy2-patch-5",
+      "headRefOid": "610895f3a78b5fc313b33f58bc6ae84c67ac4b7d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
