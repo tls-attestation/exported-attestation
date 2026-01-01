@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-18T01:22:38.871275+00:00",
+  "timestamp": "2026-01-01T01:45:53.654129+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -388,7 +388,7 @@
       ],
       "body": "> \n> I've now had a chance to look at this draft.\n> \n> At a high level I have the same concerns I expressed over\n> draft-fossati-tls-attestation, which is to say that it unclear what\n> actual security properties that attestation provides. This draft is\n> even more vague about this question. I appreciate that these\n> properties are dependent on the precise configuration of the peer\n> endpoint, and so there are presumably some specific assertions which\n> need to appear in the attestation that describe that configuration,\n> but I think the responsibility of this kind of draft is to explain\n> what the implications of various choices are.\n> \n> \n> In terms of the integration with TLS, I don't think the negotiation\n> structure is quite right. Specifically, you indicate support for this\n> mechanism with a CMW_Attestation flag in CH, which is then\n> acknowledged in EE, but then you provide the actual data in a\n> different extension (cmw_attestation) in Certificate. There are\n> two problems here:\n> \n> 1. You can't use flags this way.\n> 2. CH is generally not the right place.\n> \n> For point 1, draft-ietf-tls-tlsflags explicitly prohibits the use of a\n> flag to signal an actual extension:\n> \n> >    For a flag that does require a response, the only proper response is\n> >    the same flag in a flags extension.  This extension MUST NOT be used\n> >    to specify extensions where the response is a proper extension with\n> >    content.\n> \n> On point 2, here is what S 5.2 of RFC 9261 says:\n> \n> >    ClientHello extensions are used to determine permissible extensions\n> >    in the server's unsolicited Certificate message in order to follow\n> >    the general model for extensions in (D)TLS in which extensions can\n> >    only be included as part of a Certificate message if they were\n> >    previously sent as part of a CertificateRequest message or\n> >    ClientHello message.  This ensures that the recipient will be able to\n> >    process such extensions.\n> \n> As you are sending CertificateRequest and/or ClientCertificateRequest,\n> that is where the offer has to appear. IOW, the correct design is\n> to define only one extension, \"cmw_attestation\", which appears in\n> CertificateRequest or ClientCertificateRequest respectively.\n> \n> One more editorial point: you repeatedly refer to this as\n> \"post-handshake\", but that's more properly used to refer to the\n> mechanism in S 4.6.2 of RFC 8446. This mechanism isn't in TLS\n> at all, but rather in the application protocol but bound to\n> TLS.\n> \n> -Ekr",
       "createdAt": "2025-07-18T18:56:32Z",
-      "updatedAt": "2025-12-02T05:05:09Z",
+      "updatedAt": "2025-12-31T21:14:11Z",
       "closedAt": "2025-12-02T05:05:09Z",
       "comments": [
         {
@@ -411,6 +411,13 @@
           "body": "Fixed in https://github.com/tls-attestation/exported-attestation/pull/31",
           "createdAt": "2025-12-02T05:05:09Z",
           "updatedAt": "2025-12-02T05:05:09Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> At a high level I have the same concerns I expressed over\ndraft-fossati-tls-attestation, which is to say that it unclear what\nactual security properties that attestation provides.\n\nAdded reference to paper on formal analysis in #48, which has security properties for attestation as well as attested TLS.\n\n> One more editorial point: you repeatedly refer to this as\n\"post-handshake\", but that's more properly used to refer to the\nmechanism in S 4.6.2 of RFC 8446. This mechanism isn't in TLS\nat all, but rather in the application protocol but bound to\nTLS.\n\n\"Exported Authenticator-based post-handshake authentication\" is the right terminology as per [RFC9261](https://datatracker.ietf.org/doc/html/rfc9261#section-1-4):\n\n> Unlike renegotiation, Exported Authenticator-based post-handshake authentication does not require any changes at the TLS layer.",
+          "createdAt": "2025-12-31T21:14:11Z",
+          "updatedAt": "2025-12-31T21:14:11Z"
         }
       ]
     },
@@ -629,7 +636,7 @@
       "labels": [],
       "body": "Sec. 5 (Security Considerations): do we really require [I-D.ietf-lamps-csr-attestation] as a prerequisite? If so then we are again in a place where freshness of the Evidence depends on the CA's latency. Note that the document says twice that we don't want CA-style latency.\n\n",
       "createdAt": "2025-10-28T14:51:23Z",
-      "updatedAt": "2025-10-30T12:21:27Z",
+      "updatedAt": "2025-12-31T21:33:58Z",
       "closedAt": null,
       "comments": [
         {
@@ -638,6 +645,13 @@
           "body": "2nd para in sec. 5 should probably be made into a \"MAY\" and converted into a separate subsection.",
           "createdAt": "2025-10-30T12:21:27Z",
           "updatedAt": "2025-10-30T12:21:27Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think the whole 2nd para should be removed. It opens up the same attacks that we want to avoid.",
+          "createdAt": "2025-12-31T21:33:58Z",
+          "updatedAt": "2025-12-31T21:33:58Z"
         }
       ]
     },
@@ -3888,6 +3902,32 @@
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-5",
       "headRefOid": "610895f3a78b5fc313b33f58bc6ae84c67ac4b7d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 48,
+      "id": "PR_kwDON6zrys67Jsp9",
+      "title": "Intra- vs. post-HS security and some cleanup #23 and #42",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/48",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- added formal analysis in Appendix\r\n- Binding is orthogonal to cmw_extension, so should be a separate section\r\n- Exporter invocation does not need to define it.\r\n- s/session/connection",
+      "createdAt": "2025-12-31T20:51:49Z",
+      "updatedAt": "2025-12-31T21:26:31Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "39fbc93880e64657d67f93f8fe2ccfc83344b1a1",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "cleanup",
+      "headRefOid": "2fb4a0b8ef044123be1fefd4ccd07acc6e732c66",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
