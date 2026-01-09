@@ -24,12 +24,12 @@
     Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
-    intervaltree 3.1.0
+    intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.5.0
+    lxml 6.0.2
+    platformdirs 4.5.1
     pycountry 24.6.1
-    PyYAML 6.0.2
+    PyYAML 6.0.3
     requests 2.32.5
     wcwidth 0.2.14
 -->
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Application Layer Attestation</td>
-<td class="right">December 2025</td>
+<td class="right">January 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Sardar, et al.</td>
-<td class="center">Expires 20 June 2026</td>
+<td class="center">Expires 13 July 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-fossati-seat-expat-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-12-17" class="published">17 December 2025</time>
+<time datetime="2026-01-09" class="published">9 January 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-06-20">20 June 2026</time></dd>
+<dd class="expires"><time datetime="2026-07-13">13 July 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1142,7 +1142,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 June 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1151,7 +1151,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1692,28 +1692,9 @@ session has already completed remote attestation before the session can be used 
       <h2 id="name-binding-the-authenticator-i">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-binding-the-authenticator-i" class="section-name selfRef">Binding the Authenticator Identity Key (AIK) to the TEE</a>
       </h2>
-<p id="section-6-1">This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A malicious or compromised platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">To ensure interoperability and provide cryptographic assurance that the AIK is genuinely protected by the TEE, evidence included via the cmw_attestation extension will have to contain a signature produced by the AIK private key over both:<a href="#section-6-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6-3">
-<li id="section-6-3.1">
-          <p id="section-6-3.1.1">the attestation binding value defined in <a href="#binding" class="auto internal xref">Section 3.3</a>, and<a href="#section-6-3.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li id="section-6-3.2">
-          <p id="section-6-3.2.1">the AIK public key.<a href="#section-6-3.2.1" class="pilcrow">¶</a></p>
-</li>
-      </ol>
-<p id="section-6-4">The signature MUST use the same signature algorithm used in the CertificateVerify message, ensuring that the attestation binding is tied to the exact cryptographic identity demonstrated during the exported-authenticator exchange.<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">The TEE MUST compute this signature internally and MUST NOT accept externally supplied signatures for inclusion in Evidence.<a href="#section-6-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6-6">
-<pre>
-Sig_AIK = Sign_AIK(attestation_binding_value || AIK_pub)
-</pre><a href="#section-6-6" class="pilcrow">¶</a>
-</div>
-<p id="section-6-7">The TEE includes Sig_AIK inside the Evidence and then signs the overall attestation structure with its attestation key.<a href="#section-6-7" class="pilcrow">¶</a></p>
-<p id="section-6-8">Relying Parties MUST verify both:
-  1. Sig_AIK, proving that the AIK private key was used and is therefore under the TEE’s control, and
-  2. the TEE’s attestation signature, proving that the TEE endorses the AIK and the associated platform state.<a href="#section-6-8" class="pilcrow">¶</a></p>
-<p id="section-6-9">This construction prevents attestation of non-TEE-resident private keys and ensures that evidence conveyed through the exported-authenticator mechanism is cryptographically bound to the same AIK used in the CertificateVerify message.<a href="#section-6-9" class="pilcrow">¶</a></p>
+<p id="section-6-1">This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">To address this, the Evidence MUST include the AIK public key (AIK_pub). The relying party MUST verify that the AIK_pub included in the Evidence matches the public key presented in the TLS Certificate message. This binds the attestation Evidence to the TLS identity used for authentication.<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="privacy-considerations">
