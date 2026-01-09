@@ -340,28 +340,11 @@ The Evidence presented in this protocol is valid only at the time it is generate
 
 # Binding the Authenticator Identity Key (AIK) to the TEE
 
-This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A malicious or compromised platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.
+This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.
 
-To ensure interoperability and provide cryptographic assurance that the AIK is genuinely protected by the TEE, evidence included via the cmw_attestation extension will have to contain a signature produced by the AIK private key over both:
+This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.
 
-  1. the attestation binding value defined in {{binding}}, and
-  2. the AIK public key.
-
-The signature MUST use the same signature algorithm used in the CertificateVerify message, ensuring that the attestation binding is tied to the exact cryptographic identity demonstrated during the exported-authenticator exchange.
-
-The TEE MUST compute this signature internally and MUST NOT accept externally supplied signatures for inclusion in Evidence.
-
-~~~
-Sig_AIK = Sign_AIK(attestation_binding_value || AIK_pub)
-~~~
-
-The TEE includes Sig_AIK inside the Evidence and then signs the overall attestation structure with its attestation key.
-
-Relying Parties MUST verify both:
-  1. Sig_AIK, proving that the AIK private key was used and is therefore under the TEE’s control, and
-  2. the TEE’s attestation signature, proving that the TEE endorses the AIK and the associated platform state.
-
-This construction prevents attestation of non-TEE-resident private keys and ensures that evidence conveyed through the exported-authenticator mechanism is cryptographically bound to the same AIK used in the CertificateVerify message.
+To address this, the Evidence MUST include the AIK public key (AIK_pub). The relying party MUST verify that the AIK_pub included in the Evidence matches the public key presented in the TLS Certificate message. This binds the attestation Evidence to the TLS identity used for authentication.
 
 # Privacy Considerations
 
