@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-01T01:45:53.654129+00:00",
+  "timestamp": "2026-01-11T01:45:58.687153+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -3895,19 +3895,33 @@
       "labels": [],
       "body": "This PR addresses https://github.com/tls-attestation/exported-attestation/issues/15. ",
       "createdAt": "2025-12-16T06:33:22Z",
-      "updatedAt": "2025-12-17T06:09:56Z",
+      "updatedAt": "2026-01-09T12:34:07Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "39fbc93880e64657d67f93f8fe2ccfc83344b1a1",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-5",
-      "headRefOid": "610895f3a78b5fc313b33f58bc6ae84c67ac4b7d",
+      "headRefOid": "8763a5b9be3f650e78ca0135425dd09763fcb790",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7ZLxdD",
+          "commit": {
+            "abbreviatedOid": "8763a5b"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-01-09T12:34:07Z",
+          "updatedAt": "2026-01-09T12:34:07Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 48,
