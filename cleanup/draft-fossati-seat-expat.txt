@@ -482,6 +482,10 @@ Table of Contents
 
       TLS-Exporter("Attestation", certificate_request_context, 32)
 
+   The binding value is then defined as:
+
+      hash (nonce || public key || Exported value)
+
    The attester includes the exporter value exactly as produced in the
    attestation evidence.  The computed exporter value also ensures the
    freshness of Evidence.

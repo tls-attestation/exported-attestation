@@ -1625,10 +1625,16 @@ invocation uses:<a href="#section-5-1" class="pilcrow">¶</a></p>
    TLS-Exporter("Attestation", certificate_request_context, 32)
 </pre><a href="#section-5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-5-4">The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
+<p id="section-5-4">The binding value is then defined as:<a href="#section-5-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5-5">
+<pre>
+   hash (nonce || public key || Exported value)
+</pre><a href="#section-5-5" class="pilcrow">¶</a>
+</div>
+<p id="section-5-6">The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-7">To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
 itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
-the Verifier so that the comparison can be carried out during attestation validation.<a href="#section-5-5" class="pilcrow">¶</a></p>
+the Verifier so that the comparison can be carried out during attestation validation.<a href="#section-5-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
