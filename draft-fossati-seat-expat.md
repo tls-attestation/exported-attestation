@@ -93,6 +93,7 @@ informative:
     date: March 2025
   I-D.ietf-rats-daa: rats-daa
   I-D.ietf-oauth-selective-disclosure-jwt: sd-jwt
+  I-D.fossati-tls-attestation:
 
 entity:
   SELF: "RFCthis"
@@ -130,27 +131,6 @@ The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RE
 The reader is assumed to be familiar with the vocabulary and concepts defined in {{RFC9334}} and {{RFC9261}}.
 
 "Remote attestation credentials", or "attestation credentials", is used to refer to both Evidence and attestation results, when no distinction needs to be made between them.
-
-# Cryptographic Binding of the Evidence to the TLS Connection {#binding}
-
-The attester binds the attestation evidence to the active TLS connection. To do so, the attester derives a
-binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
-invocation uses:
-
-* the label "Attestation Binding", and
-* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in
-  {{Section 7.5 of -tls13}}), and
-* a key_length set to 256-bit (32 bytes).
-
-~~~
-   TLS-Exporter("Attestation Binding", certificate_request_context, 32)
-~~~
-
-The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
-
-To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
-itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
-the Verifier so that the comparison can be carried out during attestation validation.
 
 # cmw_attestation Extension to the Authenticator's Certificate message
 
@@ -308,6 +288,27 @@ To enable attestation workflows, implementations of the Exported Authenticator A
 2. Authenticator Validation
    - The API MUST support verification that the Evidence in the Certificate message is cryptographically valid and correctly bound to the TLS connection and the associated certificate_request_context.
 
+# Cryptographic Binding of the Evidence to the TLS Connection {#binding}
+
+The attester binds the attestation evidence to the active TLS connection. To do so, the attester derives a
+binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
+invocation uses:
+
+* the label "Attestation", and
+* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in
+  {{Section 7.5 of -tls13}}), and
+* a key_length set to 256-bit (32 bytes).
+
+~~~
+   TLS-Exporter("Attestation", certificate_request_context, 32)
+~~~
+
+The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
+
+To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
+itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
+the Verifier so that the comparison can be carried out during attestation validation.
+
 
 # Security Considerations
 
@@ -413,7 +414,7 @@ From the view of the TLS server, post-handshake attestation offers better privac
 ## Post-handshake vs. Intra-handshake Security
 {:unnumbered}
 
-Intra-handshake attestation does not bind the Evidence to the application traffic secrets, and is vulnerable to diversion attacks {{ID-Crisis}}. Formal analysis of post-handshake is a work-in-progress.
+Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} does not bind the Evidence to the application traffic secrets, and is vulnerable to diversion attacks {{ID-Crisis}}. Formal analysis of post-handshake is a work-in-progress.
 
 
 ## Document History
