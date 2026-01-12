@@ -74,6 +74,12 @@ informative:
       - ins: A. Niemi
       - ins: H. Tschofenig
       - ins: T. Fossati
+  RelayAttacks:
+    title: "Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"
+    date: November 2025,
+    target: https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/
+    author:
+      - ins: M. U. Sardar
   ID-Crisis:
     title: "Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"
     date: November 2025,
@@ -414,7 +420,7 @@ From the view of the TLS server, post-handshake attestation offers better privac
 ## Post-handshake vs. Intra-handshake Security
 {:unnumbered}
 
-Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} does not bind the Evidence to the application traffic secrets, and is vulnerable to diversion attacks {{ID-Crisis}}. Formal analysis of post-handshake is a work-in-progress.
+Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerable to diversion attacks {{ID-Crisis}}. It also does not bind the Evidence to the application traffic secrets, resulting in relay attacks {{RelayAttacks}}. Formal analysis of post-handshake attestation is a work-in-progress.
 
 
 ## Document History
