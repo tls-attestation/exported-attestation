@@ -301,6 +301,17 @@ To enable attestation workflows, implementations of the Exported Authenticator A
 2. Authenticator Validation
    - The API MUST support verification that the Evidence in the Certificate message is cryptographically valid and correctly bound to the TLS session and the associated certificate_request_context.
 
+# Binding the Authenticator Identity Key (AIK) to the TEE
+
+This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.
+
+This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.
+
+To address this, the Evidence MUST include the hash of the AIK public key (AIK_pub_hash). The AIK public key MUST be hashed using the hash algorithm associated with the negotiated TLS cipher suite for the TLS connection in which the Evidence is conveyed.
+
+The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using
+the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence. Successful
+verification binds the attestation Evidence to the TLS identity used for authentication.
 
 # Security Considerations
 
@@ -337,18 +348,6 @@ session has already completed remote attestation before the session can be used 
 The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in {{binding}}. Because this value is bound to the active TLS session, the Evidence is guaranteed to be fresh for the session in which it is generated.
 
 The Evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator–based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.
-
-# Binding the Authenticator Identity Key (AIK) to the TEE
-
-This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.
-
-This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.
-
-To address this, the Evidence MUST include the hash of the AIK public key (AIK_pub_hash). The AIK public key MUST be hashed using the hash algorithm associated with the negotiated TLS cipher suite for the TLS connection in which the Evidence is conveyed.
-
-The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using
-the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence. Successful
-verification binds the attestation Evidence to the TLS identity used for authentication.
 
 # Privacy Considerations
 
