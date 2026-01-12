@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 13 July 2026                                             Linaro
+Expires: 16 July 2026                                             Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 13 July 2026                                             Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                          9 January 2026
+                                                         12 January 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 July 2026.
+   This Internet-Draft will expire on 16 July 2026.
 
 Copyright Notice
 
@@ -598,11 +598,16 @@ Table of Contents
    by the TLS endpoint was generated, is stored, or is controlled by the
    TEE.
 
-   To address this, the Evidence MUST include the AIK public key
-   (AIK_pub).  The relying party MUST verify that the AIK_pub included
-   in the Evidence matches the public key presented in the TLS
-   Certificate message.  This binds the attestation Evidence to the TLS
-   identity used for authentication.
+   To address this, the Evidence MUST include the hash of the AIK public
+   key (AIK_pub_hash).  The AIK public key MUST be hashed using the hash
+   algorithm associated with the negotiated TLS cipher suite for the TLS
+   connection in which the Evidence is conveyed.
+
+   The Relying Party MUST compute the hash of the AIK public key
+   extracted from the TLS end-entity certificate using the same hash
+   algorithm and verify that it matches the AIK_pub_hash included in the
+   Evidence.  Successful verification binds the attestation Evidence to
+   the TLS identity used for authentication.
 
 7.  Privacy Considerations
 
