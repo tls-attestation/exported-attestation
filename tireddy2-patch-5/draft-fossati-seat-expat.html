@@ -1206,21 +1206,21 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-security-guarantees" class="internal xref">Security Guarantees</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-using-the-tls-connection" class="internal xref">Using the TLS Connection</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-evidence-freshness" class="internal xref">Evidence Freshness</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-binding-the-authenticator-i" class="internal xref">Binding the Authenticator Identity Key (AIK) to the TEE</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-binding-the-authenticator-i" class="internal xref">Binding the Authenticator Identity Key (AIK) to the TEE</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-security-guarantees" class="internal xref">Security Guarantees</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-using-the-tls-connection" class="internal xref">Using the TLS Connection</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-evidence-freshness" class="internal xref">Evidence Freshness</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
@@ -1628,76 +1628,76 @@ the Verifier so that the comparison can be carried out during attestation valida
 </div>
 </section>
 </div>
-<div id="security-considerations">
+<div id="binding-the-authenticator-identity-key-aik-to-the-tee">
 <section id="section-5">
-      <h2 id="name-security-considerations">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      <h2 id="name-binding-the-authenticator-i">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-binding-the-authenticator-i" class="section-name selfRef">Binding the Authenticator Identity Key (AIK) to the TEE</a>
       </h2>
-<p id="section-5-1">This document inherits the security considerations of <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span> and <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span>. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-1">This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">To address this, the Evidence MUST include the hash of the AIK public key (AIK_pub_hash). The AIK public key MUST be hashed using the hash algorithm associated with the negotiated TLS cipher suite for the TLS connection in which the Evidence is conveyed.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using
+the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence. Successful
+verification binds the attestation Evidence to the TLS identity used for authentication.<a href="#section-5-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-6">
+      <h2 id="name-security-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-6-1">This document inherits the security considerations of <span>[<a href="#RFC9261" class="cite xref">RFC9261</a>]</span> and <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in <span>[<a href="#I-D.ietf-lamps-csr-attestation" class="cite xref">I-D.ietf-lamps-csr-attestation</a>]</span>. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <div id="security-guarantees">
-<section id="section-5.1">
+<section id="section-6.1">
         <h3 id="name-security-guarantees">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-security-guarantees" class="section-name selfRef">Security Guarantees</a>
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-security-guarantees" class="section-name selfRef">Security Guarantees</a>
         </h3>
-<p id="section-5.1-1">Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the identity key used for TLS handshake is known by the confidential environment, such as confidential virtual machine. A number of additional guarantees must be provided by the platform and/or the TLS stack,
-and the overall security level depends on their existence and quality of assurance:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">Note that as a pure cryptographic protocol, attested TLS as-is only guarantees that the identity key used for TLS handshake is known by the confidential environment, such as confidential virtual machine. A number of additional guarantees must be provided by the platform and/or the TLS stack,
+and the overall security level depends on their existence and quality of assurance:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.1-2.1">
-            <p id="section-5.1-2.1.1">The identity key used for TLS handshake is generated within the trustworthy environment, such as Trusted Platform Module (TPM) or TEE.<a href="#section-5.1-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.1-2.1">
+            <p id="section-6.1-2.1.1">The identity key used for TLS handshake is generated within the trustworthy environment, such as Trusted Platform Module (TPM) or TEE.<a href="#section-6.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-2.2">
-            <p id="section-5.1-2.2.1">The identity key used for TLS handshake is never exported or leaked outside the trustworthy environment.<a href="#section-5.1-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.1-2.2">
+            <p id="section-6.1-2.2.1">The identity key used for TLS handshake is never exported or leaked outside the trustworthy environment.<a href="#section-6.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-2.3">
-            <p id="section-5.1-2.3.1">For confidential computing use cases, the TLS protocol is implemented within the confidential environment, and is implemented correctly, e.g., it does not leak any session key material.<a href="#section-5.1-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.1-2.3">
+            <p id="section-6.1-2.3.1">For confidential computing use cases, the TLS protocol is implemented within the confidential environment, and is implemented correctly, e.g., it does not leak any session key material.<a href="#section-6.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-2.4">
-            <p id="section-5.1-2.4.1">The TLS stack including the code that performs the post-handshake phase must be measured.<a href="#section-5.1-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.1-2.4">
+            <p id="section-6.1-2.4.1">The TLS stack including the code that performs the post-handshake phase must be measured.<a href="#section-6.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-2.5">
-            <p id="section-5.1-2.5.1">There must be no other way to initiate generation of evidence except from signed code.<a href="#section-5.1-2.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.1-2.5">
+            <p id="section-6.1-2.5.1">There must be no other way to initiate generation of evidence except from signed code.<a href="#section-6.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-5.1-3">These properties may be explicitly promised ("attested") by the platform, or they can be assured in other ways such as by providing source code, reproducible builds, formal verification etc. The exact mechanisms are out of scope of this document.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">These properties may be explicitly promised ("attested") by the platform, or they can be assured in other ways such as by providing source code, reproducible builds, formal verification etc. The exact mechanisms are out of scope of this document.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="using-the-tls-connection">
-<section id="section-5.2">
+<section id="section-6.2">
         <h3 id="name-using-the-tls-connection">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-using-the-tls-connection" class="section-name selfRef">Using the TLS Connection</a>
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-using-the-tls-connection" class="section-name selfRef">Using the TLS Connection</a>
         </h3>
-<p id="section-5.2-1">Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection
+<p id="section-6.2-1">Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection
 remains valid after this process. Care must be taken when handling this TLS connection, as both the client
 and server must agree that remote attestation was successfully completed before exchanging data with the
-attested party.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">Session resumption presents special challenges since it happens at the TLS level, which is not aware of the
+attested party.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">Session resumption presents special challenges since it happens at the TLS level, which is not aware of the
 application-level Authenticator. The application (or the modified TLS library) must ensure that a resumed
-session has already completed remote attestation before the session can be used normally, and race conditions are possible.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+session has already completed remote attestation before the session can be used normally, and race conditions are possible.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="evidence-freshness">
-<section id="section-5.3">
+<section id="section-6.3">
         <h3 id="name-evidence-freshness">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-evidence-freshness" class="section-name selfRef">Evidence Freshness</a>
+<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-evidence-freshness" class="section-name selfRef">Evidence Freshness</a>
         </h3>
-<p id="section-5.3-1">The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce <span>[<a href="#RA-TLS" class="cite xref">RA-TLS</a>]</span> or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in <a href="#binding" class="auto internal xref">Section 3.3</a>. Because this value is bound to the active TLS session, the Evidence is guaranteed to be fresh for the session in which it is generated.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3-2">The Evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator–based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-6.3-1">The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce <span>[<a href="#RA-TLS" class="cite xref">RA-TLS</a>]</span> or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in <a href="#binding" class="auto internal xref">Section 3.3</a>. Because this value is bound to the active TLS session, the Evidence is guaranteed to be fresh for the session in which it is generated.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-2">The Evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator–based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-</section>
-</div>
-<div id="binding-the-authenticator-identity-key-aik-to-the-tee">
-<section id="section-6">
-      <h2 id="name-binding-the-authenticator-i">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-binding-the-authenticator-i" class="section-name selfRef">Binding the Authenticator Identity Key (AIK) to the TEE</a>
-      </h2>
-<p id="section-6-1">This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.<a href="#section-6-2" class="pilcrow">¶</a></p>
-<p id="section-6-3">To address this, the Evidence MUST include the hash of the AIK public key (AIK_pub_hash). The AIK public key MUST be hashed using the hash algorithm associated with the negotiated TLS cipher suite for the TLS connection in which the Evidence is conveyed.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<p id="section-6-4">The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using
-the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence. Successful
-verification binds the attestation Evidence to the TLS identity used for authentication.<a href="#section-6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="privacy-considerations">

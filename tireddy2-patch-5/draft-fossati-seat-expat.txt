@@ -95,11 +95,11 @@ Table of Contents
      3.5.  Applicability to Client and Server Authentication
    4.  Architecture
      4.1.  API Requirements for Attestation Support
-   5.  Security Considerations
-     5.1.  Security Guarantees
-     5.2.  Using the TLS Connection
-     5.3.  Evidence Freshness
-   6.  Binding the Authenticator Identity Key (AIK) to the TEE
+   5.  Binding the Authenticator Identity Key (AIK) to the TEE
+   6.  Security Considerations
+     6.1.  Security Guarantees
+     6.2.  Using the TLS Connection
+     6.3.  Evidence Freshness
    7.  Privacy Considerations
      7.1.  Client as Attester
      7.2.  Server as Attester
@@ -496,7 +496,34 @@ Table of Contents
           bound to the TLS session and the associated
           certificate_request_context.
 
-5.  Security Considerations
+5.  Binding the Authenticator Identity Key (AIK) to the TEE
+
+   This specification assumes that the private key corresponding to the
+   end-entity certificate carried in the exported authenticator referred
+   to as the Authenticator Identity Key (AIK) is generated inside a TEE
+   and never leaves it.  A platform could instead generate the AIK
+   private key outside the TEE and compute the CertificateVerify
+   signature using that external key.  A Relying Party cannot detect
+   this attack unless additional safeguards are in place.
+
+   This risk is particularly relevant in split deployments, where the
+   TLS stack does not reside inside the TEE.  In such architectures,
+   attesting the TEE alone does not prove that the AIK private key used
+   by the TLS endpoint was generated, is stored, or is controlled by the
+   TEE.
+
+   To address this, the Evidence MUST include the hash of the AIK public
+   key (AIK_pub_hash).  The AIK public key MUST be hashed using the hash
+   algorithm associated with the negotiated TLS cipher suite for the TLS
+   connection in which the Evidence is conveyed.
+
+   The Relying Party MUST compute the hash of the AIK public key
+   extracted from the TLS end-entity certificate using the same hash
+   algorithm and verify that it matches the AIK_pub_hash included in the
+   Evidence.  Successful verification binds the attestation Evidence to
+   the TLS identity used for authentication.
+
+6.  Security Considerations
 
    This document inherits the security considerations of [RFC9261] and
    [RFC9334].  The integrity of the exported authenticators must be
@@ -515,7 +542,7 @@ Table of Contents
    verify that the private key is securely stored and that the platform
    meets the required security standards before issuing a certificate.
 
-5.1.  Security Guarantees
+6.1.  Security Guarantees
 
    Note that as a pure cryptographic protocol, attested TLS as-is only
    guarantees that the identity key used for TLS handshake is known by
@@ -547,7 +574,7 @@ Table of Contents
    source code, reproducible builds, formal verification etc.  The exact
    mechanisms are out of scope of this document.
 
-5.2.  Using the TLS Connection
+6.2.  Using the TLS Connection
 
    Remote attestation in this document occurs within the context of a
    TLS handshake, and the TLS connection remains valid after this
@@ -563,7 +590,7 @@ Table of Contents
    attestation before the session can be used normally, and race
    conditions are possible.
 
-5.3.  Evidence Freshness
+6.3.  Evidence Freshness
 
    The Evidence carried in cmw_attestation does not require an
    additional freshness mechanism (such as a nonce [RA-TLS] or a
@@ -581,33 +608,6 @@ Table of Contents
    authentication exchange, which results in a new
    certificate_request_context and therefore a newly derived exporter
    value to maintain freshness.
-
-6.  Binding the Authenticator Identity Key (AIK) to the TEE
-
-   This specification assumes that the private key corresponding to the
-   end-entity certificate carried in the exported authenticator referred
-   to as the Authenticator Identity Key (AIK) is generated inside a TEE
-   and never leaves it.  A platform could instead generate the AIK
-   private key outside the TEE and compute the CertificateVerify
-   signature using that external key.  A Relying Party cannot detect
-   this attack unless additional safeguards are in place.
-
-   This risk is particularly relevant in split deployments, where the
-   TLS stack does not reside inside the TEE.  In such architectures,
-   attesting the TEE alone does not prove that the AIK private key used
-   by the TLS endpoint was generated, is stored, or is controlled by the
-   TEE.
-
-   To address this, the Evidence MUST include the hash of the AIK public
-   key (AIK_pub_hash).  The AIK public key MUST be hashed using the hash
-   algorithm associated with the negotiated TLS cipher suite for the TLS
-   connection in which the Evidence is conveyed.
-
-   The Relying Party MUST compute the hash of the AIK public key
-   extracted from the TLS end-entity certificate using the same hash
-   algorithm and verify that it matches the AIK_pub_hash included in the
-   Evidence.  Successful verification binds the attestation Evidence to
-   the TLS identity used for authentication.
 
 7.  Privacy Considerations
 
