@@ -309,6 +309,12 @@ invocation uses:
    TLS-Exporter("Attestation", certificate_request_context, 32)
 ~~~
 
+The binding value is then defined as:
+
+~~~
+   hash (nonce || public key || Exported value)
+~~~
+
 The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
 
 To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
