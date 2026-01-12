@@ -765,6 +765,12 @@ Table of Contents
               Vulnerabilities in Intel's RA-TLS Protocol", November
               2024, <https://ieeexplore.ieee.org/document/10752524>.
 
+   [RelayAttacks]
+              Sardar, M. U., "Relay Attacks in Intra-handshake
+              Attestation for Confidential Agentic AI Systems", November
+              2025, <https://mailarchive.ietf.org/arch/msg/seat/
+              x3eQxFjQFJLceae6l4_NgXnmsDY/>.
+
    [RFC6960]  Santesson, S., Myers, M., Ankney, R., Malpani, A.,
               Galperin, S., and C. Adams, "X.509 Internet Public Key
               Infrastructure Online Certificate Status Protocol - OCSP",
@@ -798,10 +804,11 @@ Post-handshake vs. Intra-handshake Privacy
 
 Post-handshake vs. Intra-handshake Security
 
-   Intra-handshake attestation proposal [I-D.fossati-tls-attestation]
-   does not bind the Evidence to the application traffic secrets, and is
-   vulnerable to diversion attacks [ID-Crisis].  Formal analysis of
-   post-handshake is a work-in-progress.
+   Intra-handshake attestation proposal [I-D.fossati-tls-attestation] is
+   vulnerable to diversion attacks [ID-Crisis].  It also does not bind
+   the Evidence to the application traffic secrets, resulting in relay
+   attacks [RelayAttacks].  Formal analysis of post-handshake
+   attestation is a work-in-progress.
 
 Document History
 

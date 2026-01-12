@@ -1885,6 +1885,10 @@ Some ways to address this include:<a href="#section-7.1-2" class="pilcrow">¶</a
         <dd>
 <span class="refAuthor">Sardar, M. U.</span>, <span class="refAuthor">Niemi, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">T. Fossati</span>, <span class="refTitle">"Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"</span>, <time datetime="2024-11" class="refDate">November 2024</time>, <span>&lt;<a href="https://ieeexplore.ieee.org/document/10752524">https://ieeexplore.ieee.org/document/10752524</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RelayAttacks">[RelayAttacks]</dt>
+        <dd>
+<span class="refAuthor">Sardar, M. U.</span>, <span class="refTitle">"Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"</span>, <time datetime="2025-11" class="refDate">November 2025</time>, <span>&lt;<a href="https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/">https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6960">[RFC6960]</dt>
         <dd>
 <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Myers, M.</span>, <span class="refAuthor">Ankney, R.</span>, <span class="refAuthor">Malpani, A.</span>, <span class="refAuthor">Galperin, S.</span>, and <span class="refAuthor">C. Adams</span>, <span class="refTitle">"X.509 Internet Public Key Infrastructure Online Certificate Status Protocol - OCSP"</span>, <span class="seriesInfo">RFC 6960</span>, <span class="seriesInfo">DOI 10.17487/RFC6960</span>, <time datetime="2013-06" class="refDate">June 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6960">https://www.rfc-editor.org/rfc/rfc6960</a>&gt;</span>. </dd>
@@ -1925,7 +1929,7 @@ We would also like to thank Eric Rescorla, Paul Howard, and Yogesh Deshpande for
         <h3 id="name-post-handshake-vs-intra-hand">
 <a href="#name-post-handshake-vs-intra-hand" class="section-name selfRef">Post-handshake vs. Intra-handshake Security</a>
         </h3>
-<p id="appendix-B.2-1">Intra-handshake attestation proposal <span>[<a href="#I-D.fossati-tls-attestation" class="cite xref">I-D.fossati-tls-attestation</a>]</span> does not bind the Evidence to the application traffic secrets, and is vulnerable to diversion attacks <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span>. Formal analysis of post-handshake is a work-in-progress.<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-1">Intra-handshake attestation proposal <span>[<a href="#I-D.fossati-tls-attestation" class="cite xref">I-D.fossati-tls-attestation</a>]</span> is vulnerable to diversion attacks <span>[<a href="#ID-Crisis" class="cite xref">ID-Crisis</a>]</span>. It also does not bind the Evidence to the application traffic secrets, resulting in relay attacks <span>[<a href="#RelayAttacks" class="cite xref">RelayAttacks</a>]</span>. Formal analysis of post-handshake attestation is a work-in-progress.<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="document-history">
