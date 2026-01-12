@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 4 July 2026                                              Linaro
+Expires: 16 July 2026                                             Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 4 July 2026                                              Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                        31 December 2025
+                                                         12 January 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,11 +65,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 July 2026.
+   This Internet-Draft will expire on 16 July 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -85,16 +85,16 @@ Table of Contents
 
    1.  Introduction
    2.  Terminology
-   3.  Cryptographic Binding of the Evidence to the TLS Connection
-   4.  cmw_attestation Extension to the Authenticator's Certificate
+   3.  cmw_attestation Extension to the Authenticator's Certificate
            message
-     4.1.  Negotiation of the cmw_attestation Extension
-     4.2.  Usage in Exported Authenticator-based Post-Handshake
+     3.1.  Negotiation of the cmw_attestation Extension
+     3.2.  Usage in Exported Authenticator-based Post-Handshake
            Authentication
-     4.3.  Ensuring Compatibility with X.509 Certificate Validation
-     4.4.  Applicability to Client and Server Authentication
-   5.  Architecture
-     5.1.  API Requirements for Attestation Support
+     3.3.  Ensuring Compatibility with X.509 Certificate Validation
+     3.4.  Applicability to Client and Server Authentication
+   4.  Architecture
+     4.1.  API Requirements for Attestation Support
+   5.  Cryptographic Binding of the Evidence to the TLS Connection
    6.  Security Considerations
      6.1.  Security Guarantees
      6.2.  Using the TLS Connection
@@ -189,37 +189,7 @@ Table of Contents
    used to refer to both Evidence and attestation results, when no
    distinction needs to be made between them.
 
-3.  Cryptographic Binding of the Evidence to the TLS Connection
-
-   The attester binds the attestation evidence to the active TLS
-   connection.  To do so, the attester derives a binding value using the
-   TLS exporter and the exporter_secret of the current TLS connection.
-   The exporter invocation uses:
-
-   *  the label "Attestation Binding", and
-
-   *  the certificate_request_context from the CertificateRequest
-      message as the "context_value" (as defined in Section 7.5 of
-      [I-D.ietf-tls-rfc8446bis]), and
-
-   *  a key_length set to 256-bit (32 bytes).
-
-    TLS-Exporter("Attestation Binding", certificate_request_context, 32)
-
-   The attester includes the exporter value exactly as produced in the
-   attestation evidence.  The computed exporter value also ensures the
-   freshness of Evidence.
-
-   To allow verification, the TLS endpoint that receives the attestation
-   evidence computes the exporter value using the same exporter
-   invocation described for the attester.  The endpoint either verifies
-   the exporter binding itself or delegates this check to the Verifier.
-   If it performs the check locally and the values do not match, the
-   attestation evidence is rejected.  If the check is delegated, the
-   endpoint conveys the computed exporter value to the Verifier so that
-   the comparison can be carried out during attestation validation.
-
-4.  cmw_attestation Extension to the Authenticator's Certificate message
+3.  cmw_attestation Extension to the Authenticator's Certificate message
 
    This document introduces a new extension, called cmw_attestation, to
    the Authenticator's Certificate message.  This extension allows
@@ -262,7 +232,7 @@ Table of Contents
    Certificate message itself, removing reliance on external certificate
    issuance processes.
 
-4.1.  Negotiation of the cmw_attestation Extension
+3.1.  Negotiation of the cmw_attestation Extension
 
    Negotiation of support cmw_attestation extension follows the model
    defined in Section 5.2 of [RFC9261].
@@ -287,7 +257,7 @@ Table of Contents
    ClientCertificateRequest MUST ignore it and continue processing the
    message as if the extension were absent.
 
-4.2.  Usage in Exported Authenticator-based Post-Handshake
+3.2.  Usage in Exported Authenticator-based Post-Handshake
       Authentication
 
    The cmw_attestation extension is designed to be used exclusively in
@@ -305,7 +275,7 @@ Table of Contents
    Server or Client, respectively).  This association ensures that the
    Evidence is specific to the authentication event.
 
-4.3.  Ensuring Compatibility with X.509 Certificate Validation
+3.3.  Ensuring Compatibility with X.509 Certificate Validation
 
    The cmw_attestation extension does not modify or replace X.509
    certificate validation mechanisms.  It serves as an additional source
@@ -325,7 +295,7 @@ Table of Contents
       valid but the attestation credentials is missing or does not meet
       security policy.
 
-4.4.  Applicability to Client and Server Authentication
+3.4.  Applicability to Client and Server Authentication
 
    The cmw_attestation extension is applicable to both client and server
    authentication in Exported Authenticator-based post-handshake
@@ -367,7 +337,7 @@ Table of Contents
    within cmw_attestation, this mechanism supports flexible attestation
    workflows depending on the chosen trust model.
 
-5.  Architecture
+4.  Architecture
 
    The cmw_attestation extension enables attestation credentials to be
    included in the Certificate message during Exported Authenticator-
@@ -478,7 +448,7 @@ Table of Contents
 
   Figure 2: Background Check Model with a Separate Client-Side Attester
 
-5.1.  API Requirements for Attestation Support
+4.1.  API Requirements for Attestation Support
 
    To enable attestation workflows, implementations of the Exported
    Authenticator API MUST support the following:
@@ -494,6 +464,36 @@ Table of Contents
           Certificate message is cryptographically valid and correctly
           bound to the TLS connection and the associated
           certificate_request_context.
+
+5.  Cryptographic Binding of the Evidence to the TLS Connection
+
+   The attester binds the attestation evidence to the active TLS
+   connection.  To do so, the attester derives a binding value using the
+   TLS exporter and the exporter_secret of the current TLS connection.
+   The exporter invocation uses:
+
+   *  the label "Attestation", and
+
+   *  the certificate_request_context from the CertificateRequest
+      message as the "context_value" (as defined in Section 7.5 of
+      [I-D.ietf-tls-rfc8446bis]), and
+
+   *  a key_length set to 256-bit (32 bytes).
+
+      TLS-Exporter("Attestation", certificate_request_context, 32)
+
+   The attester includes the exporter value exactly as produced in the
+   attestation evidence.  The computed exporter value also ensures the
+   freshness of Evidence.
+
+   To allow verification, the TLS endpoint that receives the attestation
+   evidence computes the exporter value using the same exporter
+   invocation described for the attester.  The endpoint either verifies
+   the exporter binding itself or delegates this check to the Verifier.
+   If it performs the check locally and the values do not match, the
+   attestation evidence is rejected.  If the check is delegated, the
+   endpoint conveys the computed exporter value to the Verifier so that
+   the comparison can be carried out during attestation validation.
 
 6.  Security Considerations
 
@@ -568,7 +568,7 @@ Table of Contents
    additional freshness mechanism (such as a nonce [RA-TLS] or a
    timestamp).  Freshness is already ensured by the exporter value
    derived using the certificate_request_context, as described in
-   Section 3.  Because this value is bound to the active TLS connection,
+   Section 5.  Because this value is bound to the active TLS connection,
    the Evidence is guaranteed to be fresh for the connection in which it
    is generated.
 
@@ -721,6 +721,15 @@ Table of Contents
               <https://fidoalliance.org/specs/fido-security-
               requirements/>.
 
+   [I-D.fossati-tls-attestation]
+              Tschofenig, H., Sheffer, Y., Howard, P., Mihalcea, I.,
+              Deshpande, Y., Niemi, A., and T. Fossati, "Using
+              Attestation in Transport Layer Security (TLS) and Datagram
+              Transport Layer Security (DTLS)", Work in Progress,
+              Internet-Draft, draft-fossati-tls-attestation-09, 30 April
+              2025, <https://datatracker.ietf.org/doc/html/draft-
+              fossati-tls-attestation-09>.
+
    [I-D.ietf-lamps-csr-attestation]
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
               and N. Smith, "Use of Remote Attestation with
@@ -789,10 +798,10 @@ Post-handshake vs. Intra-handshake Privacy
 
 Post-handshake vs. Intra-handshake Security
 
-   Intra-handshake attestation does not bind the Evidence to the
-   application traffic secrets, and is vulnerable to diversion attacks
-   [ID-Crisis].  Formal analysis of post-handshake is a work-in-
-   progress.
+   Intra-handshake attestation proposal [I-D.fossati-tls-attestation]
+   does not bind the Evidence to the application traffic secrets, and is
+   vulnerable to diversion attacks [ID-Crisis].  Formal analysis of
+   post-handshake is a work-in-progress.
 
 Document History
 
