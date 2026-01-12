@@ -344,7 +344,11 @@ This specification assumes that the private key corresponding to the end-entity 
 
 This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.
 
-To address this, the Evidence MUST include the AIK public key (AIK_pub). The relying party MUST verify that the AIK_pub included in the Evidence matches the public key presented in the TLS Certificate message. This binds the attestation Evidence to the TLS identity used for authentication.
+To address this, the Evidence MUST include the hash of the AIK public key (AIK_pub_hash). The AIK public key MUST be hashed using the hash algorithm associated with the negotiated TLS cipher suite for the TLS connection in which the Evidence is conveyed.
+
+The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using
+the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence. Successful
+verification binds the attestation Evidence to the TLS identity used for authentication.
 
 # Privacy Considerations
 
