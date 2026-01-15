@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-13T01:25:30.706769+00:00",
+  "timestamp": "2026-01-15T01:27:25.200847+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -709,9 +709,17 @@
       "labels": [],
       "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/IuTQMmtOZw5McBYYuLhOb3sNHhY/)\n\n> I\u2019ve been reading both this draft [1] and the use case draft [2], and I have a few technical questions about how you envision some of the use cases to be realized using procedures mentioned in [1]:\n> \n> - In Section 3.2 of the use-cases draft (\u201cHigh-Assurance Command Execution\u201d), the requirement is that the remote system must provide fresh attestation Evidence before a critical command is dispatched. Do you see this being realized purely by the application issuing an Exported Authenticator request on the existing TLS connection just before such commands, or do you expect any more fine-grained binding, e.g., including an operation/command identifier in certificate_request_context so that the attestation can be tied to a specific operation rather than only to the connection?\n> \n>  - Across the three use cases in [2], where do you imagine the logic that decides when to trigger an EA-based attestation exchange typically residing?\n> \n>     - inside the TLS stack or EA API implementation,\n>     - in an application-layer middleware (e.g., a policy engine around the TLS exporter API), or\n>     - in a higher-level orchestrator (e.g., a workload / network controller that coordinates several TLS connections)?",
       "createdAt": "2025-11-30T15:46:00Z",
-      "updatedAt": "2025-11-30T15:46:00Z",
+      "updatedAt": "2026-01-14T20:29:37Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Answers on list:\n\n- [First](https://mailarchive.ietf.org/arch/msg/seat/TFQj3VlZFnKHIsTZntwjKZrwqr0/)\n- [Second](https://mailarchive.ietf.org/arch/msg/seat/BMXWwWzMMSc2h-k6vvXfFhAonB0/)",
+          "createdAt": "2026-01-14T20:29:37Z",
+          "updatedAt": "2026-01-14T20:29:37Z"
+        }
+      ]
     },
     {
       "number": 49,
@@ -725,9 +733,17 @@
       "labels": [],
       "body": "> To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator\u2013based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.\n\nAfter the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.",
       "createdAt": "2026-01-11T18:08:16Z",
-      "updatedAt": "2026-01-11T18:08:16Z",
+      "updatedAt": "2026-01-14T20:00:07Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> After the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.\n\nAs Google has done, one can simply leverage [RPC](https://github.com/CCC-Attestation/meetings/blob/main/materials/KeithMoyer_STET.pdf) for this. Would that resolve this concern?\n\nHTTP or custom protocol are alternatives.",
+          "createdAt": "2026-01-14T20:00:06Z",
+          "updatedAt": "2026-01-14T20:00:06Z"
+        }
+      ]
     }
   ],
   "pulls": [
