@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 5 June 2026                                              Linaro
+Expires: 23 July 2026                                             Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 5 June 2026                                              Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         2 December 2025
+                                                         19 January 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,11 +65,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 June 2026.
+   This Internet-Draft will expire on 23 July 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -95,19 +95,20 @@ Table of Contents
      3.5.  Applicability to Client and Server Authentication
    4.  Architecture
      4.1.  API Requirements for Attestation Support
-   5.  Security Considerations
-     5.1.  Security Guarantees
-     5.2.  Using the TLS Connection
-     5.3.  Evidence Freshness
-   6.  Privacy Considerations
-     6.1.  Client as Attester
-     6.2.  Server as Attester
-   7.  IANA Considerations
-     7.1.  TLS Extension Type Registration
-     7.2.  TLS Flags Extension Registry
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   5.  Binding the Authenticator Identity Key (AIK) to the TEE
+   6.  Security Considerations
+     6.1.  Security Guarantees
+     6.2.  Using the TLS Connection
+     6.3.  Evidence Freshness
+   7.  Privacy Considerations
+     7.1.  Client as Attester
+     7.2.  Server as Attester
+   8.  IANA Considerations
+     8.1.  TLS Extension Type Registration
+     8.2.  TLS Flags Extension Registry
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgements
    Post-handshake vs Intra-handshake Privacy
    Document History
@@ -495,7 +496,34 @@ Table of Contents
           bound to the TLS session and the associated
           certificate_request_context.
 
-5.  Security Considerations
+5.  Binding the Authenticator Identity Key (AIK) to the TEE
+
+   This specification assumes that the private key corresponding to the
+   end-entity certificate carried in the exported authenticator referred
+   to as the Authenticator Identity Key (AIK) is generated inside a TEE
+   and never leaves it.  A platform could instead generate the AIK
+   private key outside the TEE and compute the CertificateVerify
+   signature using that external key.  A Relying Party cannot detect
+   this attack unless additional safeguards are in place.
+
+   This risk is particularly relevant in split deployments, where the
+   TLS stack does not reside inside the TEE.  In such architectures,
+   attesting the TEE alone does not prove that the AIK private key used
+   by the TLS endpoint was generated, is stored, or is controlled by the
+   TEE.
+
+   To address this, the Evidence MUST include the hash of the AIK public
+   key (AIK_pub_hash).  The AIK public key MUST be hashed using the hash
+   algorithm associated with the negotiated TLS cipher suite for the TLS
+   connection in which the Evidence is conveyed.
+
+   The Relying Party MUST compute the hash of the AIK public key
+   extracted from the TLS end-entity certificate using the same hash
+   algorithm and verify that it matches the AIK_pub_hash included in the
+   Evidence.  Successful verification binds the attestation Evidence to
+   the TLS identity used for authentication.
+
+6.  Security Considerations
 
    This document inherits the security considerations of [RFC9261] and
    [RFC9334].  The integrity of the exported authenticators must be
@@ -514,7 +542,7 @@ Table of Contents
    verify that the private key is securely stored and that the platform
    meets the required security standards before issuing a certificate.
 
-5.1.  Security Guarantees
+6.1.  Security Guarantees
 
    Note that as a pure cryptographic protocol, attested TLS as-is only
    guarantees that the identity key used for TLS handshake is known by
@@ -546,7 +574,7 @@ Table of Contents
    source code, reproducible builds, formal verification etc.  The exact
    mechanisms are out of scope of this document.
 
-5.2.  Using the TLS Connection
+6.2.  Using the TLS Connection
 
    Remote attestation in this document occurs within the context of a
    TLS handshake, and the TLS connection remains valid after this
@@ -562,7 +590,7 @@ Table of Contents
    attestation before the session can be used normally, and race
    conditions are possible.
 
-5.3.  Evidence Freshness
+6.3.  Evidence Freshness
 
    The Evidence carried in cmw_attestation does not require an
    additional freshness mechanism (such as a nonce [RA-TLS] or a
@@ -581,9 +609,9 @@ Table of Contents
    certificate_request_context and therefore a newly derived exporter
    value to maintain freshness.
 
-6.  Privacy Considerations
+7.  Privacy Considerations
 
-6.1.  Client as Attester
+7.1.  Client as Attester
 
    In this section, we are assuming that the Attester is a TLS client,
    representing an individual person.  We are concerned about the
@@ -619,19 +647,19 @@ Table of Contents
    topology where the Verifier's involvement is unrelated to the TLS
    session.
 
-6.2.  Server as Attester
+7.2.  Server as Attester
 
    For the case of the TLS server as the Attester, the server can ask
    for client authentication and only send the Evidence after successful
    client authentication.  This limits the exposure of server's
    hardware-level Claims to be revealed only to authorized clients.
 
-7.  IANA Considerations
+8.  IANA Considerations
 
    // Note to RFC Editor: in this section, please replace RFCthis with
    the RFC number assigned to this document and remove this note.
 
-7.1.  TLS Extension Type Registration
+8.1.  TLS Extension Type Registration
 
    IANA is requested to register the following new extension type in the
    "TLS ExtensionType Values" registry [IANA.tls-extensiontype-values]:
@@ -645,7 +673,7 @@ Table of Contents
 
                                   Table 1
 
-7.2.  TLS Flags Extension Registry
+8.2.  TLS Flags Extension Registry
 
    IANA is requested to add the following entry to the "TLS Flags"
    extension registry established by [I-D.ietf-tls-tlsflags]:
@@ -660,16 +688,16 @@ Table of Contents
 
    *  Reference: RFCthis
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [I-D.ietf-rats-msg-wrap]
               Birkholz, H., Smith, N., Fossati, T., Tschofenig, H., and
               D. Glaze, "RATS Conceptual Messages Wrapper (CMW)", Work
-              in Progress, Internet-Draft, draft-ietf-rats-msg-wrap-21,
-              18 November 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-rats-msg-wrap-21>.
+              in Progress, Internet-Draft, draft-ietf-rats-msg-wrap-23,
+              11 December 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-rats-msg-wrap-23>.
 
    [I-D.ietf-tls-rfc8446bis]
               Rescorla, E., "The Transport Layer Security (TLS) Protocol
@@ -713,7 +741,7 @@ Table of Contents
               Architecture", RFC 9334, DOI 10.17487/RFC9334, January
               2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [FIDO-REQS]
               Peirani, B. and J. Verrept, "FIDO Authenticator Security
