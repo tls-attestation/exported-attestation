@@ -301,6 +301,17 @@ To enable attestation workflows, implementations of the Exported Authenticator A
 2. Authenticator Validation
    - The API MUST support verification that the Evidence in the Certificate message is cryptographically valid and correctly bound to the TLS session and the associated certificate_request_context.
 
+# Binding the Authenticator Identity Key (AIK) to the TEE
+
+This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.
+
+This risk is particularly relevant in split deployments, where the TLS stack does not reside inside the TEE. In such architectures, attesting the TEE alone does not prove that the AIK private key used by the TLS endpoint was generated, is stored, or is controlled by the TEE.
+
+To address this, the Evidence MUST include the hash of the AIK public key (AIK_pub_hash). The AIK public key MUST be hashed using the hash algorithm associated with the negotiated TLS cipher suite for the TLS connection in which the Evidence is conveyed.
+
+The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using
+the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence. Successful
+verification binds the attestation Evidence to the TLS identity used for authentication.
 
 # Security Considerations
 
