@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-18T01:44:52.770290+00:00",
+  "timestamp": "2026-01-20T01:38:48.520409+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -693,9 +693,17 @@
       "labels": [],
       "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/HE9QcPGrTArC0cKPcVw7tFnkh5U/)\nAdd a pointer to the paper in the Appendix to reason why we are standardizing post-handshake rather than intra-handshake",
       "createdAt": "2025-11-24T17:43:30Z",
-      "updatedAt": "2025-11-24T17:43:30Z",
+      "updatedAt": "2026-01-18T20:07:27Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "https://datatracker.ietf.org/doc/draft-usama-seat-intra-vs-post/ is covering this topic now. ",
+          "createdAt": "2026-01-18T20:07:27Z",
+          "updatedAt": "2026-01-18T20:07:27Z"
+        }
+      ]
     },
     {
       "number": 45,
@@ -733,7 +741,7 @@
       "labels": [],
       "body": "> To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator\u2013based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.\n\nAfter the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.",
       "createdAt": "2026-01-11T18:08:16Z",
-      "updatedAt": "2026-01-15T08:40:16Z",
+      "updatedAt": "2026-01-19T08:47:48Z",
       "closedAt": null,
       "comments": [
         {
@@ -749,6 +757,20 @@
           "body": "This relates to a bit of confusion i had interpreting RFC 9261 when trying to implement the protocol.  The RFC says that authenticators and authenticator requests should be sent 'out of band'.\n\nI interpreted this to mean they do not specify how they should be transmitted, and this is left up to the implementor. Meaning they can be sent as application data (as i do in the implementation).\n\nBut I think maybe 'out of band' means that these are post-handshake TLS records which are not application data, and not visible to the application. That is they are only exposed to the TLS implementation, effectively the same as handshake messages.\n\nIt would be good to get clarity on this.  I already spoke to @muhammad-usama-sardar about this, but maybe its useful to put it here as well.",
           "createdAt": "2026-01-15T08:40:16Z",
           "updatedAt": "2026-01-15T08:40:16Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The RFC says that authenticators and authenticator requests should be sent 'out of band'.\n\nMy reading of RFC9261, in particular, this statement is: (**emphasis** my own) \n> This proof of authentication **can be** exported and transmitted out of band from one party to be validated by its peer.\n\nMy reading of this statement is not in the sense of \"should\" as you are mentioning. It is just presenting just one option with \"**can be**\" and not a normative SHOULD.\n\n@ameba23 do you see any problem in [Google's RPC method](https://github.com/CCC-Attestation/meetings/blob/main/materials/KeithMoyer_STET.pdf)?",
+          "createdAt": "2026-01-18T20:33:43Z",
+          "updatedAt": "2026-01-18T20:44:38Z"
+        },
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> I interpreted this to mean they do not specify how they should be transmitted, and this is left up to the implementor. Meaning they can be sent as application data (as i do in the implementation).\n> \n> But I think maybe 'out of band' means that these are post-handshake TLS records which are not application data, and not visible to the application. That is they are only exposed to the TLS implementation, effectively the same as handshake messages.\n> \nThe RFC is not terribly clear about this, but the discussion about TLS records and fragmentation strongly implies that these are NOT post-handshake \"handshake\"-tagged TLS records.",
+          "createdAt": "2026-01-19T08:47:48Z",
+          "updatedAt": "2026-01-19T08:47:48Z"
         }
       ]
     }
@@ -3927,24 +3949,26 @@
       "id": "PR_kwDON6zrys65FI76",
       "title": "Address replay attack",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/47",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tireddy2",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This PR addresses https://github.com/tls-attestation/exported-attestation/issues/15. ",
       "createdAt": "2025-12-16T06:33:22Z",
-      "updatedAt": "2026-01-12T10:55:57Z",
+      "updatedAt": "2026-01-19T08:34:02Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "39fbc93880e64657d67f93f8fe2ccfc83344b1a1",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-5",
       "headRefOid": "a992094030a0ec87df655c407018d7db79b08810",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-19T08:34:02Z",
+      "mergedAt": "2026-01-19T08:34:02Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "46784aad56f6c9e094be9be39dd3a148a68315b8"
+      },
       "comments": [],
       "reviews": [
         {
@@ -4014,7 +4038,7 @@
       "labels": [],
       "body": "- added formal analysis in Appendix\r\n- Binding is orthogonal to cmw_extension, so should be a separate section\r\n- Exporter invocation does not need to define it.\r\n- s/session/connection",
       "createdAt": "2025-12-31T20:51:49Z",
-      "updatedAt": "2026-01-12T17:03:32Z",
+      "updatedAt": "2026-01-19T07:55:57Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "39fbc93880e64657d67f93f8fe2ccfc83344b1a1",
@@ -4041,7 +4065,21 @@
           "updatedAt": "2026-01-12T16:53:57Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7bJvMy",
+          "commit": {
+            "abbreviatedOid": "a6e85bb"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-01-19T07:55:57Z",
+          "updatedAt": "2026-01-19T07:55:57Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
