@@ -74,6 +74,20 @@ informative:
       - ins: A. Niemi
       - ins: H. Tschofenig
       - ins: T. Fossati
+  RelayAttacks:
+    title: "Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"
+    date: November 2025,
+    target: https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/
+    author:
+      - ins: M. U. Sardar
+  ID-Crisis:
+    title: "Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"
+    date: November 2025,
+    target: https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS
+    author:
+      - ins: M. U. Sardar
+      - ins: M. Moustafa
+      - ins: T. Aura
   RFC9711: rats-eat
   RFC6960: ocsp
   FIDO-REQS:
@@ -85,6 +99,7 @@ informative:
     date: March 2025
   I-D.ietf-rats-daa: rats-daa
   I-D.ietf-oauth-selective-disclosure-jwt: sd-jwt
+  I-D.fossati-tls-attestation:
 
 entity:
   SELF: "RFCthis"
@@ -102,7 +117,7 @@ There is a growing need to demonstrate to a remote party that cryptographic keys
 
 More technically, an Attester produces a signed collection of Claims that constitute Evidence about its running environment(s). A Relying Party may consult an Attestation Result produced by a Verifier that has appraised the Evidence to make policy decisions regarding the trustworthiness of the Target Environment being assessed. This is, in essence, what {{RFC9334}} defines.
 
-At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. To streamline attestation in TLS, this document introduces the cmw_attestation extension, which allows attestation credentials to be conveyed directly in the Certificate message during the Exported Authenticator-based post-handshake authentication. This eliminates reliance on real-time certificate issuance from a Certificate Authority (CA), reducing handshake delays while ensuring Evidence remains bound to the TLS session. The extension supports both the passport and background check models from the RATS architecture, enhancing flexibility for different deployment scenarios.
+At the time of writing, several standard and proprietary remote attestation technologies are in use. This specification aims to remain as technology-agnostic as possible concerning implemented remote attestation technologies. To streamline attestation in TLS, this document introduces the cmw_attestation extension, which allows attestation credentials to be conveyed directly in the Certificate message during the Exported Authenticator-based post-handshake authentication. This eliminates reliance on real-time certificate issuance from a Certificate Authority (CA), reducing handshake delays while ensuring Evidence remains bound to the TLS connection. The extension supports both the passport and background check models from the RATS architecture, enhancing flexibility for different deployment scenarios.
 
 This document builds upon three foundational specifications:
 
@@ -159,29 +174,6 @@ The `cmw_attestation` extension is designed to be used exclusively in Exported A
 
 To maintain a cryptographic binding between the Evidence and the authentication request, the `cmw_attestation` extension MUST be associated with the `certificate_request_context` of the corresponding CertificateRequest or ClientCertificateRequest message (from the Server or Client, respectively). This association ensures that the Evidence is specific to the authentication event.
 
-## Cryptographic Binding of the Evidence to the TLS Session {#binding}
-
-The attester binds the attestation evidence to the active TLS session. To do so, the attester derives a
-binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
-invocation uses:
-
-* the label "Attestation Binding", and
-* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in
-  {{Section 7.5 of -tls13}}), and
-* a key_length set to 256-bit.
-
-~~~
-   TLS-Exporter("Attestation Binding", certificate_request_context, 32) =
-       HKDF-Expand-Label(Derive-Secret(Secret, label, ""),
-                         "exporter", Hash(context_value), key_length)
-~~~
-
-The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
-
-To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
-itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
-the Verifier so that the comparison can be carried out during attestation validation.
-
 ## Ensuring Compatibility with X.509 Certificate Validation
 
 The `cmw_attestation` extension does not modify or replace X.509 certificate validation mechanisms. It serves as an additional source of authentication data rather than altering the trust model of PKI-based authentication. Specifically:
@@ -201,7 +193,7 @@ The Attester may respond with either:
 - Evidence (Background Check Model):
   - The Attester generates Evidence and includes it in the `cmw_attestation` extension to the Authenticator's Certificate message.
   - The Relying Party forwards the Evidence to an external Verifier for evaluation and waits for an Attestation Result.
-  - The Relying Party grants or denies access, or continues or terminates the TLS session, based on the Verifier's Attestation Result.
+  - The Relying Party grants or denies access, or continues or terminates the TLS connection, based on the Verifier's Attestation Result.
 
 - Attestation Result (Passport Model):
   - The Attester sends Evidence to a Verifier beforehand.
@@ -211,9 +203,10 @@ The Attester may respond with either:
 
 By allowing both Evidence and Attestation Results to be conveyed within `cmw_attestation`, this mechanism supports flexible attestation workflows depending on the chosen trust model.
 
+
 # Architecture
 
-The `cmw_attestation` extension enables attestation credentials to be included in the Certificate message during Exported Authenticator-based post-handshake authentication, ensuring that attestation remains bound to the TLS session.
+The `cmw_attestation` extension enables attestation credentials to be included in the Certificate message during Exported Authenticator-based post-handshake authentication, ensuring that attestation remains bound to the TLS connection.
 
 However, applications using this mechanism still need to negotiate the encoding format (e.g., JOSE or COSE) and specify how attestation credentials are processed. This negotiation can be done via application-layer signaling or predefined profiles. Future specifications may define mechanisms to streamline this negotiation.
 
@@ -221,7 +214,7 @@ Upon receipt of a Certificate message containing the `cmw_attestation` extension
 
 - Background Check Model:
   - Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.
-  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS session by verifying that the exporter value in the Evidence matches the exporter value computed using the label "Attestation Binding" and the certificate_request_context as the exporter context. This verification ensures correct session binding, provides freshness, and prevents replay.
+  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the exporter value in the Evidence matches the exporter value computed using the label "Attestation Binding" and the certificate_request_context as the exporter context. This verification ensures correct connection binding, provides freshness, and prevents replay.
   - Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
 
 - Passport Model:
@@ -299,7 +292,34 @@ To enable attestation workflows, implementations of the Exported Authenticator A
    - The API MUST support the inclusion of attestation credentials within the Certificate message provided as input.
 
 2. Authenticator Validation
-   - The API MUST support verification that the Evidence in the Certificate message is cryptographically valid and correctly bound to the TLS session and the associated certificate_request_context.
+   - The API MUST support verification that the Evidence in the Certificate message is cryptographically valid and correctly bound to the TLS connection and the associated certificate_request_context.
+
+# Cryptographic Binding of the Evidence to the TLS Connection {#binding}
+
+The attester binds the attestation evidence to the active TLS connection. To do so, the attester derives a
+binding value using the TLS exporter and the exporter_secret of the current TLS connection. The exporter
+invocation uses:
+
+* the label "Attestation", and
+* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in
+  {{Section 7.5 of -tls13}}), and
+* a key_length set to 256-bit (32 bytes).
+
+~~~
+   TLS-Exporter("Attestation", certificate_request_context, 32)
+~~~
+
+The binding value is then defined as:
+
+~~~
+   hash (nonce || public key || Exported value)
+~~~
+
+The attester includes the exporter value exactly as produced in the attestation evidence. The computed exporter value also ensures the freshness of Evidence.
+
+To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
+itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
+the Verifier so that the comparison can be carried out during attestation validation.
 
 # Binding the Authenticator Identity Key (AIK) to the TEE
 
@@ -345,7 +365,7 @@ session has already completed remote attestation before the session can be used 
 
 ## Evidence Freshness
 
-The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in {{binding}}. Because this value is bound to the active TLS session, the Evidence is guaranteed to be fresh for the session in which it is generated.
+The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in {{binding}}. Because this value is bound to the active TLS connection, the Evidence is guaranteed to be fresh for the connection in which it is generated.
 
 The Evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator–based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.
 
@@ -369,7 +389,7 @@ Some ways to address this include:
 
 The last two also have the property of hiding the peer's identity from the RP.
 
-Note that the equivalent of OCSP "stapling" involves using a passport topology where the Verifier's involvement is unrelated to the TLS session.
+Note that the equivalent of OCSP "stapling" involves using a passport topology where the Verifier's involvement is unrelated to the TLS connection.
 
 ## Server as Attester
 
@@ -406,16 +426,30 @@ IANA is requested to add the following entry to the "TLS Flags" extension regist
 We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
 We would also like to thank Eric Rescorla, Paul Howard, and Yogesh Deshpande for their input.
 
-# Post-handshake vs Intra-handshake Privacy
+# Appendix
+{:unnumbered}
+
+## Post-handshake vs. Intra-handshake Privacy
 {:unnumbered}
 
 From the view of the TLS server, post-handshake attestation offers better privacy than intra-handshake attestation when the server acts as the Attester. In intra-handshake attestation, due to the inherent asymmetry of the TLS protocol, a malicious TLS client could potentially retrieve sensitive information from the Evidence without the client's trustworthiness first being established by the server. In post-handshake attestation, the server can ask for client authentication and only send the Evidence after successful client authentication.
 
-# Document History
+## Post-handshake vs. Intra-handshake Security
 {:unnumbered}
 
--03
+Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerable to diversion attacks {{ID-Crisis}}. It also does not bind the Evidence to the application traffic secrets, resulting in relay attacks {{RelayAttacks}}. Formal analysis of post-handshake attestation is a work-in-progress.
+
+
+## Document History
+{:unnumbered}
+
+-00
 
 * Expanded security considerations, in particular added security guarantees
 * Added privacy considerations
 * Corrected {{fig-passport}}
+
+-01
+
+* Added channel binding
+* Added security analysis of intra-handshake attestation in Appendix
