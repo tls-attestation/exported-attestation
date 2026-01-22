@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-20T01:38:48.520409+00:00",
+  "timestamp": "2026-01-22T01:41:21.291330+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -741,7 +741,7 @@
       "labels": [],
       "body": "> To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator\u2013based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.\n\nAfter the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.",
       "createdAt": "2026-01-11T18:08:16Z",
-      "updatedAt": "2026-01-19T08:47:48Z",
+      "updatedAt": "2026-01-21T07:52:16Z",
       "closedAt": null,
       "comments": [
         {
@@ -771,6 +771,13 @@
           "body": "> I interpreted this to mean they do not specify how they should be transmitted, and this is left up to the implementor. Meaning they can be sent as application data (as i do in the implementation).\n> \n> But I think maybe 'out of band' means that these are post-handshake TLS records which are not application data, and not visible to the application. That is they are only exposed to the TLS implementation, effectively the same as handshake messages.\n> \nThe RFC is not terribly clear about this, but the discussion about TLS records and fragmentation strongly implies that these are NOT post-handshake \"handshake\"-tagged TLS records.",
           "createdAt": "2026-01-19T08:47:48Z",
           "updatedAt": "2026-01-19T08:47:48Z"
+        },
+        {
+          "author": "burgerdev",
+          "authorAssociation": "NONE",
+          "body": "Imho the sheer existence of the [API considerations](https://www.rfc-editor.org/rfc/rfc9261.html#section-7-1) section implies that the application layer is responsible for transmitting the messages - why would you expose an API for it otherwise?\n\nAlso https://www.rfc-editor.org/rfc/rfc9261.html#section-4-3:\n\n> [Authenticator messages] do not include any TLS record-layer framing and are not encrypted with a handshake or application-data key.\n\nFrom a practical standpoint, if re-authentication with attestation is the goal, I'd probably `POST /reauthenticate`, call an `rpc Reauthenticate` or similar.\n\nFor my own use-case though, which does only need attestation once, I'd rather establish the TLS session, exchange attestation messages, and only then hand the connection to the L7 library.\n\n",
+          "createdAt": "2026-01-21T07:52:16Z",
+          "updatedAt": "2026-01-21T07:52:16Z"
         }
       ]
     }
@@ -4031,24 +4038,26 @@
       "id": "PR_kwDON6zrys67Jsp9",
       "title": "Intra- vs. post-HS security and some cleanup #23 and #42",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/48",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- added formal analysis in Appendix\r\n- Binding is orthogonal to cmw_extension, so should be a separate section\r\n- Exporter invocation does not need to define it.\r\n- s/session/connection",
       "createdAt": "2025-12-31T20:51:49Z",
-      "updatedAt": "2026-01-19T07:55:57Z",
+      "updatedAt": "2026-01-21T15:57:45Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "39fbc93880e64657d67f93f8fe2ccfc83344b1a1",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "cleanup",
       "headRefOid": "a6e85bb1cdf0fc4424d7defc771b467b473ceb10",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-21T15:57:45Z",
+      "mergedAt": "2026-01-21T15:57:45Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "5a97cae18cfd8b21a53aa38f62ace7f340bc2982"
+      },
       "comments": [
         {
           "author": "muhammad-usama-sardar",
