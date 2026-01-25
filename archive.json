@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-22T01:41:21.291330+00:00",
+  "timestamp": "2026-01-25T01:47:45.669888+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -64,12 +64,13 @@
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
-        "ionut-arm"
+        "ionut-arm",
+        "muhammad-usama-sardar"
       ],
       "labels": [],
       "body": "- [ ] I didn't find \"Payload\" in RFC9261. Can you refer me to the document which is closest in the sense it is used?\n- [x] I don't seem to understand the following sentence: \n> The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.\n- [x] Not sure about the following sentence: Why not from the client? Are you scoping to a specific scenario, e.g., server/client as Attester or something else? This needs some explanation. \n> The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators.",
       "createdAt": "2025-02-20T20:31:25Z",
-      "updatedAt": "2025-10-18T17:33:05Z",
+      "updatedAt": "2026-01-24T16:50:23Z",
       "closedAt": null,
       "comments": [
         {
@@ -85,6 +86,13 @@
           "body": "Thanks, the last 2 sub-issues are indeed fixed. About the first one, I still see the \"payload\" in the editor draft. \n\n> CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.\n\nMaybe some PR replaces it; else I want to understand what exactly does it mean. For example, what is the difference between `Evidence` and `Evidence payload`?",
           "createdAt": "2025-10-18T17:33:05Z",
           "updatedAt": "2025-10-18T17:33:05Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Will remove the word \"payload\" in my PR unless someone objects",
+          "createdAt": "2026-01-24T16:39:29Z",
+          "updatedAt": "2026-01-24T16:39:29Z"
         }
       ]
     },
@@ -173,9 +181,24 @@
       "labels": [],
       "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
       "createdAt": "2025-03-03T14:40:46Z",
-      "updatedAt": "2025-03-03T14:40:46Z",
+      "updatedAt": "2026-01-23T09:32:11Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Can you elaborate the attack with more details ? ",
+          "createdAt": "2026-01-23T05:49:31Z",
+          "updatedAt": "2026-01-23T05:49:31Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think I am first trying to understand what \"Separate Client-Side Attester\" means. This is a predicate to the attack. So can someone explain what this means.\n> What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? ",
+          "createdAt": "2026-01-23T09:32:10Z",
+          "updatedAt": "2026-01-23T09:32:10Z"
+        }
+      ]
     },
     {
       "number": 11,
@@ -239,13 +262,15 @@
       "state": "OPEN",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
       "labels": [
         "Sec cons"
       ],
       "body": "Discussion with @yaronf, @thomas-fossati , @ionut-arm and Carsten: \n\nFor Sec. 4.1. in draft-00 (Using the TLS Connection): \n\n**Background**: If the session drops due to some reason, one can do session resumption rather than complete handshake. \n**Problem**: There can be problems in session resumption if remote attestation has not already been done for that session. \n**Solution**:\nFirst remote attestation MUST be done right after the initial handshake. This reduces the problem to essentially 1 round-trip time (for sending Authenticator Request and getting Authenticator) plus time for generation of Evidence and appraisal of Evidence. \n\nThe next rounds of remote attestation can be done on need basis. ",
       "createdAt": "2025-04-14T09:47:31Z",
-      "updatedAt": "2025-10-19T19:15:33Z",
+      "updatedAt": "2026-01-24T16:50:11Z",
       "closedAt": null,
       "comments": [
         {
@@ -254,6 +279,34 @@
           "body": "Possible solution to avoid the race condition:\n* Establish the handshake with explicit flags that prevent session resumption. (From the client side this can simply mean: delete the ticket before the handshake is complete.)\n* Do remote attestation.\n* Then enable session resumption. (Send a new `NewSessionTicket`.)\n\nFrom a TLS handshake perspective this is possible. The question is whether APIs (specifically the OpenSSL API) support these operations and/or can be extended to do so.",
           "createdAt": "2025-04-21T08:25:19Z",
           "updatedAt": "2025-05-01T10:17:03Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It seems the issue is addressed, we can close it. ",
+          "createdAt": "2026-01-23T05:47:39Z",
+          "updatedAt": "2026-01-23T05:47:39Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> It seems the issue is addressed, we can close it.\n\nMaybe I referenced the wrong issue in my PR. I don't see my PR addressing this specific issue. Could you please reference the relevant PR that addresses this issue?",
+          "createdAt": "2026-01-23T09:29:57Z",
+          "updatedAt": "2026-01-23T09:29:57Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Section 7.2 says attestation needs to be complete before application data can be exchanged. ",
+          "createdAt": "2026-01-23T10:59:07Z",
+          "updatedAt": "2026-01-23T10:59:07Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Maybe we can add some text from [here](https://github.com/tls-attestation/exported-attestation/issues/13#issuecomment-2817926659) to that, before closing this issue.",
+          "createdAt": "2026-01-23T11:05:07Z",
+          "updatedAt": "2026-01-23T11:05:07Z"
         }
       ]
     },
@@ -262,15 +315,15 @@
       "id": "I_kwDON6zrys61AAtI",
       "title": "Terminology: EK in CertificateVerify",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/14",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "In RATS interim, Deb mentioned that ephemeral key in CertificateVerify for Authenticator is confusing. \nClarify the terminology such that it does not contradict TLS.\n\nMore context: [interim notes](https://notes.ietf.org/notes-ietf-interim-2025-rats-01-rats#740---755-Identity-Crisis-in-Attested-TLS-for-Confidential-Computing)\n\nWe should define EK upfront in the terminology section. ",
       "createdAt": "2025-05-02T19:21:32Z",
-      "updatedAt": "2025-10-15T10:55:40Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-24T16:34:48Z",
+      "closedAt": "2026-01-24T16:34:48Z",
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -292,6 +345,13 @@
           "body": "Hmm, not sure if this issue is (still) relevant. The draft does not mention EK / \"ephemeral\" anywhere, so I assume it was part of your presentation?",
           "createdAt": "2025-10-15T10:55:40Z",
           "updatedAt": "2025-10-15T10:55:40Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't think this comment is relevant. If there are no objections, we can close the issue.  ",
+          "createdAt": "2026-01-23T05:48:38Z",
+          "updatedAt": "2026-01-23T05:48:51Z"
         }
       ]
     },
@@ -300,7 +360,7 @@
       "id": "I_kwDON6zrys61CX4z",
       "title": "Security consideration: Relay attack",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/15",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -309,8 +369,8 @@
       ],
       "body": "What prevents a malicious Attester from relaying the `certificate_request_context` to a genuine TEE and presenting the Evidence of that genuine TEE?\nThis question is not specific to `certificate_request_context` but applies in general to the draft (i.e., also to nonce, timestamp, epoch markers etc.).\n\nTiru's proposal: (discussed [here](https://github.com/tls-attestation/exported-attestation/pull/12#issuecomment-2844582521))\n> one possible technique could be that the verifier will have to enforce policies that ensure the TEE producing the evidence is the one it expects, not just any valid TEE.",
       "createdAt": "2025-05-03T09:25:45Z",
-      "updatedAt": "2025-10-19T19:15:34Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-23T05:46:47Z",
+      "closedAt": "2026-01-23T05:46:47Z",
       "comments": [
         {
           "author": "ionut-arm",
@@ -386,9 +446,9 @@
       "labels": [
         "Sec cons"
       ],
-      "body": "> \n> I've now had a chance to look at this draft.\n> \n> At a high level I have the same concerns I expressed over\n> draft-fossati-tls-attestation, which is to say that it unclear what\n> actual security properties that attestation provides. This draft is\n> even more vague about this question. I appreciate that these\n> properties are dependent on the precise configuration of the peer\n> endpoint, and so there are presumably some specific assertions which\n> need to appear in the attestation that describe that configuration,\n> but I think the responsibility of this kind of draft is to explain\n> what the implications of various choices are.\n> \n> \n> In terms of the integration with TLS, I don't think the negotiation\n> structure is quite right. Specifically, you indicate support for this\n> mechanism with a CMW_Attestation flag in CH, which is then\n> acknowledged in EE, but then you provide the actual data in a\n> different extension (cmw_attestation) in Certificate. There are\n> two problems here:\n> \n> 1. You can't use flags this way.\n> 2. CH is generally not the right place.\n> \n> For point 1, draft-ietf-tls-tlsflags explicitly prohibits the use of a\n> flag to signal an actual extension:\n> \n> >    For a flag that does require a response, the only proper response is\n> >    the same flag in a flags extension.  This extension MUST NOT be used\n> >    to specify extensions where the response is a proper extension with\n> >    content.\n> \n> On point 2, here is what S 5.2 of RFC 9261 says:\n> \n> >    ClientHello extensions are used to determine permissible extensions\n> >    in the server's unsolicited Certificate message in order to follow\n> >    the general model for extensions in (D)TLS in which extensions can\n> >    only be included as part of a Certificate message if they were\n> >    previously sent as part of a CertificateRequest message or\n> >    ClientHello message.  This ensures that the recipient will be able to\n> >    process such extensions.\n> \n> As you are sending CertificateRequest and/or ClientCertificateRequest,\n> that is where the offer has to appear. IOW, the correct design is\n> to define only one extension, \"cmw_attestation\", which appears in\n> CertificateRequest or ClientCertificateRequest respectively.\n> \n> One more editorial point: you repeatedly refer to this as\n> \"post-handshake\", but that's more properly used to refer to the\n> mechanism in S 4.6.2 of RFC 8446. This mechanism isn't in TLS\n> at all, but rather in the application protocol but bound to\n> TLS.\n> \n> -Ekr",
+      "body": "[Thread here](https://mailarchive.ietf.org/arch/msg/tls/oUnl4pYx9eF_eInhZBdTUunVEYg/)\n\n> \n> I've now had a chance to look at this draft.\n> \n> At a high level I have the same concerns I expressed over\n> draft-fossati-tls-attestation, which is to say that it unclear what\n> actual security properties that attestation provides. This draft is\n> even more vague about this question. I appreciate that these\n> properties are dependent on the precise configuration of the peer\n> endpoint, and so there are presumably some specific assertions which\n> need to appear in the attestation that describe that configuration,\n> but I think the responsibility of this kind of draft is to explain\n> what the implications of various choices are.\n> \n> \n> In terms of the integration with TLS, I don't think the negotiation\n> structure is quite right. Specifically, you indicate support for this\n> mechanism with a CMW_Attestation flag in CH, which is then\n> acknowledged in EE, but then you provide the actual data in a\n> different extension (cmw_attestation) in Certificate. There are\n> two problems here:\n> \n> 1. You can't use flags this way.\n> 2. CH is generally not the right place.\n> \n> For point 1, draft-ietf-tls-tlsflags explicitly prohibits the use of a\n> flag to signal an actual extension:\n> \n> >    For a flag that does require a response, the only proper response is\n> >    the same flag in a flags extension.  This extension MUST NOT be used\n> >    to specify extensions where the response is a proper extension with\n> >    content.\n> \n> On point 2, here is what S 5.2 of RFC 9261 says:\n> \n> >    ClientHello extensions are used to determine permissible extensions\n> >    in the server's unsolicited Certificate message in order to follow\n> >    the general model for extensions in (D)TLS in which extensions can\n> >    only be included as part of a Certificate message if they were\n> >    previously sent as part of a CertificateRequest message or\n> >    ClientHello message.  This ensures that the recipient will be able to\n> >    process such extensions.\n> \n> As you are sending CertificateRequest and/or ClientCertificateRequest,\n> that is where the offer has to appear. IOW, the correct design is\n> to define only one extension, \"cmw_attestation\", which appears in\n> CertificateRequest or ClientCertificateRequest respectively.\n> \n> One more editorial point: you repeatedly refer to this as\n> \"post-handshake\", but that's more properly used to refer to the\n> mechanism in S 4.6.2 of RFC 8446. This mechanism isn't in TLS\n> at all, but rather in the application protocol but bound to\n> TLS.\n> \n> -Ekr",
       "createdAt": "2025-07-18T18:56:32Z",
-      "updatedAt": "2025-12-31T21:14:11Z",
+      "updatedAt": "2026-01-24T17:33:26Z",
       "closedAt": "2025-12-02T05:05:09Z",
       "comments": [
         {
@@ -522,11 +582,13 @@
       "state": "OPEN",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
       "labels": [],
       "body": "\"Both peers can send an authenticator request message at any point after the handshake\" - so this doesn't have to happen immediately? As a profile of 9261, we can say that we require the post-handshake exchange to start immediately after the TLS handshake completes.\n\n",
       "createdAt": "2025-10-28T14:51:15Z",
-      "updatedAt": "2025-10-28T14:51:15Z",
+      "updatedAt": "2026-01-24T16:49:59Z",
       "closedAt": null,
       "comments": []
     },
@@ -538,11 +600,13 @@
       "state": "OPEN",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
       "labels": [],
       "body": "The first sentences of Sec. 3 are very confusing with respect to TLS messages. It is never clear when we are referring to in-handshake messages (e.g. Certificate) or post-handshake. Yes, we do mention the \"Authenticator message\" but we could still make it clearer.\n\n",
       "createdAt": "2025-10-28T14:51:17Z",
-      "updatedAt": "2025-10-28T14:51:17Z",
+      "updatedAt": "2026-01-24T16:53:26Z",
       "closedAt": null,
       "comments": []
     },
@@ -558,7 +622,7 @@
       "labels": [],
       "body": "Sec. 3.2 assumes that there is always a certificate chain ready to be sent in the post-handshake exchange. Is it an exact copy of the TLS handshake's chain? If so, we should say so and mandate that the peer bitwise compares the two chains.\n\n",
       "createdAt": "2025-10-28T14:51:18Z",
-      "updatedAt": "2025-10-30T12:50:07Z",
+      "updatedAt": "2026-01-23T05:44:16Z",
       "closedAt": null,
       "comments": [
         {
@@ -581,6 +645,13 @@
           "body": "Note: the secondary cert chain is not going to be for anchoring the AK, because that's bundled in the evidence wrapper.\n\nRe. formal verification of multiple identities being served by same server, see Sec. cons section in RFC9261.",
           "createdAt": "2025-10-30T12:47:07Z",
           "updatedAt": "2025-10-30T12:47:07Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "RFC9261 allows multiple identities, that's one of the reasons it was defined (see https://datatracker.ietf.org/doc/draft-ietf-httpbis-secondary-server-certs/00/). ",
+          "createdAt": "2026-01-23T05:44:16Z",
+          "updatedAt": "2026-01-23T05:44:16Z"
         }
       ]
     },
@@ -596,7 +667,7 @@
       "labels": [],
       "body": "Shouldn't `cmw_attestation` be negotiated in the initial handshake? It's a completely legitimate policy not to allow any traffic before the post-handshake exchange is complete. But to ensure it, you need earlier negotiation.\n\nNlte that the IANA section defines a flag but there's no text that uses it.\n\nIMO we need to re-add text on flag-based negotiation in the TLS handshake, possibly followed by more detailed negotiation in the post-handshake.\n\n",
       "createdAt": "2025-10-28T14:51:20Z",
-      "updatedAt": "2025-10-30T13:00:42Z",
+      "updatedAt": "2026-01-24T17:50:26Z",
       "closedAt": null,
       "comments": [
         {
@@ -605,6 +676,55 @@
           "body": "Would be good to discuss how we negotiate this feature so that we avoid a wasted TLS handshake (e.g., ALPN)",
           "createdAt": "2025-10-30T13:00:26Z",
           "updatedAt": "2025-10-30T13:00:42Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The flag was removed to address the comment from Ekr, I don't see any problem with the negotiation discussed in Section 3.1. If any optimizations are required, they can be taken up at a later stage.  ",
+          "createdAt": "2026-01-23T05:39:57Z",
+          "updatedAt": "2026-01-23T05:39:57Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The flag was removed to address the comment from Ekr, I don't see any problem with the negotiation discussed in Section 3.1. If any optimizations are required, they can be taken up at a later stage.\n\nI don\u2019t think the negotiation described in \u00a73.1 is particularly realistic.  Specifically, if the peer isn\u2019t aTLS-aware, it won't expect to receive a CertificateRequest or a ClientCertificateRequest in the first place.\n\nSo, some kind of explicit negotiation signal must be exchanged before the expat protocol begins.  If negotiation is forbidden at the TLS handshake stage -- I still fail to understand ekr's rationale, but apparently that's just me \u2014, I believe it's fair to leave description of the negotiation process to each \u201capplication protocol binding\u201d document.",
+          "createdAt": "2026-01-23T07:53:29Z",
+          "updatedAt": "2026-01-23T08:07:24Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> > The flag was removed to address the comment from Ekr, I don't see any problem with the negotiation discussed in Section 3.1. If any optimizations are required, they can be taken up at a later stage.\n> \n> I don\u2019t think the negotiation described in \u00a73.1 is particularly realistic. Specifically, if the peer isn\u2019t aTLS-aware, it won't expect to receive a CertificateRequest or a ClientCertificateRequest in the first place.\n\nIf you mean attestation in TLS, 3.1, RFC9261 requires support from the application. The application will have to negotiate whether attestation is required. \n\n> \n> So, some kind of explicit negotiation signal must be exchanged before the expat protocol begins. If negotiation is forbidden at the TLS handshake stage -- I still fail to understand ekr's rationale, but apparently that's just me \u2014, I believe it's fair to leave description of the negotiation process to each \u201capplication protocol binding\u201d document.\n\n",
+          "createdAt": "2026-01-23T10:29:11Z",
+          "updatedAt": "2026-01-23T10:29:11Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> If you mean attestation in TLS, 3.1, RFC9261 requires support from the application.\n\nI meant what we say in [\u00a73.1](https://www.ietf.org/archive/id/draft-fossati-seat-expat-01.html#section-3.1) is unrealistic: if the peer isn\u2019t aTLS-aware, it won't expect to receive a CertificateRequest or a ClientCertificateRequest in the first place.\n(Maybe the current prose makes sense if an application protocol allows for the use of other RFC9261-based proofs-of-identity along with expat.)\n\n> The application will have to negotiate whether attestation is required.\n\nYes, and we should be totally clear about that in \u00a73.1.",
+          "createdAt": "2026-01-23T11:07:13Z",
+          "updatedAt": "2026-01-23T11:07:13Z"
+        },
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Moreover, it this is only negotiated at the application level, that implies that both peers are preconfigured to speak the same app-level protocol (e.g. gRPC with a certain set of endpoints). Otherwise they wouldn't have a \"common language\" for that negotiation. That again needs to be clarified.",
+          "createdAt": "2026-01-23T15:34:30Z",
+          "updatedAt": "2026-01-23T15:34:30Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> That again needs to be clarified.\n\nThat said, I still don\u2019t grok why we can\u2019t use TLS handshake negotiation\u2026\n\n",
+          "createdAt": "2026-01-23T15:49:17Z",
+          "updatedAt": "2026-01-23T15:49:17Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I still don\u2019t grok why we can\u2019t use TLS handshake negotiation\u2026\n\n[Thread](https://github.com/tls-attestation/exported-attestation/issues/38#issuecomment-3788404449) for reference and he pointed out in meeting 124 as well. ",
+          "createdAt": "2026-01-24T17:50:26Z",
+          "updatedAt": "2026-01-24T17:50:26Z"
         }
       ]
     },
@@ -632,11 +752,13 @@
       "state": "OPEN",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "tireddy2"
+      ],
       "labels": [],
       "body": "Sec. 5 (Security Considerations): do we really require [I-D.ietf-lamps-csr-attestation] as a prerequisite? If so then we are again in a place where freshness of the Evidence depends on the CA's latency. Note that the document says twice that we don't want CA-style latency.\n\n",
       "createdAt": "2025-10-28T14:51:23Z",
-      "updatedAt": "2025-12-31T21:33:58Z",
+      "updatedAt": "2026-01-24T16:58:09Z",
       "closedAt": null,
       "comments": [
         {
@@ -684,7 +806,7 @@
       "id": "I_kwDON6zrys7aJY8K",
       "title": "Pre-/intra- vs. post-handshake attestation",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/42",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -693,8 +815,8 @@
       "labels": [],
       "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/HE9QcPGrTArC0cKPcVw7tFnkh5U/)\nAdd a pointer to the paper in the Appendix to reason why we are standardizing post-handshake rather than intra-handshake",
       "createdAt": "2025-11-24T17:43:30Z",
-      "updatedAt": "2026-01-18T20:07:27Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-23T10:53:46Z",
+      "closedAt": "2026-01-23T05:36:43Z",
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -702,6 +824,20 @@
           "body": "https://datatracker.ietf.org/doc/draft-usama-seat-intra-vs-post/ is covering this topic now. ",
           "createdAt": "2026-01-18T20:07:27Z",
           "updatedAt": "2026-01-18T20:07:27Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> https://datatracker.ietf.org/doc/draft-usama-seat-intra-vs-post/ is covering this topic now.\n\nWe can drop the two intra-vs-post sections in the appendix, then.\n\n\n",
+          "createdAt": "2026-01-23T07:49:30Z",
+          "updatedAt": "2026-01-23T07:49:30Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> > https://datatracker.ietf.org/doc/draft-usama-seat-intra-vs-post/ is covering this topic now.\n> \n> We can drop the two intra-vs-post sections in the appendix, then.\n\nProbably it is still a helpful rationale and data point for the implementers to make an informed choice, and since it is in Appendix, it should not hurt the reader. \nAlso, [that document](https://datatracker.ietf.org/doc/draft-usama-seat-intra-vs-post/) is not yet cited in the draft. Moreover, that is a mixture of formal proofs and opinions of WG. I am quite confident about the former but not much about the latter.",
+          "createdAt": "2026-01-23T10:53:46Z",
+          "updatedAt": "2026-01-23T10:53:46Z"
         }
       ]
     },
@@ -710,15 +846,15 @@
       "id": "I_kwDON6zrys7bOOyO",
       "title": "Yuning's questions",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/45",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/IuTQMmtOZw5McBYYuLhOb3sNHhY/)\n\n> I\u2019ve been reading both this draft [1] and the use case draft [2], and I have a few technical questions about how you envision some of the use cases to be realized using procedures mentioned in [1]:\n> \n> - In Section 3.2 of the use-cases draft (\u201cHigh-Assurance Command Execution\u201d), the requirement is that the remote system must provide fresh attestation Evidence before a critical command is dispatched. Do you see this being realized purely by the application issuing an Exported Authenticator request on the existing TLS connection just before such commands, or do you expect any more fine-grained binding, e.g., including an operation/command identifier in certificate_request_context so that the attestation can be tied to a specific operation rather than only to the connection?\n> \n>  - Across the three use cases in [2], where do you imagine the logic that decides when to trigger an EA-based attestation exchange typically residing?\n> \n>     - inside the TLS stack or EA API implementation,\n>     - in an application-layer middleware (e.g., a policy engine around the TLS exporter API), or\n>     - in a higher-level orchestrator (e.g., a workload / network controller that coordinates several TLS connections)?",
       "createdAt": "2025-11-30T15:46:00Z",
-      "updatedAt": "2026-01-14T20:29:37Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-23T05:36:27Z",
+      "closedAt": "2026-01-23T05:36:27Z",
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -741,7 +877,7 @@
       "labels": [],
       "body": "> To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator\u2013based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.\n\nAfter the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.",
       "createdAt": "2026-01-11T18:08:16Z",
-      "updatedAt": "2026-01-21T07:52:16Z",
+      "updatedAt": "2026-01-23T13:17:02Z",
       "closedAt": null,
       "comments": [
         {
@@ -778,8 +914,38 @@
           "body": "Imho the sheer existence of the [API considerations](https://www.rfc-editor.org/rfc/rfc9261.html#section-7-1) section implies that the application layer is responsible for transmitting the messages - why would you expose an API for it otherwise?\n\nAlso https://www.rfc-editor.org/rfc/rfc9261.html#section-4-3:\n\n> [Authenticator messages] do not include any TLS record-layer framing and are not encrypted with a handshake or application-data key.\n\nFrom a practical standpoint, if re-authentication with attestation is the goal, I'd probably `POST /reauthenticate`, call an `rpc Reauthenticate` or similar.\n\nFor my own use-case though, which does only need attestation once, I'd rather establish the TLS session, exchange attestation messages, and only then hand the connection to the L7 library.\n\n",
           "createdAt": "2026-01-21T07:52:16Z",
           "updatedAt": "2026-01-21T07:52:16Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The post-handshake messages defined in RFC9261 will be created by the TLS stack and the application will be responsible for conveying it. The application will interact with the TLS stack using the APIs defined in the spec to create the post-handshake messages and to validate the CertificateVerify. \n\nWe can add a section to discuss how it can possibly be implemented. ",
+          "createdAt": "2026-01-23T05:35:55Z",
+          "updatedAt": "2026-01-23T05:35:55Z"
+        },
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@tireddy2 The RFC also allows an alternative:\n\n> It is also possible to implement this API outside of the TLS library using TLS exporters. This may be preferable in cases where the application does not have access to a TLS library with these APIs or when TLS is handled independently of the application-layer protocol.\n\n",
+          "createdAt": "2026-01-23T13:17:02Z",
+          "updatedAt": "2026-01-23T13:17:02Z"
         }
       ]
+    },
+    {
+      "number": 51,
+      "id": "I_kwDON6zrys7llFtq",
+      "title": "Spec for server as Attester",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/51",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Many use cases need it. I think we should prioritize it for meeting 125.",
+      "createdAt": "2026-01-24T17:52:09Z",
+      "updatedAt": "2026-01-24T17:52:09Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -4089,6 +4255,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 50,
+      "id": "PR_kwDON6zrys6_JodN",
+      "title": "Closes #2, #13, #35, #36",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/50",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes issues #2, #13, #35, #36",
+      "createdAt": "2026-01-24T17:05:45Z",
+      "updatedAt": "2026-01-24T17:05:47Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "5a97cae18cfd8b21a53aa38f62ace7f340bc2982",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "address-issues",
+      "headRefOid": "b05a6fcbfbd51ef57aa795f1e08b39711483fb42",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
