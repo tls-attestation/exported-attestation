@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-25T01:47:45.669888+00:00",
+  "timestamp": "2026-01-27T01:44:52.715873+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -4268,7 +4268,7 @@
       "labels": [],
       "body": "Closes issues #2, #13, #35, #36",
       "createdAt": "2026-01-24T17:05:45Z",
-      "updatedAt": "2026-01-24T17:05:47Z",
+      "updatedAt": "2026-01-26T13:18:13Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "5a97cae18cfd8b21a53aa38f62ace7f340bc2982",
