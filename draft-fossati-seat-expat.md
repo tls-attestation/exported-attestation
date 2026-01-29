@@ -363,18 +363,19 @@ Session resumption presents special challenges since it happens at the TLS level
 application-level Authenticator. The application (or the modified TLS library) must ensure that a resumed
 session has already completed remote attestation before the session can be used normally, and race conditions are possible.
 
-Possible solution to avoid the race condition:
+One possible approach to avoid race conditions is as follows:
 
-* Establish the handshake with explicit flags that prevent session resumption. (From the client side this can simply mean: delete the ticket before the handshake is complete.)
-* Do remote attestation.
-* Then enable session resumption. (Send a new `NewSessionTicket`.)
+* For any TLS handshake in which remote attestation is required, the TLS client ensures that any `NewSessionTicket` messages received from the TLS server are ignored or discarded.
+
+* The client and server perform remote attestation over the established TLS connection.
+
+* For subsequent TLS connections, the client applies the same policy: if remote attestation is required for a connection before any application traffic is exchanged, PSK-based resumption is prevented.
 
 From a TLS handshake perspective this is possible.
 
 ## Timing for Remote Attestation
-Remote attestation MUST be done before sending any secure data to the peer. For use cases which require
-only one-time attestation and need to just send some secret, remote attestation can be done
-immediately after the handshake.
+Remote attestation MUST be completed before sending any application data to the peer.
+For use cases that require only a one-time attestation for the lifetime of a TLS connection, remote attestation can be performed immediately after the TLS handshake completes.
 
 ## Evidence Freshness
 
