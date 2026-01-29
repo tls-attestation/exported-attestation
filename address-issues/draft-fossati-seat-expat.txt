@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 28 July 2026                                             Linaro
+Expires: 2 August 2026                                            Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 28 July 2026                                             Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         24 January 2026
+                                                         29 January 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 July 2026.
+   This Internet-Draft will expire on 2 August 2026.
 
 Copyright Notice
 
@@ -596,24 +596,28 @@ Table of Contents
    attestation before the session can be used normally, and race
    conditions are possible.
 
-   Possible solution to avoid the race condition:
+   One possible approach to avoid race conditions is as follows:
 
-   *  Establish the handshake with explicit flags that prevent session
-      resumption.  (From the client side this can simply mean: delete
-      the ticket before the handshake is complete.)
+   *  For any TLS handshake in which remote attestation is required, the
+      TLS client ensures that any NewSessionTicket messages received
+      from the TLS server are ignored or discarded.
 
-   *  Do remote attestation.
+   *  The client and server perform remote attestation over the
+      established TLS connection.
 
-   *  Then enable session resumption.  (Send a new NewSessionTicket.)
+   *  For subsequent TLS connections, the client applies the same
+      policy: if remote attestation is required for a connection before
+      any application traffic is exchanged, PSK-based resumption is
+      prevented.
 
    From a TLS handshake perspective this is possible.
 
 7.3.  Timing for Remote Attestation
 
-   Remote attestation MUST be done before sending any secure data to the
-   peer.  For use cases which require only one-time attestation and need
-   to just send some secret, remote attestation can be done immediately
-   after the handshake.
+   Remote attestation MUST be completed before sending any application
+   data to the peer.  For use cases that require only a one-time
+   attestation for the lifetime of a TLS connection, remote attestation
+   can be performed immediately after the TLS handshake completes.
 
 7.4.  Evidence Freshness
 
