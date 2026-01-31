@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 25 July 2026                                             Linaro
+Expires: 4 August 2026                                            Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 25 July 2026                                             Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         21 January 2026
+                                                         31 January 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 July 2026.
+   This Internet-Draft will expire on 4 August 2026.
 
 Copyright Notice
 
@@ -99,7 +99,8 @@ Table of Contents
    7.  Security Considerations
      7.1.  Security Guarantees
      7.2.  Using the TLS Connection
-     7.3.  Evidence Freshness
+     7.3.  Timing for Remote Attestation
+     7.4.  Evidence Freshness
    8.  Privacy Considerations
      8.1.  Client as Attester
      8.2.  Server as Attester
@@ -167,8 +168,8 @@ Table of Contents
 
    *  RATS Conceptual Messages Wrapper (CMW) [I-D.ietf-rats-msg-wrap]:
       CMW provides a structured encapsulation of Evidence and
-      Attestation Result payloads, abstracting the underlying
-      attestation technology.
+      Attestation Result, abstracting the underlying attestation
+      technology.
 
    This specification introduces the cmw_attestation extension, enabling
    Evidence to be included directly in the Certificate message during
@@ -195,7 +196,8 @@ Table of Contents
    This document introduces a new extension, called cmw_attestation, to
    the Authenticator's Certificate message.  This extension allows
    Evidence or Attestation Results to be included in the extensions
-   field of the end-entity certificate in the TLS Certificate message.
+   field of the end-entity certificate in the Authenticator's
+   Certificate message.
 
    As defined in Section 4.4.2 of [I-D.ietf-tls-rfc8446bis], the TLS
    Certificate message consists of a certificate_list, which is a
@@ -594,7 +596,30 @@ Table of Contents
    attestation before the session can be used normally, and race
    conditions are possible.
 
-7.3.  Evidence Freshness
+   One possible approach to avoid race conditions is as follows:
+
+   *  For any TLS handshake in which remote attestation is required, the
+      TLS client ensures that any NewSessionTicket messages received
+      from the TLS server are ignored or discarded.
+
+   *  The client and server perform remote attestation over the
+      established TLS connection.
+
+   *  For subsequent TLS connections, the client applies the same
+      policy: if remote attestation is required for a connection before
+      any application traffic is exchanged, PSK-based resumption is
+      prevented.
+
+   From a TLS handshake perspective this is possible.
+
+7.3.  Timing for Remote Attestation
+
+   Remote attestation MUST be completed before sending any application
+   data to the peer.  For use cases that require only a one-time
+   attestation for the lifetime of a TLS connection, remote attestation
+   can be performed immediately after the TLS handshake completes.
+
+7.4.  Evidence Freshness
 
    The Evidence carried in cmw_attestation does not require an
    additional freshness mechanism (such as a nonce [RA-TLS] or a
@@ -858,6 +883,12 @@ Document History
    *  Added channel binding
 
    *  Added security analysis of intra-handshake attestation in Appendix
+
+   -02
+
+   *  Security considerations: Race conditions
+
+   *  Security considerations: Timing of remote attestation
 
 Authors' Addresses
 
