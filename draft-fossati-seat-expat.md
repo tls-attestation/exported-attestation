@@ -125,7 +125,7 @@ This document builds upon three foundational specifications:
 
 - TLS Exported Authenticators {{RFC9261}}: It offers bi-directional post-handshake authentication. Once a TLS connection is established, both peers can send an authenticator request message at any point after the handshake. This message from the server and the client uses the CertificateRequest and the ClientCertificateRequest messages, respectively. The peer receiving the authenticator request message can respond with an Authenticator consisting of Certificate, CertificateVerify, and Finished messages. These messages can then be validated by the other peer.
 
-- RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result payloads, abstracting the underlying attestation technology.
+- RATS Conceptual Messages Wrapper (CMW) {{I-D.ietf-rats-msg-wrap}}: CMW provides a structured encapsulation of Evidence and Attestation Result, abstracting the underlying attestation technology.
 
 
 This specification introduces the cmw_attestation extension, enabling Evidence to be included directly in the Certificate message during the Exported Authenticator-based post-handshake authentication defined in {{RFC9261}}.
@@ -141,7 +141,7 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 # cmw_attestation Extension to the Authenticator's Certificate message
 
 This document introduces a new extension, called `cmw_attestation`, to the Authenticator's Certificate message.
-This extension allows Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the TLS Certificate message.
+This extension allows Evidence or Attestation Results to be included in the extensions field of the end-entity certificate in the Authenticator's Certificate message.
 
 As defined in {{Section 4.4.2 of -tls13}}, the TLS Certificate message consists of a certificate_list, which is a sequence of CertificateEntry structures. Each CertificateEntry contains a certificate and a set of associated extensions. The cmw_attestation extension MUST appear only in the first CertificateEntry of the Certificate message and applies exclusively to the end-entity certificate. It MUST NOT be included in entries corresponding to intermediate or trust anchor certificates. This design ensures that attestation information is tightly bound to the entity being authenticated.
 
@@ -363,6 +363,20 @@ Session resumption presents special challenges since it happens at the TLS level
 application-level Authenticator. The application (or the modified TLS library) must ensure that a resumed
 session has already completed remote attestation before the session can be used normally, and race conditions are possible.
 
+One possible approach to avoid race conditions is as follows:
+
+* For any TLS handshake in which remote attestation is required, the TLS client ensures that any `NewSessionTicket` messages received from the TLS server are ignored or discarded.
+
+* The client and server perform remote attestation over the established TLS connection.
+
+* For subsequent TLS connections, the client applies the same policy: if remote attestation is required for a connection before any application traffic is exchanged, PSK-based resumption is prevented.
+
+From a TLS handshake perspective this is possible.
+
+## Timing for Remote Attestation
+Remote attestation MUST be completed before sending any application data to the peer.
+For use cases that require only a one-time attestation for the lifetime of a TLS connection, remote attestation can be performed immediately after the TLS handshake completes.
+
 ## Evidence Freshness
 
 The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in {{binding}}. Because this value is bound to the active TLS connection, the Evidence is guaranteed to be fresh for the connection in which it is generated.
@@ -453,3 +467,8 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 
 * Added channel binding
 * Added security analysis of intra-handshake attestation in Appendix
+
+-02
+
+* Security considerations: Race conditions
+* Security considerations: Timing of remote attestation
