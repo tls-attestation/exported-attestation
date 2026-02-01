@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-27T01:44:52.715873+00:00",
+  "timestamp": "2026-02-01T02:08:44.979435+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -60,7 +60,7 @@
       "id": "I_kwDON6zrys6q5hSS",
       "title": "Questions from initial review of Introduction",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -70,8 +70,8 @@
       "labels": [],
       "body": "- [ ] I didn't find \"Payload\" in RFC9261. Can you refer me to the document which is closest in the sense it is used?\n- [x] I don't seem to understand the following sentence: \n> The end-entity certificate is associated with key material that serves as an Attestation Key, which acts as Evidence originating from the Attester.\n- [x] Not sure about the following sentence: Why not from the client? Are you scoping to a specific scenario, e.g., server/client as Attester or something else? This needs some explanation. \n> The mechanisms described in this document focus primarily on the server's ability to generate TLS Exported Authenticators.",
       "createdAt": "2025-02-20T20:31:25Z",
-      "updatedAt": "2026-01-24T16:50:23Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-31T06:13:50Z",
+      "closedAt": "2026-01-31T06:13:50Z",
       "comments": [
         {
           "author": "ionut-arm",
@@ -259,7 +259,7 @@
       "id": "I_kwDON6zrys6yXhwb",
       "title": "Security Considerations: session resumption",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/13",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -270,8 +270,8 @@
       ],
       "body": "Discussion with @yaronf, @thomas-fossati , @ionut-arm and Carsten: \n\nFor Sec. 4.1. in draft-00 (Using the TLS Connection): \n\n**Background**: If the session drops due to some reason, one can do session resumption rather than complete handshake. \n**Problem**: There can be problems in session resumption if remote attestation has not already been done for that session. \n**Solution**:\nFirst remote attestation MUST be done right after the initial handshake. This reduces the problem to essentially 1 round-trip time (for sending Authenticator Request and getting Authenticator) plus time for generation of Evidence and appraisal of Evidence. \n\nThe next rounds of remote attestation can be done on need basis. ",
       "createdAt": "2025-04-14T09:47:31Z",
-      "updatedAt": "2026-01-24T16:50:11Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-31T07:54:02Z",
+      "closedAt": "2026-01-31T07:54:02Z",
       "comments": [
         {
           "author": "yaronf",
@@ -579,7 +579,7 @@
       "id": "I_kwDON6zrys7UT0GK",
       "title": "When to start post-handshake",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/35",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -588,8 +588,8 @@
       "labels": [],
       "body": "\"Both peers can send an authenticator request message at any point after the handshake\" - so this doesn't have to happen immediately? As a profile of 9261, we can say that we require the post-handshake exchange to start immediately after the TLS handshake completes.\n\n",
       "createdAt": "2025-10-28T14:51:15Z",
-      "updatedAt": "2026-01-24T16:49:59Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-31T07:54:12Z",
+      "closedAt": "2026-01-31T07:54:12Z",
       "comments": []
     },
     {
@@ -597,7 +597,7 @@
       "id": "I_kwDON6zrys7UT0Hz",
       "title": "Top of Sec. 3 is confusing",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/36",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -606,8 +606,8 @@
       "labels": [],
       "body": "The first sentences of Sec. 3 are very confusing with respect to TLS messages. It is never clear when we are referring to in-handshake messages (e.g. Certificate) or post-handshake. Yes, we do mention the \"Authenticator message\" but we could still make it clearer.\n\n",
       "createdAt": "2025-10-28T14:51:17Z",
-      "updatedAt": "2026-01-24T16:53:26Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-31T07:54:19Z",
+      "closedAt": "2026-01-31T07:54:19Z",
       "comments": []
     },
     {
@@ -4261,26 +4261,75 @@
       "id": "PR_kwDON6zrys6_JodN",
       "title": "Closes #2, #13, #35, #36",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/50",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Closes issues #2, #13, #35, #36",
       "createdAt": "2026-01-24T17:05:45Z",
-      "updatedAt": "2026-01-26T13:18:13Z",
+      "updatedAt": "2026-01-31T06:13:49Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "5a97cae18cfd8b21a53aa38f62ace7f340bc2982",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "address-issues",
-      "headRefOid": "b05a6fcbfbd51ef57aa795f1e08b39711483fb42",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "9fd84fb96f7237525262fc5b1383862287f8a0c4",
+      "closedAt": "2026-01-31T06:13:49Z",
+      "mergedAt": "2026-01-31T06:13:49Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "9753c4bbe09ebe6f0487f2121aa43026d370c6e7"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7d5WSw",
+          "commit": {
+            "abbreviatedOid": "b05a6fc"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-29T13:40:10Z",
+          "updatedAt": "2026-01-29T13:42:54Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "I suggest to modify the text as follows:\n\nOne possible approach to avoid race conditions is as follows:\n\n1. For any TLS handshake in which remote attestation is required, the TLS client ensures that any `NewSessionTicket` messages received from the TLS  server are ignored or discarded.\n2. The client and server perform remote attestation over the established TLS connection.\n3. For subsequent TLS connections, the client applies the same policy: if remote attestation is required for a connection before any application traffic is    exchanged, PSK-based resumption is prevented.\n",
+              "createdAt": "2026-01-29T13:40:10Z",
+              "updatedAt": "2026-01-29T13:42:54Z"
+            },
+            {
+              "originalPosition": 30,
+              "body": "I suggest to modify text as follows:\r\n\r\nRemote attestation MUST be completed before sending any application data to the peer. For use cases that require only a one-time attestation for the lifetime of a TLS connection, remote attestation can be performed immediately after the TLS handshake completes.",
+              "createdAt": "2026-01-29T13:42:42Z",
+              "updatedAt": "2026-01-29T13:43:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7d-8-N",
+          "commit": {
+            "abbreviatedOid": "b05a6fc"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-29T18:07:29Z",
+          "updatedAt": "2026-01-29T18:07:29Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "LGTM.",
+              "createdAt": "2026-01-29T18:07:29Z",
+              "updatedAt": "2026-01-29T18:07:29Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
