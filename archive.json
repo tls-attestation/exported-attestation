@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-01T02:08:44.979435+00:00",
+  "timestamp": "2026-02-03T01:59:37.676396+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -177,11 +177,13 @@
       "state": "OPEN",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
       "labels": [],
       "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
       "createdAt": "2025-03-03T14:40:46Z",
-      "updatedAt": "2026-01-23T09:32:11Z",
+      "updatedAt": "2026-02-02T10:05:24Z",
       "closedAt": null,
       "comments": [
         {
@@ -197,6 +199,13 @@
           "body": "I think I am first trying to understand what \"Separate Client-Side Attester\" means. This is a predicate to the attack. So can someone explain what this means.\n> What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? ",
           "createdAt": "2026-01-23T09:32:10Z",
           "updatedAt": "2026-01-23T09:32:10Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Based on discussion with Carsten, @tireddy2 and Meiling:\n\ns/[Separate Client-Side Attester](https://www.ietf.org/archive/id/draft-fossati-seat-expat-01.html#name-background-check-model-with)/Client as Attester\n\ns/Client/TE\ns/Attester/AE\n\nSync figure 1 and 2\n\n**Case1**: TLS stack is wihtin TEE. => Use this case\n\n---\n**Case2**: TLS stack is outside the TEE. PKI cert keys are stored in TEE. ",
+          "createdAt": "2026-02-02T09:04:34Z",
+          "updatedAt": "2026-02-02T10:05:24Z"
         }
       ]
     },
@@ -873,11 +882,13 @@
       "state": "OPEN",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "tireddy2"
+      ],
       "labels": [],
       "body": "> To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator\u2013based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.\n\nAfter the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.",
       "createdAt": "2026-01-11T18:08:16Z",
-      "updatedAt": "2026-01-23T13:17:02Z",
+      "updatedAt": "2026-02-02T09:05:10Z",
       "closedAt": null,
       "comments": [
         {
@@ -939,13 +950,23 @@
       "state": "OPEN",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
       "labels": [],
       "body": "Many use cases need it. I think we should prioritize it for meeting 125.",
       "createdAt": "2026-01-24T17:52:09Z",
-      "updatedAt": "2026-01-24T17:52:09Z",
+      "updatedAt": "2026-02-02T10:05:45Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Based on discussion with Carsten, @tireddy2 and Meiling:\n\nAdd a note that the extension that is added is applicable to both client and server. This is for illustrative purposes. ",
+          "createdAt": "2026-02-02T08:51:23Z",
+          "updatedAt": "2026-02-02T10:05:45Z"
+        }
+      ]
     }
   ],
   "pulls": [
