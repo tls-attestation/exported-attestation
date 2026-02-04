@@ -333,11 +333,26 @@ The Relying Party MUST compute the hash of the AIK public key extracted from the
 the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence. Successful
 verification binds the attestation Evidence to the TLS identity used for authentication.
 
+
+# Operational Overview
+
+This specification follows the Exported Authenticator model defined in Section 7 of {{RFC9261}}. In this model, the TLS stack creates and validates post-handshake authentication messages, while the application triggers the exchange and conveys the Authenticator Request and Authenticator messages between peers.
+
+When attestation is required, the application initiates Exported Authenticator–based post-handshake authentication. The TLS stack constructs an Authenticator Request, using either a `CertificateRequest` or `ClientCertificateRequest` message, and indicates support for attestation by including an empty `cmw_attestation` extension.
+
+On the attesting side, the platform generates attestation, either in the form of Evidence or an Attestation Result, depending on the deployment model. The TLS stack embeds this attestation in the `cmw_attestation` extension and completes the Exported Authenticator by generating the corresponding `CertificateVerify` and `Finished` messages. The application then conveys the resulting Authenticator to the peer, as defined in {{RFC9261}}.
+
+Upon receipt, the application delivers the Authenticator to the TLS stack for processing. The TLS stack validates the certificate chain, the `CertificateVerify` signature, and the `Finished` message, and extracts the `cmw_attestation` extension. The TLS stack treats the contents of the `cmw_attestation` extension as opaque.
+
+If the `cmw_attestation` extension carries Evidence, the application acting as the Relying Party forwards it to a Verifier to obtain an Attestation Result. If the extension carries an Attestation Result, the application validates it directly. Based on the outcome of this processing, the application determines whether to continue using the TLS connection.
+
+While it is technically possible to create or validate Authenticator Requests and Authenticators at the application layer, {{RFC9261}} recommends that their creation and validation be handled within the TLS library.
+
 # Security Considerations
 
 This document inherits the security considerations of {{RFC9261}} and {{RFC9334}}. The integrity of the exported authenticators must be guaranteed, and any failure in validating Evidence SHOULD be treated as a fatal error in the communication channel. Additionally, in order to benefit from remote attestation, Evidence MUST be protected using dedicated attestation keys chaining back to a trust anchor. This trust anchor will typically be provided by the hardware manufacturer.
 
-This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the key pair and producing either Evidence or attestation results, which is included in the Certificate Signing Request (CSR) as defined in {{I-D.ietf-lamps-csr-attestation}}. This attestation enables the CA to verify that the private key is securely stored and that the platform meets the required security standards before issuing a certificate.
+This specification assumes that the Hardware Security Module (HSM) or Trusted Execution Environment (TEE) is responsible for generating the Authenticator Identity Key (AIK) key pair and producing either Evidence or Attestation Results. The Evidence or Attestation Results MAY be included in a Certificate Signing Request (CSR), as defined in {{I-D.ietf-lamps-csr-attestation}}, enabling the CA to verify that the AIK private key is securely generated and stored and that the platform meets the required security standards before issuing a certificate.
 
 ## Security Guarantees
 
