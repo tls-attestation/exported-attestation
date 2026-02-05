@@ -340,7 +340,7 @@ This specification follows the Exported Authenticator model defined in Section 7
 
 Whenever attestation is required, the application initiates Exported Authenticator–based post-handshake authentication. The TLS stack constructs an Authenticator Request, using either a `CertificateRequest` or `ClientCertificateRequest` message, and indicates support for attestation by including an empty `cmw_attestation` extension.
 
-On the attesting side, the platform generates attestation, either in the form of Evidence or an Attestation Result, depending on the deployment model. The TLS stack embeds this attestation in the `cmw_attestation` extension and completes the Exported Authenticator by generating the corresponding `CertificateVerify` and `Finished` messages. The application then conveys the resulting Authenticator to the peer, as defined in {{RFC9261}}.
+On the attesting side, the platform generates RATS conceptual message, either in the form of Evidence or an Attestation Result, depending on the deployment model. The TLS stack embeds the RATS conceptual message in the `cmw_attestation` extension and completes the Exported Authenticator by generating the corresponding `CertificateVerify` and `Finished` messages. The application then conveys the resulting Authenticator to the peer, as defined in {{RFC9261}}.
 
 Upon receipt, the application delivers the Authenticator to the TLS stack for processing. The TLS stack validates the certificate chain, the `CertificateVerify` signature, and the `Finished` message, and extracts the `cmw_attestation` extension. The TLS stack treats the contents of the `cmw_attestation` extension as opaque.
 
