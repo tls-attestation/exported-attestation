@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 4 August 2026                                            Linaro
+Expires: 9 August 2026                                            Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 4 August 2026                                            Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         31 January 2026
+                                                         5 February 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 August 2026.
+   This Internet-Draft will expire on 9 August 2026.
 
 Copyright Notice
 
@@ -96,20 +96,21 @@ Table of Contents
      4.1.  API Requirements for Attestation Support
    5.  Cryptographic Binding of the Evidence to the TLS Connection
    6.  Binding the Authenticator Identity Key (AIK) to the TEE
-   7.  Security Considerations
-     7.1.  Security Guarantees
-     7.2.  Using the TLS Connection
-     7.3.  Timing for Remote Attestation
-     7.4.  Evidence Freshness
-   8.  Privacy Considerations
-     8.1.  Client as Attester
-     8.2.  Server as Attester
-   9.  IANA Considerations
-     9.1.  TLS Extension Type Registration
-     9.2.  TLS Flags Extension Registry
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   7.  Operational Overview
+   8.  Security Considerations
+     8.1.  Security Guarantees
+     8.2.  Using the TLS Connection
+     8.3.  Timing for Remote Attestation
+     8.4.  Evidence Freshness
+   9.  Privacy Considerations
+     9.1.  Client as Attester
+     9.2.  Server as Attester
+   10. IANA Considerations
+     10.1.  TLS Extension Type Registration
+     10.2.  TLS Flags Extension Registry
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Acknowledgements
    Appendix
      Post-handshake vs. Intra-handshake Privacy
@@ -529,7 +530,49 @@ Table of Contents
    Evidence.  Successful verification binds the attestation Evidence to
    the TLS identity used for authentication.
 
-7.  Security Considerations
+7.  Operational Overview
+
+   This specification follows the Exported Authenticator model defined
+   in Section 7 of [RFC9261].  In this model, the TLS stack creates and
+   validates post-handshake authentication messages, while the
+   application triggers the exchange and conveys the Authenticator
+   Request and Authenticator messages between peers.
+
+   Whenever attestation is required, the application initiates Exported
+   Authenticator–based post-handshake authentication.  The TLS stack
+   constructs an Authenticator Request, using either a
+   CertificateRequest or ClientCertificateRequest message, and indicates
+   support for attestation by including an empty cmw_attestation
+   extension.
+
+   On the attesting side, the platform generates RATS conceptual
+   message, either in the form of Evidence or an Attestation Result,
+   depending on the deployment model.  The TLS stack embeds the RATS
+   conceptual message in the cmw_attestation extension and completes the
+   Exported Authenticator by generating the corresponding
+   CertificateVerify and Finished messages.  The application then
+   conveys the resulting Authenticator to the peer, as defined in
+   [RFC9261].
+
+   Upon receipt, the application delivers the Authenticator to the TLS
+   stack for processing.  The TLS stack validates the certificate chain,
+   the CertificateVerify signature, and the Finished message, and
+   extracts the cmw_attestation extension.  The TLS stack treats the
+   contents of the cmw_attestation extension as opaque.
+
+   If the cmw_attestation extension carries Evidence, the application
+   acting as the Relying Party forwards it to a Verifier to obtain an
+   Attestation Result.  If the extension carries an Attestation Result,
+   the application validates it directly.  Based on the outcome of this
+   processing, the application determines whether to continue using the
+   TLS connection.
+
+   While it is technically possible to create or validate Authenticator
+   Requests and Authenticators at the application layer, Section 7 of
+   [RFC9261] recommends that their creation and validation be handled
+   within the TLS library.
+
+8.  Security Considerations
 
    This document inherits the security considerations of [RFC9261] and
    [RFC9334].  The integrity of the exported authenticators must be
@@ -542,13 +585,15 @@ Table of Contents
 
    This specification assumes that the Hardware Security Module (HSM) or
    Trusted Execution Environment (TEE) is responsible for generating the
-   key pair and producing either Evidence or attestation results, which
-   is included in the Certificate Signing Request (CSR) as defined in
-   [I-D.ietf-lamps-csr-attestation].  This attestation enables the CA to
-   verify that the private key is securely stored and that the platform
-   meets the required security standards before issuing a certificate.
+   Authenticator Identity Key (AIK) key pair and producing either
+   Evidence or Attestation Results.  The Evidence or Attestation Results
+   MAY be included in a Certificate Signing Request (CSR), as defined in
+   [I-D.ietf-lamps-csr-attestation], enabling the CA to verify that the
+   AIK private key is securely generated and stored and that the
+   platform meets the required security standards before issuing a
+   certificate.
 
-7.1.  Security Guarantees
+8.1.  Security Guarantees
 
    Note that as a pure cryptographic protocol, attested TLS as-is only
    guarantees that the identity key used for TLS handshake is known by
@@ -580,7 +625,7 @@ Table of Contents
    source code, reproducible builds, formal verification etc.  The exact
    mechanisms are out of scope of this document.
 
-7.2.  Using the TLS Connection
+8.2.  Using the TLS Connection
 
    Remote attestation in this document occurs within the context of a
    TLS handshake, and the TLS connection remains valid after this
@@ -612,14 +657,14 @@ Table of Contents
 
    From a TLS handshake perspective this is possible.
 
-7.3.  Timing for Remote Attestation
+8.3.  Timing for Remote Attestation
 
    Remote attestation MUST be completed before sending any application
    data to the peer.  For use cases that require only a one-time
    attestation for the lifetime of a TLS connection, remote attestation
    can be performed immediately after the TLS handshake completes.
 
-7.4.  Evidence Freshness
+8.4.  Evidence Freshness
 
    The Evidence carried in cmw_attestation does not require an
    additional freshness mechanism (such as a nonce [RA-TLS] or a
@@ -638,9 +683,9 @@ Table of Contents
    certificate_request_context and therefore a newly derived exporter
    value to maintain freshness.
 
-8.  Privacy Considerations
+9.  Privacy Considerations
 
-8.1.  Client as Attester
+9.1.  Client as Attester
 
    In this section, we are assuming that the Attester is a TLS client,
    representing an individual person.  We are concerned about the
@@ -676,19 +721,19 @@ Table of Contents
    topology where the Verifier's involvement is unrelated to the TLS
    connection.
 
-8.2.  Server as Attester
+9.2.  Server as Attester
 
    For the case of the TLS server as the Attester, the server can ask
    for client authentication and only send the Evidence after successful
    client authentication.  This limits the exposure of server's
    hardware-level Claims to be revealed only to authorized clients.
 
-9.  IANA Considerations
+10.  IANA Considerations
 
    // Note to RFC Editor: in this section, please replace RFCthis with
    the RFC number assigned to this document and remove this note.
 
-9.1.  TLS Extension Type Registration
+10.1.  TLS Extension Type Registration
 
    IANA is requested to register the following new extension type in the
    "TLS ExtensionType Values" registry [IANA.tls-extensiontype-values]:
@@ -702,7 +747,7 @@ Table of Contents
 
                                   Table 1
 
-9.2.  TLS Flags Extension Registry
+10.2.  TLS Flags Extension Registry
 
    IANA is requested to add the following entry to the "TLS Flags"
    extension registry established by [I-D.ietf-tls-tlsflags]:
@@ -717,9 +762,9 @@ Table of Contents
 
    *  Reference: RFCthis
 
-10.  References
+11.  References
 
-10.1.  Normative References
+11.1.  Normative References
 
    [I-D.ietf-rats-msg-wrap]
               Birkholz, H., Smith, N., Fossati, T., Tschofenig, H., and
@@ -770,7 +815,7 @@ Table of Contents
               Architecture", RFC 9334, DOI 10.17487/RFC9334, January
               2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
-10.2.  Informative References
+11.2.  Informative References
 
    [FIDO-REQS]
               Peirani, B. and J. Verrept, "FIDO Authenticator Security
