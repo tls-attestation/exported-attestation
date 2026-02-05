@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-03T01:59:37.676396+00:00",
+  "timestamp": "2026-02-05T01:55:57.019110+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -52,6 +52,11 @@
       "name": "Sec cons",
       "description": "Security considerations",
       "color": "d93f0b"
+    },
+    {
+      "name": "Clarification",
+      "description": "",
+      "color": "6243d8"
     }
   ],
   "issues": [
@@ -180,10 +185,12 @@
       "assignees": [
         "muhammad-usama-sardar"
       ],
-      "labels": [],
+      "labels": [
+        "Clarification"
+      ],
       "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
       "createdAt": "2025-03-03T14:40:46Z",
-      "updatedAt": "2026-02-02T10:05:24Z",
+      "updatedAt": "2026-02-04T19:14:36Z",
       "closedAt": null,
       "comments": [
         {
@@ -764,10 +771,12 @@
       "assignees": [
         "tireddy2"
       ],
-      "labels": [],
+      "labels": [
+        "Clarification"
+      ],
       "body": "Sec. 5 (Security Considerations): do we really require [I-D.ietf-lamps-csr-attestation] as a prerequisite? If so then we are again in a place where freshness of the Evidence depends on the CA's latency. Note that the document says twice that we don't want CA-style latency.\n\n",
       "createdAt": "2025-10-28T14:51:23Z",
-      "updatedAt": "2026-01-24T16:58:09Z",
+      "updatedAt": "2026-02-04T19:14:36Z",
       "closedAt": null,
       "comments": [
         {
@@ -953,10 +962,12 @@
       "assignees": [
         "muhammad-usama-sardar"
       ],
-      "labels": [],
+      "labels": [
+        "Clarification"
+      ],
       "body": "Many use cases need it. I think we should prioritize it for meeting 125.",
       "createdAt": "2026-01-24T17:52:09Z",
-      "updatedAt": "2026-02-02T10:05:45Z",
+      "updatedAt": "2026-02-04T19:14:37Z",
       "closedAt": null,
       "comments": [
         {
@@ -4347,6 +4358,65 @@
               "body": "LGTM.",
               "createdAt": "2026-01-29T18:07:29Z",
               "updatedAt": "2026-01-29T18:07:29Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "PR_kwDON6zrys7Bd012",
+      "title": "Address post-handshake multiplexing and CSR issues",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/52",
+      "state": "OPEN",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address issues https://github.com/tls-attestation/exported-attestation/issues/49 and \r\nhttps://github.com/tls-attestation/exported-attestation/issues/40",
+      "createdAt": "2026-02-04T13:21:35Z",
+      "updatedAt": "2026-02-04T21:15:56Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "9753c4bbe09ebe6f0487f2121aa43026d370c6e7",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "tireddy2-patch-6",
+      "headRefOid": "284b648e4f9d569ca1a131355eb3a92154e1f3e2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7ftzGJ",
+          "commit": {
+            "abbreviatedOid": "284b648"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks, only a few minor terminology clarifications.",
+          "createdAt": "2026-02-04T21:10:17Z",
+          "updatedAt": "2026-02-04T21:15:56Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "```suggestion\nWhenever attestation is required, the application initiates Exported Authenticator\u2013based post-handshake authentication. The TLS stack constructs an Authenticator Request, using either a `CertificateRequest` or `ClientCertificateRequest` message, and indicates support for attestation by including an empty `cmw_attestation` extension.\n```",
+              "createdAt": "2026-02-04T21:10:17Z",
+              "updatedAt": "2026-02-04T21:15:56Z"
+            },
+            {
+              "originalPosition": 11,
+              "body": "```suggestion\nOn the attesting side, the platform generates RATS conceptual message, either in the form of Evidence or an Attestation Result, depending on the deployment model. The TLS stack embeds the RATS conceptual message in the `cmw_attestation` extension and completes the Exported Authenticator by generating the corresponding `CertificateVerify` and `Finished` messages. The application then conveys the resulting Authenticator to the peer, as defined in {{RFC9261}}.\n```",
+              "createdAt": "2026-02-04T21:12:09Z",
+              "updatedAt": "2026-02-04T21:15:56Z"
+            },
+            {
+              "originalPosition": 17,
+              "body": "```suggestion\nWhile it is technically possible to create or validate Authenticator Requests and Authenticators at the application layer, Section 7 of {{RFC9261}} recommends that their creation and validation be handled within the TLS library.\n```",
+              "createdAt": "2026-02-04T21:14:48Z",
+              "updatedAt": "2026-02-04T21:15:56Z"
             }
           ]
         }
