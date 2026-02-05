@@ -568,9 +568,9 @@ Table of Contents
    TLS connection.
 
    While it is technically possible to create or validate Authenticator
-   Requests and Authenticators at the application layer, [RFC9261]
-   recommends that their creation and validation be handled within the
-   TLS library.
+   Requests and Authenticators at the application layer, Section 7 of
+   [RFC9261] recommends that their creation and validation be handled
+   within the TLS library.
 
 8.  Security Considerations
 
