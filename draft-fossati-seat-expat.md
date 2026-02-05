@@ -346,7 +346,7 @@ Upon receipt, the application delivers the Authenticator to the TLS stack for pr
 
 If the `cmw_attestation` extension carries Evidence, the application acting as the Relying Party forwards it to a Verifier to obtain an Attestation Result. If the extension carries an Attestation Result, the application validates it directly. Based on the outcome of this processing, the application determines whether to continue using the TLS connection.
 
-While it is technically possible to create or validate Authenticator Requests and Authenticators at the application layer, {{RFC9261}} recommends that their creation and validation be handled within the TLS library.
+While it is technically possible to create or validate Authenticator Requests and Authenticators at the application layer, Section 7 of {{RFC9261}} recommends that their creation and validation be handled within the TLS library.
 
 # Security Considerations
 
