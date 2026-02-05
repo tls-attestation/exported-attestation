@@ -338,7 +338,7 @@ verification binds the attestation Evidence to the TLS identity used for authent
 
 This specification follows the Exported Authenticator model defined in Section 7 of {{RFC9261}}. In this model, the TLS stack creates and validates post-handshake authentication messages, while the application triggers the exchange and conveys the Authenticator Request and Authenticator messages between peers.
 
-When attestation is required, the application initiates Exported Authenticator–based post-handshake authentication. The TLS stack constructs an Authenticator Request, using either a `CertificateRequest` or `ClientCertificateRequest` message, and indicates support for attestation by including an empty `cmw_attestation` extension.
+Whenever attestation is required, the application initiates Exported Authenticator–based post-handshake authentication. The TLS stack constructs an Authenticator Request, using either a `CertificateRequest` or `ClientCertificateRequest` message, and indicates support for attestation by including an empty `cmw_attestation` extension.
 
 On the attesting side, the platform generates attestation, either in the form of Evidence or an Attestation Result, depending on the deployment model. The TLS stack embeds this attestation in the `cmw_attestation` extension and completes the Exported Authenticator by generating the corresponding `CertificateVerify` and `Finished` messages. The application then conveys the resulting Authenticator to the peer, as defined in {{RFC9261}}.
 
