@@ -224,7 +224,10 @@ By integrating `cmw_attestation` directly into the Certificate message during Ex
 
 In the following examples, the server possesses an identity certificate, while the client is not authenticated during the initial TLS exchange.
 
-{{fig-passport}} shows the passport model while {{fig-background}} illustrates the background-check model.
+## Client as Attester
+
+### Passport Model
+{{fig-passport}} shows the passport model.
 
 ~~~aasvg
 Client                   Server                   Verifier
@@ -236,7 +239,7 @@ Client                   Server                   Verifier
   |  ... time passes ...   |                         |
   |                        |                         |
   | Authenticator Request  |                         |
-  | (ClientCertificateReq) |                         |
+  |   (CertificateReq)     |                         |
   |<-----------------------|                         |
   |                        |                         |
   |                  Sends Evidence                  |
@@ -252,17 +255,21 @@ Client                   Server                   Verifier
 ~~~
 {: #fig-passport title="Passport Model with Client as Attester"}
 
-{{fig-background}} shows an example using the background-check model.
+### Background-check Model
+
+{{fig-background}} shows an example using the background-check model,
+where TE represents the Target Environment and AE represents the
+Attesting Environment.
 
 ~~~aasvg
-Client              Attester                 Server           Verifier
+ TE                   AE                     Server           Verifier
   |                   |                        |                  |
   |  Regular TLS Handshake (Server-only auth)  |                  |
   |<------------------------------------------>|                  |
   |                   |                        |                  |
   |   ... time passes ...                      |                  |
   |                   |                        |                  |
-  | Authenticator Request (ClientCertReq)      |                  |
+  | Authenticator Request (CertificateReq)     |                  |
   |<-------------------------------------------|                  |
   |                   |                        |                  |
   | Request Evidence  |                        |                  |
@@ -271,7 +278,7 @@ Client              Attester                 Server           Verifier
   | Evidence          |                        |                  |
   |<------------------|                        |                  |
   | Exported Authenticator(Certificate with    |                  |
-  | cmw_attestation                            |                  |
+  | cmw_attestation,                           |                  |
   | CertificateVerify,                         |                  |
   | Finished)                                  |                  |
   |------------------------------------------->|                  |
@@ -282,7 +289,11 @@ Client              Attester                 Server           Verifier
   |                   |                        |<-----------------|
   |                   |                        |                  |
 ~~~
-{: #fig-background title="Background Check Model with a Separate Client-Side Attester"}
+{: #fig-background title="Background Check Model with Client as Attester"}
+
+## Server as Attester
+
+The flow for Server as Attester will be analogous.
 
 ## API Requirements for Attestation Support
 
