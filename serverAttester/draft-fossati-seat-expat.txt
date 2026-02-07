@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 10 August 2026                                           Linaro
+Expires: 11 August 2026                                           Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 10 August 2026                                           Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         6 February 2026
+                                                         7 February 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 August 2026.
+   This Internet-Draft will expire on 11 August 2026.
 
 Copyright Notice
 
@@ -432,7 +432,13 @@ Table of Contents
 
    Figure 2 shows an example using the background-check model, where TE
    represents the Target Environment and AE represents the Attesting
-   Environment.
+   Environment.  The TLS client on TE establishes a TLS connection with
+   the Server.  At a later time, the Server triggers an Authenticator
+   Request.  The TE invokes the AE, which collects claims and produces
+   attestation Evidence about the TE.  The TE embeds this Evidence into
+   an Exported Authenticator and sends it to the Server.  The Server
+   forwards the Evidence to a Verifier for appraisal and receives an
+   Attestation Result.
 
    TE                   AE                     Server           Verifier
     |                   |                        |                  |
@@ -465,7 +471,8 @@ Table of Contents
 
 4.2.  Server as Attester
 
-   The flow for Server as Attester will be analogous.
+   The flow for the Server as Attester is analogous, except for the use
+   of a ClientCertificateRequest instead of CertificateRequest.
 
 4.3.  API Requirements for Attestation Support
 
