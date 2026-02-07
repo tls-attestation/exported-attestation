@@ -259,7 +259,12 @@ Client                   Server                   Verifier
 
 {{fig-background}} shows an example using the background-check model,
 where TE represents the Target Environment and AE represents the
-Attesting Environment.
+Attesting Environment. 
+The TLS client on TE establishes a TLS connection with the Server.
+At a later time, the Server triggers an Authenticator Request. 
+The TE invokes the AE, which collects claims and produces attestation Evidence about the TE.
+The TE embeds this Evidence into an Exported Authenticator and sends it to the Server.
+The Server forwards the Evidence to a Verifier for appraisal and receives an Attestation Result.
 
 ~~~aasvg
  TE                   AE                     Server           Verifier
@@ -293,7 +298,7 @@ Attesting Environment.
 
 ## Server as Attester
 
-The flow for Server as Attester will be analogous.
+The flow for the Server as Attester is analogous, except for the use of a ClientCertificateRequest instead of CertificateRequest.
 
 ## API Requirements for Attestation Support
 
