@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-05T01:55:57.019110+00:00",
+  "timestamp": "2026-02-08T02:24:52.771848+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -190,7 +190,7 @@
       ],
       "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
       "createdAt": "2025-03-03T14:40:46Z",
-      "updatedAt": "2026-02-04T19:14:36Z",
+      "updatedAt": "2026-02-05T13:46:47Z",
       "closedAt": null,
       "comments": [
         {
@@ -631,15 +631,15 @@
       "id": "I_kwDON6zrys7UT0JR",
       "title": "What certificate chain?",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/37",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Sec. 3.2 assumes that there is always a certificate chain ready to be sent in the post-handshake exchange. Is it an exact copy of the TLS handshake's chain? If so, we should say so and mandate that the peer bitwise compares the two chains.\n\n",
       "createdAt": "2025-10-28T14:51:18Z",
-      "updatedAt": "2026-01-23T05:44:16Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-05T13:47:07Z",
+      "closedAt": "2026-02-05T13:47:07Z",
       "comments": [
         {
           "author": "ionut-arm",
@@ -668,6 +668,13 @@
           "body": "RFC9261 allows multiple identities, that's one of the reasons it was defined (see https://datatracker.ietf.org/doc/draft-ietf-httpbis-secondary-server-certs/00/). ",
           "createdAt": "2026-01-23T05:44:16Z",
           "updatedAt": "2026-01-23T05:44:16Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The text in https://github.com/tls-attestation/exported-attestation/blob/main/draft-fossati-seat-expat.md#ensuring-compatibility-with-x509-certificate-validation already clarifies that the draft does not substitute for X.509 certificate validation, but can be used alongside standard certificate validation to provide additional security assurances.\n\nThis draft is not affected by whether the same identity is used during the pre-handshake and post-handshake authentication phases. It is up to the application to decide whether to use the same identity or a different one, and the draft does not impose any such requirement on the application. If the application chooses to use a different identity during post-handshake, the public key corresponding to the end-entity certificate is used as the attestation binder.",
+          "createdAt": "2026-02-05T13:47:07Z",
+          "updatedAt": "2026-02-05T13:47:07Z"
         }
       ]
     },
@@ -765,7 +772,7 @@
       "id": "I_kwDON6zrys7UT0Nm",
       "title": "Attested CSR as a prerequisite",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/40",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -776,8 +783,8 @@
       ],
       "body": "Sec. 5 (Security Considerations): do we really require [I-D.ietf-lamps-csr-attestation] as a prerequisite? If so then we are again in a place where freshness of the Evidence depends on the CA's latency. Note that the document says twice that we don't want CA-style latency.\n\n",
       "createdAt": "2025-10-28T14:51:23Z",
-      "updatedAt": "2026-02-04T19:14:36Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-05T04:57:06Z",
+      "closedAt": "2026-02-05T04:57:06Z",
       "comments": [
         {
           "author": "ionut-arm",
@@ -888,7 +895,7 @@
       "id": "I_kwDON6zrys7imgVr",
       "title": "Post-handshake data multiplexing",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/49",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "yaronf",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -897,8 +904,8 @@
       "labels": [],
       "body": "> To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator\u2013based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.\n\nAfter the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.",
       "createdAt": "2026-01-11T18:08:16Z",
-      "updatedAt": "2026-02-02T09:05:10Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-07T08:38:22Z",
+      "closedAt": "2026-02-05T13:35:47Z",
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -948,6 +955,90 @@
           "body": "@tireddy2 The RFC also allows an alternative:\n\n> It is also possible to implement this API outside of the TLS library using TLS exporters. This may be preferable in cases where the application does not have access to a TLS library with these APIs or when TLS is handled independently of the application-layer protocol.\n\n",
           "createdAt": "2026-01-23T13:17:02Z",
           "updatedAt": "2026-01-23T13:17:02Z"
+        },
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The PR is very reasonable, but it does not address this issue.\n\n* What is the expected application protocol, if any.\n* Is it client-server or bidirectional.\n* How does it accommodate reattestation.\n\nThe API between the application and the TLS stack is important but it's not what the (original) issue is about.",
+          "createdAt": "2026-02-05T12:32:33Z",
+          "updatedAt": "2026-02-05T12:32:33Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The PR is very reasonable, but it does not address this issue.\n> \n> * What is the expected application protocol, if any.\n> * Is it client-server or bidirectional.\n> * How does it accommodate reattestation.\n\nAlso, how it accommodates negotiation.\n\nThis issue is also related to #38 and #39.",
+          "createdAt": "2026-02-05T12:40:01Z",
+          "updatedAt": "2026-02-05T12:40:01Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> > The PR is very reasonable, but it does not address this issue.\n> > \n> > * What is the expected application protocol, if any.\n> > * Is it client-server or bidirectional.\n> > * How does it accommodate reattestation.\n> \n> Also, how it accommodates negotiation.\n> \n> This issue is also related to [#38](https://github.com/tls-attestation/exported-attestation/issues/38) and [#39](https://github.com/tls-attestation/exported-attestation/issues/39).\n\nYes, I did not close these issues https://github.com/tls-attestation/exported-attestation/issues/38 and https://github.com/tls-attestation/exported-attestation/issues/39. We need to discuss and address them in separate PRs. ",
+          "createdAt": "2026-02-05T13:35:47Z",
+          "updatedAt": "2026-02-05T13:35:47Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The PR is very reasonable, but it does not address this issue.\n> \n>     * What is the expected application protocol, if any.\n\nRFC 9261 intentionally does not define or assume any application protocol, and I suggest even in this draft we follow the same layering principle to avoid unnecessary scope expansion. Application-specific usage of Exported Authenticators is already being addressed in draft-ietf-httpbis-secondary-server-certs. \n\n> \n>     * Is it client-server or bidirectional.\n\nRFC 9261 is bidirectional.\n\n> \n>     * How does it accommodate reattestation.\n\nRFC 9261 allows authentication anytime during lifetime of the TLS session, https://github.com/tls-attestation/exported-attestation/blob/main/draft-fossati-seat-expat.md#cryptographic-binding-of-the-evidence-to-the-tls-connection-binding would work for reattestation. \n\n> \n> \n> The API between the application and the TLS stack is important but it's not what the (original) issue is about.\n\n",
+          "createdAt": "2026-02-05T13:44:59Z",
+          "updatedAt": "2026-02-05T13:44:59Z"
+        },
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@tireddy2 RPC-style protocols keep being mentioned as examples, including on this very thread. These are not bidirectional.\n\nTo put it bluntly: RFC 9261 is underspecified. If you want to use it for real, you would need to fill in the blanks.",
+          "createdAt": "2026-02-05T15:55:33Z",
+          "updatedAt": "2026-02-05T15:55:33Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> [@tireddy2](https://github.com/tireddy2) RPC-style protocols keep being mentioned as examples, including on this very thread. These are not bidirectional.\n> \n> To put it bluntly: RFC 9261 is underspecified. If you want to use it for real, you would need to fill in the blanks.\n\nExpanding this document to cover application protocol details would significantly increase its scope. Application-specific changes are better addressed in separate drafts which is why work such as HTTPbis explicitly discusses how HTTP/2 and HTTP/3 are updated to leverage RFC 9261, rather than attempting to embed those details in the TLS specification itself.",
+          "createdAt": "2026-02-06T05:29:05Z",
+          "updatedAt": "2026-02-06T05:29:05Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Expanding this document to cover application protocol details would significantly increase its scope. \n\nYes.  However, that\u2019s probably the only way to stay within SEAT scope:\n\n\"The Secure Evidence and Attestation Transport (SEAT) WG will [\u2026] deliver a Standards Track _protocol_\"\n\nWhat seat-expat provides, at the moment, is an attestation-tailored profile of the RFC9261 framework, rather than a _protocol_.",
+          "createdAt": "2026-02-06T08:49:43Z",
+          "updatedAt": "2026-02-06T08:49:43Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> What seat-expat provides, at the moment, is an attestation-tailored profile of the RFC9261 framework, rather than a protocol.\n\nI don't know what's your definition of a protocol, but from a formal perspective, what we have is a protocol.\n\nI believe this issue has been addressed. #38 and #39 are still open and can be addressed separately. If there is a specific concern beyond that, please create a separate issue with the specifics. ",
+          "createdAt": "2026-02-06T12:34:31Z",
+          "updatedAt": "2026-02-06T12:34:31Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I don't know what's your definition of a protocol, but from a formal perspective, what we have is a protocol.\n\nThe IETF specifies _network_ protocols (think TCP, TLS, HTTP), not _formal_ protocols.\n\n> I believe this issue has been addressed.\n\nI don't think so.\n\nOne option would be to argue that multiplexing is not a concern because the expat exchange is completed simultaneously with the TLS handshake (once, back-to-back).  Note that this implies re-attestation is not possible, unfortunately.\n\nThe alternative is to either expand the scope of the document to specify precisely how multiplexing is supposed to work, which Tiru noted would require a considerable amount of work, or defer that (and other aspects, notably feature negotiation and triggering) to the _real_ (network/transport/application) protocol.  The latter opiton would require tweaking the SEAT charter to ensure it\u2019s clear that the deliverable is not a _protocol_ but a framework that requires further integration work to be applied.\n",
+          "createdAt": "2026-02-06T13:36:06Z",
+          "updatedAt": "2026-02-06T13:36:06Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> > I don't know what's your definition of a protocol, but from a formal perspective, what we have is a protocol.\n> \n> The IETF specifies _network_ protocols (think TCP, TLS, HTTP), not _formal_ protocols.\n> \n> > I believe this issue has been addressed.\n> \n> I don't think so.\n> \n> One option would be to argue that multiplexing is not a concern because the expat exchange is completed simultaneously with the TLS handshake (once, back-to-back). Note that this implies re-attestation is not possible, unfortunately.\n> \n> The alternative is to either expand the scope of the document to specify precisely how multiplexing is supposed to work, which Tiru noted would require a considerable amount of work, or defer that (and other aspects, notably feature negotiation and triggering) to the _real_ (network/transport/application) protocol. The latter opiton would require tweaking the SEAT charter to ensure it\u2019s clear that the deliverable is not a _protocol_ but a framework that requires further integration work to be applied.\n\nAgreed that deployment requires application-protocol considerations. My plan is to address those in a separate companion draft that specifies the required application-level changes. Together, the two drafts provide a complete and real solution while keeping each document\u2019s scope manageable.",
+          "createdAt": "2026-02-06T15:02:41Z",
+          "updatedAt": "2026-02-06T15:02:41Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Agreed that deployment requires application-protocol considerations. My plan is to address those in a separate companion draft that specifies the required application-level changes. Together, the two drafts provide a complete and real solution while keeping each document\u2019s scope manageable.\n\nSure, this is a perfectly acceptable option.  In fact, it's the most flexible option.\n\nHowever, if we decide to proceed with this approach rather than the \"expat as a shim\", I want it to be clear to everyone that this would make seat-expat a _protocol building block_ rather than a _protocol_ in its own right.\n\nGiven the current phrasing in the SEAT charter, this implies that seat-expat would not be suitable for adoption as a standalone work item that fulfils the charter goal: one or more companion documents would be required for each _real_ target protocol.",
+          "createdAt": "2026-02-06T15:27:18Z",
+          "updatedAt": "2026-02-06T15:27:18Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> > Agreed that deployment requires application-protocol considerations. My plan is to address those in a separate companion draft that specifies the required application-level changes. Together, the two drafts provide a complete and real solution while keeping each document\u2019s scope manageable.\n> \n> Sure, this is a perfectly acceptable option. In fact, it's the most flexible option.\n> \n> However, if we decide to proceed with this approach rather than the \"expat as a shim\", I want it to be clear to everyone that this would make seat-expat a _protocol building block_ rather than a _protocol_ in its own right.\n> \n> Given the current phrasing in the SEAT charter, this implies that seat-expat would not be suitable for adoption as a standalone work item that fulfils the charter goal: one or more companion documents would be required for each _real_ target protocol.\n\nWe should start with a single companion document to demonstrate completeness. If the WG sees value in covering additional application protocols, those can be proposed as follow-on work.",
+          "createdAt": "2026-02-07T08:38:21Z",
+          "updatedAt": "2026-02-07T08:38:21Z"
         }
       ]
     },
@@ -978,6 +1069,24 @@
           "updatedAt": "2026-02-02T10:05:45Z"
         }
       ]
+    },
+    {
+      "number": 54,
+      "id": "I_kwDON6zrys7o3db-",
+      "title": "`ClientCertificateRequest` vs. `CertificateRequest`",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/54",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
+      "labels": [],
+      "body": "In the figures, `ClientCertificateRequest` is shown from Server to Client, whereas it is from Client to Server. The one from Server to Client should be `CertificateRequest`.",
+      "createdAt": "2026-02-06T13:46:24Z",
+      "updatedAt": "2026-02-06T13:46:47Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -4368,24 +4477,26 @@
       "id": "PR_kwDON6zrys7Bd012",
       "title": "Address post-handshake multiplexing and CSR issues",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/52",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tireddy2",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Address issues https://github.com/tls-attestation/exported-attestation/issues/49 and \r\nhttps://github.com/tls-attestation/exported-attestation/issues/40",
       "createdAt": "2026-02-04T13:21:35Z",
-      "updatedAt": "2026-02-04T21:15:56Z",
+      "updatedAt": "2026-02-05T04:55:53Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "9753c4bbe09ebe6f0487f2121aa43026d370c6e7",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-6",
-      "headRefOid": "284b648e4f9d569ca1a131355eb3a92154e1f3e2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "c7ee86b935aae00d4701823b75e5961e60c27262",
+      "closedAt": "2026-02-05T04:55:52Z",
+      "mergedAt": "2026-02-05T04:55:52Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf"
+      },
       "comments": [],
       "reviews": [
         {
@@ -4417,6 +4528,122 @@
               "body": "```suggestion\nWhile it is technically possible to create or validate Authenticator Requests and Authenticators at the application layer, Section 7 of {{RFC9261}} recommends that their creation and validation be handled within the TLS library.\n```",
               "createdAt": "2026-02-04T21:14:48Z",
               "updatedAt": "2026-02-04T21:15:56Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "id": "PR_kwDON6zrys7BoypT",
+      "title": "Updates to Cryptographic Binding of the Evidence",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/53",
+      "state": "OPEN",
+      "author": "tireddy2",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-05T05:58:46Z",
+      "updatedAt": "2026-02-07T07:41:06Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "tireddy2-patch-7",
+      "headRefOid": "bc48f16951d26a8adf4481ad60c4a934483f931f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Please fix the build errors.",
+          "createdAt": "2026-02-07T00:21:30Z",
+          "updatedAt": "2026-02-07T00:21:30Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Please fix the build errors.\r\n\r\nFixed. ",
+          "createdAt": "2026-02-07T07:41:06Z",
+          "updatedAt": "2026-02-07T07:41:06Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 55,
+      "id": "PR_kwDON6zrys7CAUNb",
+      "title": "Issues #8, #51 and #54",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/55",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "muhammad-usama-sardar"
+      ],
+      "labels": [],
+      "body": "Issues #8, #51 and #54",
+      "createdAt": "2026-02-06T13:58:11Z",
+      "updatedAt": "2026-02-07T15:12:28Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "serverAttester",
+      "headRefOid": "848450d9689eb09cbaac25483f63c138defb5b00",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7gg00l",
+          "commit": {
+            "abbreviatedOid": "cc74b64"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-07T08:24:24Z",
+          "updatedAt": "2026-02-07T08:26:53Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "I propose to add following text: The TLS client on TE establishes a TLS connection with the Server. At a later time, the Server triggers an Authenticator Request. The TE invokes the AE, which collects claims and produces attestation Evidence about the TE. The TE embeds this Evidence into an Exported Authenticator and sends it to the Server. The Server forwards the Evidence to a Verifier for appraisal and receives an attestation result.",
+              "createdAt": "2026-02-07T08:24:25Z",
+              "updatedAt": "2026-02-07T08:30:27Z"
+            },
+            {
+              "originalPosition": 64,
+              "body": "Fix text as follows: The flow for the Server as Attester is analogous, except for the use of a ClientCertificateRequest.",
+              "createdAt": "2026-02-07T08:26:48Z",
+              "updatedAt": "2026-02-07T08:26:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7gi-84",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-07T15:11:54Z",
+          "updatedAt": "2026-02-07T15:11:55Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "Added text as proposed",
+              "createdAt": "2026-02-07T15:11:54Z",
+              "updatedAt": "2026-02-07T15:11:55Z"
             }
           ]
         }
