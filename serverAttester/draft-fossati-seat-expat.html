@@ -1055,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Sardar, et al.</td>
-<td class="center">Expires 11 August 2026</td>
+<td class="center">Expires 12 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-fossati-seat-expat-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-07" class="published">7 February 2026</time>
+<time datetime="2026-02-08" class="published">8 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-11">11 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-12">12 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1143,7 +1143,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1548,9 +1548,9 @@ ClientCertificateRequest MUST ignore it and continue processing the message as i
 <p id="section-4.1.2-1"><a href="#fig-background" class="auto internal xref">Figure 2</a> shows an example using the background-check model,
 where TE represents the Target Environment and AE represents the
 Attesting Environment.
-The TLS client on TE establishes a TLS connection with the Server.
+The TLS client within TE establishes a TLS connection with the Server.
 At a later time, the Server triggers an Authenticator Request.
-The TE invokes the AE, which collects claims and produces attestation Evidence about the TE.
+The TE requests Evidence from the AE. The Evidence produced includes the TE's TCB measurements, including those relating to the Client code and configuration.
 The TE embeds this Evidence into an Exported Authenticator and sends it to the Server.
 The Server forwards the Evidence to a Verifier for appraisal and receives an Attestation Result.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
 <span id="name-background-check-model-with"></span><div id="fig-background">
@@ -1581,6 +1581,7 @@ The Server forwards the Evidence to a Verifier for appraisal and receives an Att
                   <polygon class="arrowhead" points="32,80 20,74.4 20,85.6" fill="black" transform="rotate(180,24,80)"></polygon>
                   <g class="text">
                     <text x="12" y="36">TE</text>
+                    <text x="60" y="36">(Client)</text>
                     <text x="180" y="36">AE</text>
                     <text x="380" y="36">Server</text>
                     <text x="524" y="36">Verifier</text>
@@ -1629,7 +1630,7 @@ The Server forwards the Evidence to a Verifier for appraisal and receives an Att
         <h3 id="name-server-as-attester">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-server-as-attester" class="section-name selfRef">Server as Attester</a>
         </h3>
-<p id="section-4.2-1">The flow for the Server as Attester is analogous, except for the use of a ClientCertificateRequest instead of CertificateRequest.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The flow for the Server as Attester is analogous, except that it uses a ClientCertificateRequest instead of CertificateRequest.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="api-requirements-for-attestation-support">
