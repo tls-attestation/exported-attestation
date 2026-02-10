@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-08T02:24:52.771848+00:00",
+  "timestamp": "2026-02-10T02:12:28.507245+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -190,7 +190,7 @@
       ],
       "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
       "createdAt": "2025-03-03T14:40:46Z",
-      "updatedAt": "2026-02-05T13:46:47Z",
+      "updatedAt": "2026-02-09T09:03:41Z",
       "closedAt": null,
       "comments": [
         {
@@ -213,6 +213,20 @@
           "body": "Based on discussion with Carsten, @tireddy2 and Meiling:\n\ns/[Separate Client-Side Attester](https://www.ietf.org/archive/id/draft-fossati-seat-expat-01.html#name-background-check-model-with)/Client as Attester\n\ns/Client/TE\ns/Attester/AE\n\nSync figure 1 and 2\n\n**Case1**: TLS stack is wihtin TEE. => Use this case\n\n---\n**Case2**: TLS stack is outside the TEE. PKI cert keys are stored in TEE. ",
           "createdAt": "2026-02-02T09:04:34Z",
           "updatedAt": "2026-02-02T10:05:24Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Based on discussion with Carsten, [@tireddy2](https://github.com/tireddy2) and Meiling:\n> \n> s/[Separate Client-Side Attester](https://www.ietf.org/archive/id/draft-fossati-seat-expat-01.html#name-background-check-model-with)/Client as Attester\n> \n> s/Client/TE s/Attester/AE\n\nI fail to see why the renaming is necessary.  Even if it were, the proposal is imprecise and not particularly representative of reality.  Generally speaking, the TLS client is not \"the TE\"; rather, it is \"part of the TE\u201d \u2014 alongside its TCB, including the relevant parts of the computing platform and any attached devices.\nIn the context we are describing, i.e. a combined TLS + RA session, it is important that the high-level actors, in this case the \u201cClient\", are clearly shown rather than hidden behind low-level definitions.\n\n> Sync figure 1 and 2\n> \n> **Case1**: TLS stack is wihtin TEE. => Use this case\n> **Case2**: TLS stack is outside the TEE. PKI cert keys are stored in TEE.\n\nPS: I am confused about this mention of case 2.  Is it in scope or not?",
+          "createdAt": "2026-02-09T08:01:04Z",
+          "updatedAt": "2026-02-09T08:01:04Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In general, please see the new text that I added, and say more clearly why it is wrong. Did you miss [this](https://github.com/tls-attestation/exported-attestation/pull/55/changes/6585a3a782473176de1132cdf60e37f2296eec7d) commit?\n\n> I fail to see why the renaming is necessary. Even if it were, the proposal is imprecise and not particularly representative of reality. \nGenerally speaking, the TLS client is not \"the TE\"; rather, it is \"part of the TE\u201d \u2014 alongside its TCB, including the relevant parts of the computing platform and any attached devices.\n\nThe text says \"The TLS client within TE establishes a TLS connection with the Server.\" I don't see why it is wrong.\n\n> In the context we are describing, i.e. a combined TLS + RA session, it is important that the high-level actors, in this case the \u201cClient\", are clearly shown rather than hidden behind low-level definitions.\n\nIt is clearly shown: \"TE (Client)\"\n\n> PS: I am confused about this mention of case 2. Is it in scope or not?\n\nAs far as I understood, it is out of scope. Sorry for shorthand notes of meeting \"Use this case\" for case 1 was capturing this. ",
+          "createdAt": "2026-02-09T09:01:45Z",
+          "updatedAt": "2026-02-09T09:03:41Z"
         }
       ]
     },
@@ -904,7 +918,7 @@
       "labels": [],
       "body": "> To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator\u2013based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.\n\nAfter the handshake, the TLS connection is used to transmit unstructured data in both directions. If the same connection is also to be used to transmit signaling messages (a.k.a. post-handshake authentication exchange), there must be a way to distinguish the \"normal\" TLS-protected data from these messages.",
       "createdAt": "2026-01-11T18:08:16Z",
-      "updatedAt": "2026-02-07T08:38:22Z",
+      "updatedAt": "2026-02-08T17:13:03Z",
       "closedAt": "2026-02-05T13:35:47Z",
       "comments": [
         {
@@ -1039,6 +1053,27 @@
           "body": "> > Agreed that deployment requires application-protocol considerations. My plan is to address those in a separate companion draft that specifies the required application-level changes. Together, the two drafts provide a complete and real solution while keeping each document\u2019s scope manageable.\n> \n> Sure, this is a perfectly acceptable option. In fact, it's the most flexible option.\n> \n> However, if we decide to proceed with this approach rather than the \"expat as a shim\", I want it to be clear to everyone that this would make seat-expat a _protocol building block_ rather than a _protocol_ in its own right.\n> \n> Given the current phrasing in the SEAT charter, this implies that seat-expat would not be suitable for adoption as a standalone work item that fulfils the charter goal: one or more companion documents would be required for each _real_ target protocol.\n\nWe should start with a single companion document to demonstrate completeness. If the WG sees value in covering additional application protocols, those can be proposed as follow-on work.",
           "createdAt": "2026-02-07T08:38:21Z",
           "updatedAt": "2026-02-07T08:38:21Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": " > We should start with a single companion document to demonstrate completeness. If the WG sees value in covering additional application protocols, those can be proposed as follow-on work.\n\nThis raises a couple of questions:\n\n* Which application protocol should we target first?\n* Given the use cases, is one protocol sufficient?",
+          "createdAt": "2026-02-08T08:27:03Z",
+          "updatedAt": "2026-02-08T08:27:03Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Should we either reopen this issue or open a new issue, something like \"potential designs: shim layer or app. protocol\"? What I heard from folks at CCC Attestation SIG was the shim layer. ",
+          "createdAt": "2026-02-08T12:37:31Z",
+          "updatedAt": "2026-02-08T12:37:31Z"
+        },
+        {
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Should we either reopen this issue or open a new issue, something like \"potential designs: shim layer or app. protocol\u201d?\n\nI have opened https://github.com/tls-attestation/exported-attestation/issues/56 with a summary of the discussion so far.",
+          "createdAt": "2026-02-08T17:12:48Z",
+          "updatedAt": "2026-02-08T17:13:03Z"
         }
       ]
     },
@@ -1087,6 +1122,37 @@
       "updatedAt": "2026-02-06T13:46:47Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 56,
+      "id": "I_kwDON6zrys7pPZkV",
+      "title": "Design options",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/56",
+      "state": "OPEN",
+      "author": "thomas-fossati",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There seem to be at least a couple of ways to approach the post-handshake design based on expat.\n\n### expat as a shim\n\nIn this approach, expat is run once, after the TLS handshake has finished and before the application/transport protocol starts.\n\nNote that to make this completely self-contained, we'd need to iron out a few other bits that draft-expat hasn't detailed yet, e.g., negotiation of attestation features.\n\nThe major drawback with this approach is that re-attestation within the same session is not possible.\nTherefore, some use cases that require continuous attestation would need to decide whether they can live with this limitation (e.g., re-estalibhsing a new TLS connection), or explore other options.\n\n### Per-protocol integration of the expat framework\n\nIn this model, expat is simply an attestation-tailored profile of the RFC9261 framework rather than a complete protocol.\n\nCompanion documents would be required to integrate expat into each real target protocol (e.g. SCTP, HTTP, etc.).\n\nWith this approach, multiplexing, feature negotiation, and (re)attestation triggering are deferred to the \"real\" protocol.\n\nThis makes it the most flexible design, which should accommodate any use case.  However, it is also the most demanding: it essentially doesn't scale.\n\n### SEAT charter considerations\n\nIn terms of the charter, the first option seems to fit the mandate perfectly:\n\n_\"The Secure Evidence and Attestation Transport (SEAT) Working Group will [\u2026] deliver a Standards Track protocol\u201d_\n\nThe second option does not, unless we also provide one or more companion documents for the specific integrations.",
+      "createdAt": "2026-02-08T17:12:17Z",
+      "updatedAt": "2026-02-09T07:21:15Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "yaronf",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you @thomas-fossati. Two more things to keep in mind:\n\n* In the per-protocol integration, the integration should allow for bidirectionality, i.e. for reattestation to be initiated from the server side. This is obviously not natural behavior for HTTP. \n* Session resumption is painful even in the shim model, because of race conditions (the session may be interrupted after the handshake but before attestation has been completed). I'm not sure if this is only an implementation issue or whether it has implications on the protocol.",
+          "createdAt": "2026-02-08T21:05:25Z",
+          "updatedAt": "2026-02-08T21:05:25Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks @thomas-fossati for raising this issue. We should discuss this in our meeting and decide on which approach to take. ",
+          "createdAt": "2026-02-09T07:21:15Z",
+          "updatedAt": "2026-02-09T07:21:15Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -4545,7 +4611,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-02-05T05:58:46Z",
-      "updatedAt": "2026-02-07T07:41:06Z",
+      "updatedAt": "2026-02-09T06:57:42Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
@@ -4572,7 +4638,48 @@
           "updatedAt": "2026-02-07T07:41:06Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDON6zrys7gr3e0",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-08T10:28:00Z",
+          "updatedAt": "2026-02-08T10:28:01Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "not sure why it was removed.",
+              "createdAt": "2026-02-08T10:28:01Z",
+              "updatedAt": "2026-02-08T10:28:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7gzK8a",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-09T06:57:42Z",
+          "updatedAt": "2026-02-09T06:57:42Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "The public key is already conveyed as an claim in the Evidence (see https://github.com/tls-attestation/exported-attestation/blob/tireddy2-patch-7/draft-fossati-seat-expat.md#binding-the-authenticator-identity-key-aik-to-the-tee), so including it again is redundant. \r\n\r\nThe Exported value is already session-unique and cryptographically bound to the TLS handshake, so hashing it again is uncessary. Given the exporter\u2019s built-in freshness because of certificate_request_context, an explicit nonce is also unnecessary. ",
+              "createdAt": "2026-02-09T06:57:42Z",
+              "updatedAt": "2026-02-09T06:58:18Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 55,
@@ -4588,13 +4695,13 @@
       "labels": [],
       "body": "Issues #8, #51 and #54",
       "createdAt": "2026-02-06T13:58:11Z",
-      "updatedAt": "2026-02-07T15:12:28Z",
+      "updatedAt": "2026-02-09T08:01:54Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "serverAttester",
-      "headRefOid": "848450d9689eb09cbaac25483f63c138defb5b00",
+      "headRefOid": "6585a3a782473176de1132cdf60e37f2296eec7d",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -4644,6 +4751,131 @@
               "body": "Added text as proposed",
               "createdAt": "2026-02-07T15:11:54Z",
               "updatedAt": "2026-02-07T15:11:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7gppW0",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-08T06:56:06Z",
+          "updatedAt": "2026-02-08T06:56:06Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDON6zrys7gqOxt",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-08T07:57:00Z",
+          "updatedAt": "2026-02-08T08:24:36Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "s/on/within/",
+              "createdAt": "2026-02-08T07:57:00Z",
+              "updatedAt": "2026-02-08T08:24:36Z"
+            },
+            {
+              "originalPosition": 33,
+              "body": "I think renaming is unnecessary; there's nothing wrong with the current labels. \u201cClient\" and \u201cAttester\u201d are exactly at the right level of abstraction.\n\nAFAIU, your objective is to show that the Client and Attester are lumped together.  Perhaps they should be boxed together in the SD?  For example:\n```\n.------------------------.\n| Client        Attester |\n'---+--------------+-----'\n    |              |\n```\n\nAlso, _\u201cTE invokes the AE\u201d_ is not a proper characterisation of what happens.  It would be better to say: _\"The Client requests Evidence from the Attester.  The Evidence produced includes the Client's TCB measurements, including those relating to the Client code and configuration.\u201d_",
+              "createdAt": "2026-02-08T08:13:41Z",
+              "updatedAt": "2026-02-08T08:24:36Z"
+            },
+            {
+              "originalPosition": 69,
+              "body": "```suggestion\nThe flow for the Server as Attester is analogous, except that it uses a ClientCertificateRequest instead of CertificateRequest.\n```",
+              "createdAt": "2026-02-08T08:19:46Z",
+              "updatedAt": "2026-02-08T08:24:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7gr5uf",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-08T10:30:25Z",
+          "updatedAt": "2026-02-08T10:30:27Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "Fixed",
+              "createdAt": "2026-02-08T10:30:25Z",
+              "updatedAt": "2026-02-08T10:30:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7gr7Ak",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-08T10:32:43Z",
+          "updatedAt": "2026-02-08T10:32:47Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "The issue has been open for one year. The change is for clarity and based on the [agreement in meeting](https://github.com/tls-attestation/exported-attestation/issues/8#issuecomment-3833860054). So the point is not whether change is necessary; the point is whether the change is wrong. If it is not wrong, I would suggest we keep the agreement in meeting.\n\nThe point is Client is part of Attester, which the previous figure was not clarifying.",
+              "createdAt": "2026-02-08T10:32:44Z",
+              "updatedAt": "2026-02-08T10:37:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7gr9Gx",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-08T10:38:05Z",
+          "updatedAt": "2026-02-08T10:38:08Z",
+          "comments": [
+            {
+              "originalPosition": 69,
+              "body": "Fixed.",
+              "createdAt": "2026-02-08T10:38:06Z",
+              "updatedAt": "2026-02-08T10:38:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7g0DEL",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-09T08:01:54Z",
+          "updatedAt": "2026-02-09T08:01:54Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "> The point is Client is part of Attester, which the previous figure was not clarifying.\r\n\r\nSee https://github.com/tls-attestation/exported-attestation/issues/8#issuecomment-3869954108",
+              "createdAt": "2026-02-09T08:01:54Z",
+              "updatedAt": "2026-02-09T08:01:55Z"
             }
           ]
         }
