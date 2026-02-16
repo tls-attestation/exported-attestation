@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 12 August 2026                                           Linaro
+Expires: 20 August 2026                                           Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 12 August 2026                                           Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                         8 February 2026
+                                                        16 February 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 August 2026.
+   This Internet-Draft will expire on 20 August 2026.
 
 Copyright Notice
 
@@ -432,43 +432,43 @@ Table of Contents
 
    Figure 2 shows an example using the background-check model, where TE
    represents the Target Environment and AE represents the Attesting
-   Environment.  The TLS client within TE establishes a TLS connection
+   Environment.  The TLS Client within TE establishes a TLS connection
    with the Server.  At a later time, the Server triggers an
    Authenticator Request.  The TE requests Evidence from the AE.  The
    Evidence produced includes the TE's TCB measurements, including those
-   relating to the Client code and configuration.  The TE embeds this
-   Evidence into an Exported Authenticator and sends it to the Server.
-   The Server forwards the Evidence to a Verifier for appraisal and
-   receives an Attestation Result.
+   relating to the TLS Client code and configuration.  The TE embeds
+   this Evidence into an Exported Authenticator and sends it to the
+   Server.  The Server forwards the Evidence to a Verifier for appraisal
+   and receives an Attestation Result.
 
-   TE (Client)          AE                     Server           Verifier
-    |                   |                        |                  |
-    |  Regular TLS Handshake (Server-only auth)  |                  |
-    |<------------------------------------------>|                  |
-    |                   |                        |                  |
-    |   ... time passes ...                      |                  |
-    |                   |                        |                  |
-    | Authenticator Request (CertificateReq)     |                  |
-    |<-------------------------------------------|                  |
-    |                   |                        |                  |
-    | Request Evidence  |                        |                  |
-    |------------------>|                        |                  |
-    | Attestation       |                        |                  |
-    | Evidence          |                        |                  |
-    |<------------------|                        |                  |
-    | Exported Authenticator(Certificate with    |                  |
-    | cmw_attestation,                           |                  |
-    | CertificateVerify,                         |                  |
-    | Finished)                                  |                  |
-    |------------------------------------------->|                  |
-    |                   |                        | Send Evidence    |
-    |                   |                        |----------------->|
-    |                   |                        | Attestation      |
-    |                   |                        | Result           |
-    |                   |                        |<-----------------|
-    |                   |                        |                  |
+  TE (TLS Client)      AE                  TLS Server           Verifier
+   |                   |                        |                  |
+   |  Regular TLS Handshake (Server-only auth)  |                  |
+   |<------------------------------------------>|                  |
+   |                   |                        |                  |
+   |   ... time passes ...                      |                  |
+   |                   |                        |                  |
+   | Authenticator Request (CertificateReq)     |                  |
+   |<-------------------------------------------|                  |
+   |                   |                        |                  |
+   | Request Evidence  |                        |                  |
+   |------------------>|                        |                  |
+   | Attestation       |                        |                  |
+   | Evidence          |                        |                  |
+   |<------------------|                        |                  |
+   | Exported Authenticator(Certificate with    |                  |
+   | cmw_attestation,                           |                  |
+   | CertificateVerify,                         |                  |
+   | Finished)                                  |                  |
+   |------------------------------------------->|                  |
+   |                   |                        | Send Evidence    |
+   |                   |                        |----------------->|
+   |                   |                        | Attestation      |
+   |                   |                        | Result           |
+   |                   |                        |<-----------------|
+   |                   |                        |                  |
 
-         Figure 2: Background Check Model with Client as Attester
+        Figure 2: Background Check Model with Client as Attester
 
 4.2.  Server as Attester
 
@@ -859,9 +859,9 @@ Table of Contents
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
               and N. Smith, "Use of Remote Attestation with
               Certification Signing Requests", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-csr-attestation-21, 5
-              October 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-csr-attestation-21>.
+              Internet-Draft, draft-ietf-lamps-csr-attestation-22, 11
+              February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-csr-attestation-22>.
 
    [I-D.ietf-oauth-selective-disclosure-jwt]
               Fett, D., Yasuda, K., and B. Campbell, "Selective
