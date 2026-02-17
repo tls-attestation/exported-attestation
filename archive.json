@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-10T02:12:28.507245+00:00",
+  "timestamp": "2026-02-17T01:57:55.070126+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -179,7 +179,7 @@
       "id": "I_kwDON6zrys6sV_CY",
       "title": "Separate Client-Side Attester?",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/8",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -190,8 +190,8 @@
       ],
       "body": "What does it mean to have a \"Separate Client-Side Attester\" in Background-Check model? If the TLS connection terminates outside of Attester, there are trivial attacks possible (e.g., in case of Confidential Computing). ",
       "createdAt": "2025-03-03T14:40:46Z",
-      "updatedAt": "2026-02-09T09:03:41Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-16T19:16:44Z",
+      "closedAt": "2026-02-16T19:16:44Z",
       "comments": [
         {
           "author": "tireddy2",
@@ -227,6 +227,13 @@
           "body": "In general, please see the new text that I added, and say more clearly why it is wrong. Did you miss [this](https://github.com/tls-attestation/exported-attestation/pull/55/changes/6585a3a782473176de1132cdf60e37f2296eec7d) commit?\n\n> I fail to see why the renaming is necessary. Even if it were, the proposal is imprecise and not particularly representative of reality. \nGenerally speaking, the TLS client is not \"the TE\"; rather, it is \"part of the TE\u201d \u2014 alongside its TCB, including the relevant parts of the computing platform and any attached devices.\n\nThe text says \"The TLS client within TE establishes a TLS connection with the Server.\" I don't see why it is wrong.\n\n> In the context we are describing, i.e. a combined TLS + RA session, it is important that the high-level actors, in this case the \u201cClient\", are clearly shown rather than hidden behind low-level definitions.\n\nIt is clearly shown: \"TE (Client)\"\n\n> PS: I am confused about this mention of case 2. Is it in scope or not?\n\nAs far as I understood, it is out of scope. Sorry for shorthand notes of meeting \"Use this case\" for case 1 was capturing this. ",
           "createdAt": "2026-02-09T09:01:45Z",
           "updatedAt": "2026-02-09T09:03:41Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed in #55 ",
+          "createdAt": "2026-02-16T19:16:44Z",
+          "updatedAt": "2026-02-16T19:16:44Z"
         }
       ]
     },
@@ -1082,7 +1089,7 @@
       "id": "I_kwDON6zrys7llFtq",
       "title": "Spec for server as Attester",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/51",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1093,8 +1100,8 @@
       ],
       "body": "Many use cases need it. I think we should prioritize it for meeting 125.",
       "createdAt": "2026-01-24T17:52:09Z",
-      "updatedAt": "2026-02-04T19:14:37Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-16T19:17:03Z",
+      "closedAt": "2026-02-16T19:17:03Z",
       "comments": [
         {
           "author": "muhammad-usama-sardar",
@@ -1102,6 +1109,13 @@
           "body": "Based on discussion with Carsten, @tireddy2 and Meiling:\n\nAdd a note that the extension that is added is applicable to both client and server. This is for illustrative purposes. ",
           "createdAt": "2026-02-02T08:51:23Z",
           "updatedAt": "2026-02-02T10:05:45Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed in #55 ",
+          "createdAt": "2026-02-16T19:17:03Z",
+          "updatedAt": "2026-02-16T19:17:03Z"
         }
       ]
     },
@@ -1110,7 +1124,7 @@
       "id": "I_kwDON6zrys7o3db-",
       "title": "`ClientCertificateRequest` vs. `CertificateRequest`",
       "url": "https://github.com/tls-attestation/exported-attestation/issues/54",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1119,9 +1133,17 @@
       "labels": [],
       "body": "In the figures, `ClientCertificateRequest` is shown from Server to Client, whereas it is from Client to Server. The one from Server to Client should be `CertificateRequest`.",
       "createdAt": "2026-02-06T13:46:24Z",
-      "updatedAt": "2026-02-06T13:46:47Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-02-16T19:17:21Z",
+      "closedAt": "2026-02-16T19:17:21Z",
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed in #55 ",
+          "createdAt": "2026-02-16T19:17:21Z",
+          "updatedAt": "2026-02-16T19:17:21Z"
+        }
+      ]
     },
     {
       "number": 56,
@@ -1153,6 +1175,25 @@
           "updatedAt": "2026-02-09T07:21:15Z"
         }
       ]
+    },
+    {
+      "number": 57,
+      "id": "I_kwDON6zrys7rZQi8",
+      "title": "Attestation nonce",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/57",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "tireddy2",
+        "muhammad-usama-sardar"
+      ],
+      "labels": [],
+      "body": "Briefly explain the need for attestation nonce, and add an extension to `CertificateRequest` and `ClientCertificateRequest` messages for conveyance of attestation nonce.\n\nMotivation: Unlike TLS nonce, attestation nonce ensures AE invalidates cached Claims and collects fresh Claims.\n\nReference: Discussion in the expat meeting with @tireddy2 and multi-verifiers meeting today\n\n- https://github.com/ietf-rats-wg/draft-ietf-rats-reference-interaction-models/issues/82\n- https://github.com/mcr/composite-attesters/issues/25",
+      "createdAt": "2026-02-16T19:38:34Z",
+      "updatedAt": "2026-02-16T19:38:34Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -4611,7 +4652,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-02-05T05:58:46Z",
-      "updatedAt": "2026-02-09T06:57:42Z",
+      "updatedAt": "2026-02-16T20:01:14Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
@@ -4678,6 +4719,26 @@
               "updatedAt": "2026-02-09T06:58:18Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7jHLZd",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-16T20:01:14Z",
+          "updatedAt": "2026-02-16T20:01:14Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "As discussed in today's meeting, TEEs provide only one field of 64 bytes where everything has to be put in. Created #57",
+              "createdAt": "2026-02-16T20:01:14Z",
+              "updatedAt": "2026-02-16T20:01:15Z"
+            }
+          ]
         }
       ]
     },
@@ -4686,7 +4747,7 @@
       "id": "PR_kwDON6zrys7CAUNb",
       "title": "Issues #8, #51 and #54",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/55",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "muhammad-usama-sardar",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -4695,17 +4756,19 @@
       "labels": [],
       "body": "Issues #8, #51 and #54",
       "createdAt": "2026-02-06T13:58:11Z",
-      "updatedAt": "2026-02-09T08:01:54Z",
+      "updatedAt": "2026-02-16T19:16:06Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "serverAttester",
-      "headRefOid": "6585a3a782473176de1132cdf60e37f2296eec7d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "35f6923c92269c5cce0e6d973e8011c0b52576f8",
+      "closedAt": "2026-02-16T19:16:06Z",
+      "mergedAt": "2026-02-16T19:16:06Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "2403a543ddacf42220367ed30e09d02585b63f9a"
+      },
       "comments": [],
       "reviews": [
         {
@@ -4878,6 +4941,79 @@
               "updatedAt": "2026-02-09T08:01:55Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7i7qXf",
+          "commit": {
+            "abbreviatedOid": "6585a3a"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-16T08:37:08Z",
+          "updatedAt": "2026-02-16T08:37:08Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "```suggestion\nThe TE requests Evidence from the AE. The Evidence produced includes the TE's TCB measurements, including those relating to the TLS Client code and configuration.\n```",
+              "createdAt": "2026-02-16T08:37:08Z",
+              "updatedAt": "2026-02-16T08:37:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7i7rMN",
+          "commit": {
+            "abbreviatedOid": "6585a3a"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-16T08:38:02Z",
+          "updatedAt": "2026-02-16T08:38:02Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "```suggestion\n TE (TLS Client)          AE                     TLS Server           Verifier\n```",
+              "createdAt": "2026-02-16T08:38:02Z",
+              "updatedAt": "2026-02-16T08:38:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7jFPs4",
+          "commit": {
+            "abbreviatedOid": "848450d"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-16T17:37:37Z",
+          "updatedAt": "2026-02-16T17:37:37Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "@thomas-fossati Could you check if the new changes resolve your concern?",
+              "createdAt": "2026-02-16T17:37:37Z",
+              "updatedAt": "2026-02-16T17:37:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7jFthr",
+          "commit": {
+            "abbreviatedOid": "35f6923"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-16T18:05:03Z",
+          "updatedAt": "2026-02-16T18:05:03Z",
+          "comments": []
         }
       ]
     }
