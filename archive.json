@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-17T01:57:55.070126+00:00",
+  "timestamp": "2026-02-19T02:00:39.109624+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -57,6 +57,11 @@
       "name": "Clarification",
       "description": "",
       "color": "6243d8"
+    },
+    {
+      "name": "IETF 125",
+      "description": "",
+      "color": "7d3633"
     }
   ],
   "issues": [
@@ -1188,10 +1193,12 @@
         "tireddy2",
         "muhammad-usama-sardar"
       ],
-      "labels": [],
-      "body": "Briefly explain the need for attestation nonce, and add an extension to `CertificateRequest` and `ClientCertificateRequest` messages for conveyance of attestation nonce.\n\nMotivation: Unlike TLS nonce, attestation nonce ensures AE invalidates cached Claims and collects fresh Claims.\n\nReference: Discussion in the expat meeting with @tireddy2 and multi-verifiers meeting today\n\n- https://github.com/ietf-rats-wg/draft-ietf-rats-reference-interaction-models/issues/82\n- https://github.com/mcr/composite-attesters/issues/25",
+      "labels": [
+        "IETF 125"
+      ],
+      "body": "Briefly explain the need for attestation nonce, and explain how to convey attestation nonce in `CertificateRequest` and `ClientCertificateRequest` messages.\n\nMotivation: Unlike TLS nonce, attestation nonce ensures AE invalidates cached Claims and collects fresh Claims.\n\nDiscussion: \nWe could pass on the attestation nonce as part of `certficiate_request_content`, since it is opaque (RFC9261 doesn't define its internal structure, so it can have any semantics). I think we might not need to define a new extension.\n\nReference: Discussion in the expat meeting with @tireddy2 and multi-verifiers meeting today\n\n- https://github.com/ietf-rats-wg/draft-ietf-rats-reference-interaction-models/issues/82\n- https://github.com/mcr/composite-attesters/issues/25",
       "createdAt": "2026-02-16T19:38:34Z",
-      "updatedAt": "2026-02-16T19:38:34Z",
+      "updatedAt": "2026-02-17T23:04:03Z",
       "closedAt": null,
       "comments": []
     }
@@ -4649,10 +4656,12 @@
       "author": "tireddy2",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "IETF 125"
+      ],
       "body": "",
       "createdAt": "2026-02-05T05:58:46Z",
-      "updatedAt": "2026-02-16T20:01:14Z",
+      "updatedAt": "2026-02-17T23:04:26Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
