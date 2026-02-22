@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-19T02:00:39.109624+00:00",
+  "timestamp": "2026-02-22T01:59:58.847691+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -4661,7 +4661,7 @@
       ],
       "body": "",
       "createdAt": "2026-02-05T05:58:46Z",
-      "updatedAt": "2026-02-17T23:04:26Z",
+      "updatedAt": "2026-02-21T10:32:49Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
@@ -4746,6 +4746,86 @@
               "body": "As discussed in today's meeting, TEEs provide only one field of 64 bytes where everything has to be put in. Created #57",
               "createdAt": "2026-02-16T20:01:14Z",
               "updatedAt": "2026-02-16T20:01:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7j6Lyl",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-19T06:04:22Z",
+          "updatedAt": "2026-02-19T06:04:22Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "I suggest to address this issue, the verifier-provided nonce be conveyed to the Attester in the certificate_request_context itself, that way the modified hash will be:\r\n\r\nhash (public key || Exported value)\r\n\r\nOtherwise, we will have to figure out a way to send the verifier-provided nonce to the Attester. ",
+              "createdAt": "2026-02-19T06:04:22Z",
+              "updatedAt": "2026-02-19T06:04:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7j816H",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-19T09:17:01Z",
+          "updatedAt": "2026-02-19T09:17:01Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "> I suggest to address this issue, the verifier-provided nonce be conveyed to the Attester in the certificate_request_context itself\r\n\r\nAgree, that's also what I propose in #57.\r\n\r\n> Otherwise, we will have to figure out a way to send the verifier-provided nonce to the Attester.\r\n\r\nVerifier-generated nonce is already available to Attester, since it puts it in `certificate_request_context`. If nonce is removed from hash, then there is no Evidence freshness.",
+              "createdAt": "2026-02-19T09:17:01Z",
+              "updatedAt": "2026-02-19T09:17:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7kmvan",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-21T08:09:43Z",
+          "updatedAt": "2026-02-21T08:09:43Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "> > I suggest to address this issue, the verifier-provided nonce be conveyed to the Attester in the certificate_request_context itself\r\n> \r\n> Agree, that's also what I propose in #57.\r\n> \r\n> > Otherwise, we will have to figure out a way to send the verifier-provided nonce to the Attester.\r\n> \r\n> Verifier-generated nonce is already available to Attester, since it puts it in `certificate_request_context`. If nonce is removed from hash, then there is no Evidence freshness.\r\n\r\nNo, certificate_request_context is used as the \"context_value\" in the TLS exporter, so evidence freshness is available. \r\n\r\nI suggest we update text to say:\r\ncertificate_request_context = Verifier-generated nonce //new change\r\nTLS-Exporter(\"Attestation\", certificate_request_context, 32)  //existing in the draft\r\nhash (public key || Exported value) //exclude Verifier-generated nonce from hash calculation. \r\n",
+              "createdAt": "2026-02-21T08:09:43Z",
+              "updatedAt": "2026-02-21T08:09:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7knJzZ",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-21T10:32:49Z",
+          "updatedAt": "2026-02-21T10:32:49Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "wait, let's sync on what exactly we are talking about. I am thinking about: \r\n\r\n1. Server as Attester\r\n2. Background-check model\r\n3. Attestation using Evidence\r\n\r\nIs this also what you are thinking about?",
+              "createdAt": "2026-02-21T10:32:49Z",
+              "updatedAt": "2026-02-21T10:32:49Z"
             }
           ]
         }
