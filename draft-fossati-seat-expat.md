@@ -318,19 +318,24 @@ The attester binds the attestation Evidence to the active TLS connection. To do 
 binding value using the TLS exporter. The exporter invocation uses:
 
 * the label "Attestation", and
-* the certificate_request_context from the CertificateRequest message as the "context_value" (as defined in
-  {{Section 7.5 of -tls13}}), and
+* the certificate_request_context from the CertificateRequest message as the context_value (as defined in Section 7.5 of {{RFC8446}}). In a Background Check model, this value contains the Verifier-provided nonce; and
 * a key_length set to 256-bit (32 bytes).
 
 ~~~
    TLS-Exporter("Attestation", certificate_request_context, 32)
 ~~~
 
-The value produced by the TLS exporter is used as an attestation challenge in the attestation Evidence to bind the attestation to the TLS connection and to the corresponding certificate_request_context associated with post-handshake authentication, and to provide freshness guarantees.
+The binding value is defined as:
 
-To allow verification, the TLS endpoint that receives the attestation evidence computes the exporter value using the same exporter invocation described for the attester. The endpoint either verifies the exporter binding
-itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation Evidence is rejected. If the check is delegated, the endpoint conveys the computed exporter value to
-the Verifier so that the comparison can be carried out during attestation validation.
+~~~
+   Hash(public_key || exported_value)
+~~~
+
+where exported_value is the output of the TLS exporter and public_key is the public key corresponding to the end-entity certificate used for authentication. The Hash function is the hash algorithm associated with the negotiated TLS 1.3 cipher suite (i.e., the HKDF hash).
+
+This binding value is included as an attestation challenge (or nonce) in the attestation Evidence. It binds the Evidence to the specific TLS connection and to the associated certificate_request_context, thereby providing freshness and preventing replay across TLS sessions.
+
+The TLS endpoint that receives the attestation evidence computes the binding value using the same exporter and hash function invocation described for the attester. The endpoint either verifies the exporter binding itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation Evidence is rejected. If the check is delegated, the endpoint conveys the computed binding value to the Verifier so that the comparison can be carried out during attestation validation.
 
 ## Binding the Authenticator Identity Key (AIK) to the TEE
 
