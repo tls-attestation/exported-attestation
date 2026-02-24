@@ -335,7 +335,7 @@ where exported_value is the output of the TLS exporter and public_key is the pub
 
 This binding value is included as an attestation challenge (or nonce) in the attestation Evidence. It binds the Evidence to the specific TLS connection and to the associated certificate_request_context, thereby providing freshness and preventing replay across TLS sessions.
 
-The TLS endpoint that receives the attestation evidence computes the binding value using the same exporter and hash function invocation described for the attester. The endpoint either verifies the exporter binding itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation Evidence is rejected. If the check is delegated, the endpoint conveys the computed binding value to the Verifier so that the comparison can be carried out during attestation validation.
+The TLS endpoint that receives the attestation Evidence computes the binding value using the same exporter and hash function invocation described for the attester. The endpoint either verifies the exporter binding itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation Evidence is rejected. If the check is delegated, the endpoint conveys the computed binding value to the Verifier so that the comparison can be carried out during attestation validation.
 
 ## Binding the Authenticator Identity Key (AIK) to the TEE
 
