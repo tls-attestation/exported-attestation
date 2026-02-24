@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 27 August 2026                                           Linaro
+Expires: 28 August 2026                                           Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 27 August 2026                                           Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                        23 February 2026
+                                                        24 February 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 August 2026.
+   This Internet-Draft will expire on 28 August 2026.
 
 Copyright Notice
 
@@ -524,7 +524,7 @@ Table of Contents
    thereby providing freshness and preventing replay across TLS
    sessions.
 
-   The TLS endpoint that receives the attestation evidence computes the
+   The TLS endpoint that receives the attestation Evidence computes the
    binding value using the same exporter and hash function invocation
    described for the attester.  The endpoint either verifies the
    exporter binding itself or delegates this check to the Verifier.  If
