@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-22T01:59:58.847691+00:00",
+  "timestamp": "2026-02-24T01:57:49.226424+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -4661,13 +4661,13 @@
       ],
       "body": "",
       "createdAt": "2026-02-05T05:58:46Z",
-      "updatedAt": "2026-02-21T10:32:49Z",
+      "updatedAt": "2026-02-23T15:51:46Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-7",
-      "headRefOid": "bc48f16951d26a8adf4481ad60c4a934483f931f",
+      "headRefOid": "ba152c3ffeabba45d57287dc283637fcacab9634",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -4686,6 +4686,13 @@
           "body": "> Please fix the build errors.\r\n\r\nFixed. ",
           "createdAt": "2026-02-07T07:41:06Z",
           "updatedAt": "2026-02-07T07:41:06Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The following part is not coming out clear to me in this text:\r\n> \r\n> certificate_request_context = Verifier-generated nonce //new change TLS-Exporter(\"Attestation\", certificate_request_context, 32) //existing in the draft hash (public key || Exported value) //exclude Verifier-generated nonce from hash calculation.\r\n\r\n\r\n\r\n> The following part is not coming out clear to me in this text:\r\n> \r\n> certificate_request_context = Verifier-generated nonce //new change TLS-Exporter(\"Attestation\", certificate_request_context, 32) //existing in the draft hash (public key || Exported value) //exclude Verifier-generated nonce from hash calculation.\r\n\r\nI finished updating the draft, check now. ",
+          "createdAt": "2026-02-23T12:34:28Z",
+          "updatedAt": "2026-02-23T12:34:28Z"
         }
       ],
       "reviews": [
@@ -4826,6 +4833,86 @@
               "body": "wait, let's sync on what exactly we are talking about. I am thinking about: \r\n\r\n1. Server as Attester\r\n2. Background-check model\r\n3. Attestation using Evidence\r\n\r\nIs this also what you are thinking about?",
               "createdAt": "2026-02-21T10:32:49Z",
               "updatedAt": "2026-02-21T10:32:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7k2l5z",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "tireddy2",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T07:34:04Z",
+          "updatedAt": "2026-02-23T07:34:04Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "Yes, client or server as Attestor and attestation using Evidence. ",
+              "createdAt": "2026-02-23T07:34:04Z",
+              "updatedAt": "2026-02-23T07:34:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7k62Yg",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "The following part is not coming out clear to me in this text:\n\ncertificate_request_context = Verifier-generated nonce //new change\nTLS-Exporter(\"Attestation\", certificate_request_context, 32) //existing in the draft\nhash (public key || Exported value) //exclude Verifier-generated nonce from hash calculation.",
+          "createdAt": "2026-02-23T11:51:55Z",
+          "updatedAt": "2026-02-23T11:55:48Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "```suggestion\nTLS connection in which it is conveyed.\n```",
+              "createdAt": "2026-02-23T11:51:55Z",
+              "updatedAt": "2026-02-23T11:55:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7k67Js",
+          "commit": {
+            "abbreviatedOid": "bc48f16"
+          },
+          "author": "burgerdev",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T11:56:43Z",
+          "updatedAt": "2026-02-23T11:56:44Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "> I suggest we update text to say: \r\n> certificate_request_context = Verifier-generated nonce //new change\r\n> TLS-Exporter(\"Attestation\", certificate_request_context, 32) //existing in the draft\r\n> hash (public key || Exported value) //exclude Verifier-generated nonce from hash calculation.\r\n\r\nWhy does the public key need to go into the hash? Isn't it already bound transitively through exported key-material?",
+              "createdAt": "2026-02-23T11:56:43Z",
+              "updatedAt": "2026-02-23T11:56:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDON6zrys7k_NOa",
+          "commit": {
+            "abbreviatedOid": "ba152c3"
+          },
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks!",
+          "createdAt": "2026-02-23T15:29:44Z",
+          "updatedAt": "2026-02-23T15:37:49Z",
+          "comments": [
+            {
+              "originalPosition": 54,
+              "body": "```suggestion\nThe TLS endpoint that receives the attestation Evidence computes the binding value using the same exporter and hash function invocation described for the attester. The endpoint either verifies the exporter binding itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation Evidence is rejected. If the check is delegated, the endpoint conveys the computed binding value to the Verifier so that the comparison can be carried out during attestation validation.\n```",
+              "createdAt": "2026-02-23T15:36:46Z",
+              "updatedAt": "2026-02-23T15:37:50Z"
             }
           ]
         }
