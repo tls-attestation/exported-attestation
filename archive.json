@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-24T01:57:49.226424+00:00",
+  "timestamp": "2026-02-26T01:55:35.573766+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -1201,6 +1201,35 @@
       "updatedAt": "2026-02-17T23:04:03Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 58,
+      "id": "I_kwDON6zrys7tXQOF",
+      "title": "Why does the public key need to be hashed into the binder?",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/58",
+      "state": "OPEN",
+      "author": "burgerdev",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "tireddy2",
+        "muhammad-usama-sardar"
+      ],
+      "labels": [
+        "IETF 125"
+      ],
+      "body": "(opening an issue for the unanswered question in https://github.com/tls-attestation/exported-attestation/pull/53/changes#r2840475288)\n\nThe current specification for the binder value reads\n\nhttps://github.com/tls-attestation/exported-attestation/blob/538e16a4deadeac8260677d087b5aa244cdf17fe/draft-fossati-seat-expat.md?plain=1#L344-L348\n\nThe explanation given is this:\n\nhttps://github.com/tls-attestation/exported-attestation/blob/538e16a4deadeac8260677d087b5aa244cdf17fe/draft-fossati-seat-expat.md?plain=1#L352\n\nHowever, the exported key material is already bound to the session, and the session already established that the server controls the private key for its certificate. Why does the public key need to be hashed into the binder?\n\ncc @tireddy2 @muhammad-usama-sardar \n\n",
+      "createdAt": "2026-02-24T08:36:33Z",
+      "updatedAt": "2026-02-24T22:50:18Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hi Markus,\n\nThank you for the question, and please accept our apologies that the comment was missed and the PR was merged without addressing it. I've put triage on it to address it before the IETF meeting.",
+          "createdAt": "2026-02-24T22:50:18Z",
+          "updatedAt": "2026-02-24T22:50:18Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -4652,7 +4681,7 @@
       "id": "PR_kwDON6zrys7BoypT",
       "title": "Updates to Cryptographic Binding of the Evidence",
       "url": "https://github.com/tls-attestation/exported-attestation/pull/53",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tireddy2",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -4661,17 +4690,19 @@
       ],
       "body": "",
       "createdAt": "2026-02-05T05:58:46Z",
-      "updatedAt": "2026-02-23T15:51:46Z",
+      "updatedAt": "2026-02-24T06:35:35Z",
       "baseRepository": "tls-attestation/exported-attestation",
       "baseRefName": "main",
       "baseRefOid": "dcac2e2e4fd3570bab32529f097b3d92bdd491cf",
       "headRepository": "tls-attestation/exported-attestation",
       "headRefName": "tireddy2-patch-7",
-      "headRefOid": "ba152c3ffeabba45d57287dc283637fcacab9634",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "ff87ae5fbdda432ff8bd52f89469f3e9214aae82",
+      "closedAt": "2026-02-24T06:35:35Z",
+      "mergedAt": "2026-02-24T06:35:34Z",
+      "mergedBy": "tireddy2",
+      "mergeCommit": {
+        "oid": "538e16a4deadeac8260677d087b5aa244cdf17fe"
+      },
       "comments": [
         {
           "author": "muhammad-usama-sardar",
