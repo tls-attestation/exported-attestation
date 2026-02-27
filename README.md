@@ -39,8 +39,8 @@ s/`00`/next version.
 
 ```sh
 $ git push origin main
-$ git tag -a draft-sardar-rats-sec-cons-00 -m "v00"
-$ git push origin draft-sardar-rats-sec-cons-00
+$ git tag -a draft-fossati-seat-expat-00 -m "v00"
+$ git push origin draft-fossati-seat-expat-00
 ```
 
 - Confirm the email
