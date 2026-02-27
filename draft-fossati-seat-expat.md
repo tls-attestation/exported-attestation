@@ -518,3 +518,6 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 
 * Security considerations: Race conditions
 * Security considerations: Timing of remote attestation
+* Updated Client as Attester
+* Added Server as Attester
+* Added operational overview
