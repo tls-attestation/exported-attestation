@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-26T01:55:35.573766+00:00",
+  "timestamp": "2026-03-01T02:06:57.123452+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -1219,7 +1219,7 @@
       ],
       "body": "(opening an issue for the unanswered question in https://github.com/tls-attestation/exported-attestation/pull/53/changes#r2840475288)\n\nThe current specification for the binder value reads\n\nhttps://github.com/tls-attestation/exported-attestation/blob/538e16a4deadeac8260677d087b5aa244cdf17fe/draft-fossati-seat-expat.md?plain=1#L344-L348\n\nThe explanation given is this:\n\nhttps://github.com/tls-attestation/exported-attestation/blob/538e16a4deadeac8260677d087b5aa244cdf17fe/draft-fossati-seat-expat.md?plain=1#L352\n\nHowever, the exported key material is already bound to the session, and the session already established that the server controls the private key for its certificate. Why does the public key need to be hashed into the binder?\n\ncc @tireddy2 @muhammad-usama-sardar \n\n",
       "createdAt": "2026-02-24T08:36:33Z",
-      "updatedAt": "2026-02-24T22:50:18Z",
+      "updatedAt": "2026-02-27T20:48:34Z",
       "closedAt": null,
       "comments": [
         {
@@ -1228,6 +1228,27 @@
           "body": "Hi Markus,\n\nThank you for the question, and please accept our apologies that the comment was missed and the PR was merged without addressing it. I've put triage on it to address it before the IETF meeting.",
           "createdAt": "2026-02-24T22:50:18Z",
           "updatedAt": "2026-02-24T22:50:18Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> However, the exported key material is already bound to the session, and the session already established that the server controls the private key for its certificate. Why does the public key need to be hashed into the binder?\n\nOne of the reasons is for client as Attester where the exported key material (EKM) does not contain the client's public key. ",
+          "createdAt": "2026-02-27T07:48:59Z",
+          "updatedAt": "2026-02-27T07:48:59Z"
+        },
+        {
+          "author": "burgerdev",
+          "authorAssociation": "NONE",
+          "body": "Why does that matter? Post-handshake, the server already verified that the client's private key matches the certificate. The EKM is only known to the participants and can't be forced into a relayed session. Binding to this session secret should already be stronger than binding to the public key, right?",
+          "createdAt": "2026-02-27T17:17:51Z",
+          "updatedAt": "2026-02-27T17:17:51Z"
+        },
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I agree with you that the explanations are missing in the draft and we will fix it in the next version. I was waiting to finish formal analysis to add reasonings in one go. Here is my current understanding:\n\n> Why does that matter? Post-handshake, the server already verified that the client's private key matches the certificate. \n\nTo accommodate the case of the charter which says: \n`The attested (D)TLS protocol extension will focus on attestation with TLS server authentication, and with or without TLS client authentication. `\n\n> The EKM is only known to the participants and can't be forced into a relayed session.\n\nEven if client is authenticated, EKM does not contain contributions from Client certificate.\n\n> Binding to this session secret should already be stronger than binding to the public key, right?\n\nFor Server as Attester, sure but I don't think that's always true. I need to thoroughly model and analyze Client as Attester and mutual attestation to be able to give a more insightful answer.",
+          "createdAt": "2026-02-27T20:48:34Z",
+          "updatedAt": "2026-02-27T20:48:34Z"
         }
       ]
     }
@@ -5223,6 +5244,42 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 59,
+      "id": "PR_kwDON6zrys7Gv_Fn",
+      "title": "History log",
+      "url": "https://github.com/tls-attestation/exported-attestation/pull/59",
+      "state": "MERGED",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-27T07:18:18Z",
+      "updatedAt": "2026-02-27T07:21:41Z",
+      "baseRepository": "tls-attestation/exported-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "538e16a4deadeac8260677d087b5aa244cdf17fe",
+      "headRepository": "tls-attestation/exported-attestation",
+      "headRefName": "history",
+      "headRefOid": "bb42ce83bd4786465bbf6c7609ba8d135fc8b8c4",
+      "closedAt": "2026-02-27T07:21:41Z",
+      "mergedAt": "2026-02-27T07:21:41Z",
+      "mergedBy": "muhammad-usama-sardar",
+      "mergeCommit": {
+        "oid": "9c9061c7075080cf9315f3d6857b12a5998903d0"
+      },
+      "comments": [
+        {
+          "author": "muhammad-usama-sardar",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Only history for log, so self-merging. ",
+          "createdAt": "2026-02-27T07:21:30Z",
+          "updatedAt": "2026-02-27T07:21:30Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
