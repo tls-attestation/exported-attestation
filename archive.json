@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-01T02:06:57.123452+00:00",
+  "timestamp": "2026-03-31T02:09:50.036438+00:00",
   "repo": "tls-attestation/exported-attestation",
   "labels": [
     {
@@ -1251,6 +1251,24 @@
           "updatedAt": "2026-02-27T20:48:34Z"
         }
       ]
+    },
+    {
+      "number": 60,
+      "id": "I_kwDON6zrys74g_HA",
+      "title": "Session resumption (AI review by Bas Spitters)",
+      "url": "https://github.com/tls-attestation/exported-attestation/issues/60",
+      "state": "OPEN",
+      "author": "muhammad-usama-sardar",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "tireddy2"
+      ],
+      "labels": [],
+      "body": "[Archive link](https://mailarchive.ietf.org/arch/msg/seat/UBABJYW9sgHPbMTIy9CBIaoIrWw/)\n\n> Issue 6: Session resumption enforcement gap\n> \n> Section 7.2 recommends that clients discard NewSessionTicket messages\n> when attestation is required.  However, no enforcement mechanism is\n> specified: the draft does not define how the server signals that\n> attestation is required, how the client knows to reject PSK\n> resumption, or what happens if PSK resumption occurs without\n> attestation.\n> \n> Instead, one can demand that the DDH assumption requires a fresh DH\n> exchange.  PSK-only resumption (without psk_dhe_ke) would set\n> DHE = 0, invalidating the DDH assumption and making the security\n> bound vacuous.\n> \n> Recommendation: Mandate the psk_dhe_ke mode or prohibit PSK\n> resumption entirely for attested connections.",
+      "createdAt": "2026-03-30T10:06:15Z",
+      "updatedAt": "2026-03-30T10:12:47Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
