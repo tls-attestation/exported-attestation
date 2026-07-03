@@ -68,7 +68,7 @@ informative:
   I-D.ietf-lamps-csr-attestation:
   RA-TLS:
     title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
-    date: 13 November 2024,
+    date: "13 November 2024"
     target: https://ieeexplore.ieee.org/document/10752524
     author:
       - ins: M. U. Sardar
@@ -77,13 +77,13 @@ informative:
       - ins: T. Fossati
   RelayAttacks:
     title: "Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"
-    date: November 2025,
+    date: "November 2025"
     target: https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/
     author:
       - ins: M. U. Sardar
   ID-Crisis:
     title: "Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"
-    date: November 2025,
+    date: "November 2025"
     target: https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS
     author:
       - ins: M. U. Sardar
@@ -434,7 +434,7 @@ Session resumption presents special challenges since it happens at the TLS level
 * A TLS client MUST NOT offer 0-RTT (`early_data`) on a connection intended to use this specification.
 * As defense in depth against a non-conformant server, a TLS client MUST discard, and MUST NOT attempt to use for resumption, any `NewSessionTicket` message received on a connection where the `CMW_Attestation` flag was negotiated.
 
-Because these connections are therefore established via a full handshake or the {{I-D.ietf-tls-8773bis}} certificate-with-external-PSK handshake both of which include a fresh key  exchange, the freshness argument in {{binding}} holds.
+As these connections are established via either a full handshake or the certificate-with-external-PSK handshake {{I-D.ietf-tls-8773bis}}, both of which include a fresh key exchange, the freshness argument in {{binding}} holds.
 
 ## Timing for Remote Attestation
 Remote attestation MUST be completed before sending any application data to the peer.
