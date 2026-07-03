@@ -434,7 +434,7 @@ Session resumption presents special challenges since it happens at the TLS level
 * A TLS client MUST NOT offer 0-RTT (`early_data`) on a connection intended to use this specification.
 * As defense in depth against a non-conformant server, a TLS client MUST discard, and MUST NOT attempt to use for resumption, any `NewSessionTicket` message received on a connection where the `CMW_Attestation` flag was negotiated.
 
-Because these connections are therefore established via a full handshake or the {{-8773bis}} certificate-with-external-PSK handshake both of which include a fresh key  exchange, the freshness argument in {{binding}} holds.
+Because these connections are therefore established via a full handshake or the {{I-D.ietf-tls-8773bis}} certificate-with-external-PSK handshake both of which include a fresh key  exchange, the freshness argument in {{binding}} holds.
 
 ## Timing for Remote Attestation
 Remote attestation MUST be completed before sending any application data to the peer.
