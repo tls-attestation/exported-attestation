@@ -66,29 +66,16 @@ normative:
 
 informative:
   I-D.ietf-lamps-csr-attestation:
-  RA-TLS:
-    title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
-    date: "13 November 2024"
-    target: https://ieeexplore.ieee.org/document/10752524
-    author:
-      - ins: M. U. Sardar
-      - ins: A. Niemi
-      - ins: H. Tschofenig
-      - ins: T. Fossati
+  RA-TLS: DOI.10.1109/ACCESS.2024.3497184
   RelayAttacks:
-    title: "Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"
-    date: "November 2025"
-    target: https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/
+    title: "Intra-handshake.fail (CVE-2026-33697): High-severity CVE in Attested TLS"
+    date: June 2026
+    target: https://www.researchgate.net/publication/408219182_Intra-handshakefail_CVE-2026-33697_High-severity_CVE_in_Attested_TLS
     author:
       - ins: M. U. Sardar
-  ID-Crisis:
-    title: "Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"
-    date: "November 2025"
-    target: https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS
-    author:
-      - ins: M. U. Sardar
-      - ins: M. Moustafa
-      - ins: T. Aura
+      - ins: V. Dubeyko
+      - ins: J-M. Jacquet
+  ID-Crisis: DOI.10.1145/3779208.3785387
   RFC9711: rats-eat
   RFC6960: ocsp
   FIDO-REQS:
