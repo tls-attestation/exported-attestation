@@ -982,21 +982,27 @@ Table of Contents
               expat-transport-00>.
 
    [ID-Crisis]
-              Sardar, M. U., Moustafa, M., and T. Aura, "Identity Crisis
-              in Confidential Computing: Formal Analysis of Attested
-              TLS", November 2025, <https://www.researchgate.net/
-              publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS>.
+              Sardar, M., Moustafa, M., and T. Aura, "Identity Crisis in
+              Confidential Computing: Formal Analysis of Attested TLS",
+              ACM, Proceedings of the ACM Asia Conference on Computer
+              and Communications Security pp. 547-560,
+              DOI 10.1145/3779208.3785387, June 2026,
+              <https://doi.org/10.1145/3779208.3785387>.
 
-   [RA-TLS]   Sardar, M. U., Niemi, A., Tschofenig, H., and T. Fossati,
+   [RA-TLS]   Sardar, M., Niemi, A., Tschofenig, H., and T. Fossati,
               "Towards Validation of TLS 1.3 Formal Model and
-              Vulnerabilities in Intel's RA-TLS Protocol", November
-              2024, <https://ieeexplore.ieee.org/document/10752524>.
+              Vulnerabilities in Intel’s RA-TLS Protocol", Institute of
+              Electrical and Electronics Engineers (IEEE), IEEE
+              Access vol. 12, pp. 173670-173685,
+              DOI 10.1109/access.2024.3497184, 2024,
+              <https://doi.org/10.1109/access.2024.3497184>.
 
    [RelayAttacks]
-              Sardar, M. U., "Relay Attacks in Intra-handshake
-              Attestation for Confidential Agentic AI Systems", November
-              2025, <https://mailarchive.ietf.org/arch/msg/seat/
-              x3eQxFjQFJLceae6l4_NgXnmsDY/>.
+              Sardar, M. U., Dubeyko, V., and J.-M. Jacquet, "Intra-
+              handshake.fail (CVE-2026-33697): High-severity CVE in
+              Attested TLS", June 2026, <https://www.researchgate.net/
+              publication/408219182_Intra-handshakefail_CVE-2026-
+              33697_High-severity_CVE_in_Attested_TLS>.
 
    [RFC6960]  Santesson, S., Myers, M., Ankney, R., Malpani, A.,
               Galperin, S., and C. Adams, "X.509 Internet Public Key
