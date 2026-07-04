@@ -61,7 +61,7 @@ normative:
   I-D.ietf-tls-rfc8446bis: tls13
   RFC9261:
   I-D.ietf-rats-msg-wrap:
-  I-D.ietf-tls-8773bis: 8773bis 
+  I-D.ietf-tls-8773bis: 8773bis
 
 informative:
   I-D.ietf-lamps-csr-attestation:
@@ -489,7 +489,7 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 * Added Server as Attester
 * Added operational overview
 
--03 
+-03
 
 * Prohibited session resumption and 0-RTT data.
 
