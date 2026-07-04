@@ -61,8 +61,7 @@ normative:
   I-D.ietf-tls-rfc8446bis: tls13
   RFC9261:
   I-D.ietf-rats-msg-wrap:
-  I-D.ietf-tls-tlsflags: tls-flags
-  I-D.ietf-tls-8773bis:
+  I-D.ietf-tls-8773bis: 8773bis 
 
 informative:
   I-D.ietf-lamps-csr-attestation:
@@ -88,7 +87,6 @@ informative:
   I-D.ietf-rats-daa: rats-daa
   I-D.ietf-oauth-selective-disclosure-jwt: sd-jwt
   I-D.fossati-tls-attestation:
-  I-D.reddy-seat-expat-transport:
 
 entity:
   SELF: "RFCthis"
@@ -146,33 +144,9 @@ cmw_data: Encapsulates the attestation credentials in CMW format {{I-D.ietf-rats
 
 This approach eliminates the need for real-time certificate issuance from a Certificate Authority (CA) and minimizes handshake delays. Typically, CAs require several seconds to minutes to issue a certificate due to verification steps such as validating subject identity, signing the certificate, and distributing it. These delays introduce latency into the TLS handshake, making real-time certificate generation impractical. The cmw_attestation extension circumvents this issue by embedding attestation data within the Certificate message itself, removing reliance on external certificate issuance processes.
 
-## Negotiation of Attestation Capability via TLS Flags {#flag-negotiation}
-
-Before any attestation credential can be exchanged using the `cmw_attestation` extension, both endpoints need a way to determine, during the TLS handshake, whether this specification applies to the TLS connection at all. This document uses the `CMW_Attestation` TLS Flag registered in {{iana-flags}}, following
-the general mechanism defined in {{-tls-flags}}, for this purpose.
-
-### Client Behavior
-
-A TLS client that intends to use this specification, either because it will require attestation from its peer or because it may be asked to provide attestation itself, MUST include the `CMW_Attestation` flag in the "flags" extension of its ClientHello, as defined in {{-tls-flags}}.
-
-A client that requires attestation for a connection MUST treat the absence of the `CMW_Attestation` flag from the server's EncryptedExtensions message as a failure, it MUST abort the connection rather than proceed to exchange application data without attestation.
-
-### Server Behavior
-
-A TLS server that supports this specification MUST include the `CMW_Attestation` flag in its EncryptedExtensions message if, and only if, the client included the flag in its ClientHello and the server is willing to allow attestation-based exchanges, as defined in this document, on the resulting connection.
-
-A server that requires attestation for a connection and does not receive the `CMW_Attestation` flag in the ClientHello MUST abort the handshake (e.g., with a "missing_extension" alert) rather than complete a connection it cannot subsequently attest.
-
-### Use by Application-Layer Transports
-
-Application-layer transport protocols built on top of this specification, such as
-{{I-D.reddy-seat-expat-transport}}, will have to use the outcome of this negotiation to decide whether to perform their own capability exchange for attestation-specific messaging. For example, {{I-D.reddy-seat-expat-transport}} requires that its capability-exchange message only be sent on a TLS connection where the `CMW_Attestation` flag was successfully negotiated.
-
 ## Negotiation of the cmw_attestation Extension {#negotiation}
 
 Negotiation of support cmw_attestation extension follows the model defined in {{Section 5.2 of RFC9261}}.
-
-Endpoints MUST NOT include the `cmw_attestation` extension in any message on a connection where the `CMW_Attestation` flag ({{flag-negotiation}}) was not negotiated; a receiver that observes it anyway MUST abort with an "unsupported_extension" alert.
 
 Endpoints that wish to receive attestation credentials using Exported Authenticators MUST indicate support by including an empty cmw_attestation extension in the CertificateRequest or ClientCertificateRequest message.
 The presence of this empty extension indicates that the requester understands this specification and is willing to process an attestation credential in the peer's Certificate message.
@@ -415,13 +389,13 @@ These properties may be explicitly promised ("attested") by the platform, or the
 
 Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection remains valid after this process. Care must be taken when handling this TLS connection, as both the client and server must agree that remote attestation was successfully completed before exchanging data with the attested party.
 
-Session resumption presents special challenges since it happens at the TLS level, which is not aware of the application-level Authenticator: a resumed session could be used before attestation completes, and race conditions between resumption and post-handshake attestation are possible. To avoid this, this document prohibits session resumption and 0-RTT data entirely for TLS connections in scope of this specification:
+Session resumption presents special challenges since it happens at the TLS level, which is not aware of the application-level Authenticator: a resumed session could be used before attestation completes, and race conditions between resumption and post-handshake attestation are possible. To avoid this, this document prohibits session resumption and 0-RTT data entirely for connections in scope of this specification:
 
-* A TLS server MUST NOT send a `NewSessionTicket` message on a connection where the `CMW_Attestation` flag was negotiated as described in {{flag-negotiation}}.
-* A TLS client MUST NOT offer 0-RTT (`early_data`) on a connection intended to use this specification.
-* As defense in depth against a non-conformant server, a TLS client MUST discard, and MUST NOT attempt to use for resumption, any `NewSessionTicket` message received on a connection where the `CMW_Attestation` flag was negotiated.
+* A TLS server MUST NOT send a `NewSessionTicket` message on any connection for which it requires remote attestation using this specification.
+* A TLS client MUST NOT offer 0-RTT (`early_data`) on such a connection.
+* As defense in depth against a non-conformant server, a TLS client MUST discard, and MUST NOT attempt to use for resumption, any `NewSessionTicket` message received on such a connection.
 
-As these connections are established via either a full handshake or the certificate-with-external-PSK handshake {{I-D.ietf-tls-8773bis}}, both of which include a fresh key exchange, the freshness argument in {{binding}} holds.
+Because these connections are therefore established via a full handshake or the {{-8773bis}} certificate-with-external-PSK handshake, both of which include a fresh key exchange, the freshness argument in {{binding}} holds.
 
 ## Timing for Remote Attestation
 Remote attestation MUST be completed before sending any application data to the peer.
@@ -471,17 +445,6 @@ IANA is requested to register the following new extension type in the "TLS Exten
 |-------|-------------------|---------|-----------|-------------|-----------|
 | TBD   | cmw_attestation   | CT      | N         | Yes         | {{&SELF}} |
 
-
-## TLS Flags Extension Registry {#iana-flags}
-
-IANA is requested to add the following entry to the "TLS Flags" extension registry established by {{-tls-flags}}:
-
-- Value: TBD1
-- Flag Name: CMW_Attestation
-- Messages: CH, EE
-- Recommended: Y
-- Reference: {{&SELF}}
-
 --- back
 
 # Acknowledgements
@@ -526,8 +489,7 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 * Added Server as Attester
 * Added operational overview
 
--03
+-03 
 
 * Prohibited session resumption and 0-RTT data.
-* Added negotiation of attestation capability via the `CMW_Attestation` TLS flag ({{flag-negotiation}})
 
