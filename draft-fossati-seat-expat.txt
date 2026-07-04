@@ -11,7 +11,7 @@ Expires: 5 January 2027                                           Linaro
                                                               Y. Sheffer
                                                                   Intuit
                                                            H. Tschofenig
-                                                                   H-BRS
+                                                                UniBw M.
                                                              I. Mihalcea
                                                              Arm Limited
                                                              4 July 2026
@@ -1016,9 +1016,10 @@ Authors' Addresses
 
 
    Hannes Tschofenig
-   University of Applied Sciences Bonn-Rhein-Sieg
+   University of the Bundeswehr Munich
+   85577 Neubiberg
    Germany
-   Email: Hannes.Tschofenig@gmx.net
+   Email: hannes.tschofenig@gmx.net
 
 
    Ionut Mihalcea
