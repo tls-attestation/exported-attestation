@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 4 January 2027                                           Linaro
+Expires: 5 January 2027                                           Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 4 January 2027                                           Linaro
                                                                    H-BRS
                                                              I. Mihalcea
                                                              Arm Limited
-                                                             3 July 2026
+                                                             4 July 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 January 2027.
+   This Internet-Draft will expire on 5 January 2027.
 
 Copyright Notice
 
@@ -87,15 +87,11 @@ Table of Contents
    2.  Terminology
    3.  cmw_attestation Extension to the Authenticator's Certificate
            message
-     3.1.  Negotiation of Attestation Capability via TLS Flags
-       3.1.1.  Client Behavior
-       3.1.2.  Server Behavior
-       3.1.3.  Use by Application-Layer Transports
-     3.2.  Negotiation of the cmw_attestation Extension
-     3.3.  Usage in Exported Authenticator-based Post-Handshake
+     3.1.  Negotiation of the cmw_attestation Extension
+     3.2.  Usage in Exported Authenticator-based Post-Handshake
            Authentication
-     3.4.  Ensuring Compatibility with X.509 Certificate Validation
-     3.5.  Applicability to Client and Server Authentication
+     3.3.  Ensuring Compatibility with X.509 Certificate Validation
+     3.4.  Applicability to Client and Server Authentication
    4.  Architecture
      4.1.  Client as Attester
        4.1.1.  Passport Model
@@ -116,7 +112,6 @@ Table of Contents
      8.2.  Server as Attester
    9.  IANA Considerations
      9.1.  TLS Extension Type Registration
-     9.2.  TLS Flags Extension Registry
    10. References
      10.1.  Normative References
      10.2.  Informative References
@@ -245,61 +240,10 @@ Table of Contents
    Certificate message itself, removing reliance on external certificate
    issuance processes.
 
-3.1.  Negotiation of Attestation Capability via TLS Flags
-
-   Before any attestation credential can be exchanged using the
-   cmw_attestation extension, both endpoints need a way to determine,
-   during the TLS handshake, whether this specification applies to the
-   TLS connection at all.  This document uses the CMW_Attestation TLS
-   Flag registered in Section 9.2, following the general mechanism
-   defined in [I-D.ietf-tls-tlsflags], for this purpose.
-
-3.1.1.  Client Behavior
-
-   A TLS client that intends to use this specification, either because
-   it will require attestation from its peer or because it may be asked
-   to provide attestation itself, MUST include the CMW_Attestation flag
-   in the "flags" extension of its ClientHello, as defined in
-   [I-D.ietf-tls-tlsflags].
-
-   A client that requires attestation for a connection MUST treat the
-   absence of the CMW_Attestation flag from the server's
-   EncryptedExtensions message as a failure, it MUST abort the
-   connection rather than proceed to exchange application data without
-   attestation.
-
-3.1.2.  Server Behavior
-
-   A TLS server that supports this specification MUST include the
-   CMW_Attestation flag in its EncryptedExtensions message if, and only
-   if, the client included the flag in its ClientHello and the server is
-   willing to allow attestation-based exchanges, as defined in this
-   document, on the resulting connection.
-
-   A server that requires attestation for a connection and does not
-   receive the CMW_Attestation flag in the ClientHello MUST abort the
-   handshake (e.g., with a "missing_extension" alert) rather than
-   complete a connection it cannot subsequently attest.
-
-3.1.3.  Use by Application-Layer Transports
-
-   Application-layer transport protocols built on top of this
-   specification, such as [I-D.reddy-seat-expat-transport], will have to
-   use the outcome of this negotiation to decide whether to perform
-   their own capability exchange for attestation-specific messaging.
-   For example, [I-D.reddy-seat-expat-transport] requires that its
-   capability-exchange message only be sent on a TLS connection where
-   the CMW_Attestation flag was successfully negotiated.
-
-3.2.  Negotiation of the cmw_attestation Extension
+3.1.  Negotiation of the cmw_attestation Extension
 
    Negotiation of support cmw_attestation extension follows the model
    defined in Section 5.2 of [RFC9261].
-
-   Endpoints MUST NOT include the cmw_attestation extension in any
-   message on a connection where the CMW_Attestation flag (Section 3.1)
-   was not negotiated; a receiver that observes it anyway MUST abort
-   with an "unsupported_extension" alert.
 
    Endpoints that wish to receive attestation credentials using Exported
    Authenticators MUST indicate support by including an empty
@@ -321,7 +265,7 @@ Table of Contents
    ClientCertificateRequest MUST ignore it and continue processing the
    message as if the extension were absent.
 
-3.3.  Usage in Exported Authenticator-based Post-Handshake
+3.2.  Usage in Exported Authenticator-based Post-Handshake
       Authentication
 
    The cmw_attestation extension is designed to be used exclusively in
@@ -339,7 +283,7 @@ Table of Contents
    Server or Client, respectively).  This association ensures that the
    Evidence is specific to the authentication event.
 
-3.4.  Ensuring Compatibility with X.509 Certificate Validation
+3.3.  Ensuring Compatibility with X.509 Certificate Validation
 
    The cmw_attestation extension does not modify or replace X.509
    certificate validation mechanisms.  It serves as an additional source
@@ -359,7 +303,7 @@ Table of Contents
       valid but the attestation credentials is missing or does not meet
       security policy.
 
-3.5.  Applicability to Client and Server Authentication
+3.4.  Applicability to Client and Server Authentication
 
    The cmw_attestation extension is applicable to both client and server
    authentication in Exported Authenticator-based post-handshake
@@ -750,22 +694,21 @@ Table of Contents
    session resumption and 0-RTT data entirely for TLS connections in
    scope of this specification:
 
-   *  A TLS server MUST NOT send a NewSessionTicket message on a
-      connection where the CMW_Attestation flag was negotiated as
-      described in Section 3.1.
+   *  A TLS server MUST NOT send a NewSessionTicket message on any
+      connection for which it requires remote attestation using this
+      specification.
 
-   *  A TLS client MUST NOT offer 0-RTT (early_data) on a connection
-      intended to use this specification.
+   *  A TLS client MUST NOT offer 0-RTT (early_data) on such a
+      connection.
 
    *  As defense in depth against a non-conformant server, a TLS client
-      MUST discard, and MUST NOT attempt to use for resumption, any
-      NewSessionTicket message received on a connection where the
-      CMW_Attestation flag was negotiated.
+      that receives a NewSessionTicket message on such a connection MUST
+      discard it and MUST NOT attempt to use it for resumption.
 
-   As these connections are established via either a full handshake or
-   the certificate-with-external-PSK handshake [I-D.ietf-tls-8773bis],
-   both of which include a fresh key exchange, the freshness argument in
-   Section 5 holds.
+   Because these connections are therefore established via a full
+   handshake or the [I-D.ietf-tls-8773bis] certificate-with-external-PSK
+   handshake, both of which include a fresh key exchange, the freshness
+   argument in Section 5 holds.
 
 7.3.  Timing for Remote Attestation
 
@@ -858,21 +801,6 @@ Table of Contents
 
                                   Table 1
 
-9.2.  TLS Flags Extension Registry
-
-   IANA is requested to add the following entry to the "TLS Flags"
-   extension registry established by [I-D.ietf-tls-tlsflags]:
-
-   *  Value: TBD1
-
-   *  Flag Name: CMW_Attestation
-
-   *  Messages: CH, EE
-
-   *  Recommended: Y
-
-   *  Reference: RFCthis
-
 10.  References
 
 10.1.  Normative References
@@ -897,12 +825,6 @@ Table of Contents
               ietf-tls-rfc8446bis-14, 13 September 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
               rfc8446bis-14>.
-
-   [I-D.ietf-tls-tlsflags]
-              Nir, Y., "A Flags Extension for TLS 1.3", Work in
-              Progress, Internet-Draft, draft-ietf-tls-tlsflags-17, 17
-              March 2026, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-tls-tlsflags-17>.
 
    [IANA.tls-extensiontype-values]
               IANA, "Transport Layer Security (TLS) Extensions",
@@ -972,14 +894,6 @@ Table of Contents
               Internet-Draft, draft-ietf-rats-daa-09, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-rats-
               daa-09>.
-
-   [I-D.reddy-seat-expat-transport]
-              Reddy.K, T. and H. Tschofenig, "Application-Layer
-              Transport for Exported Authenticators and Attestation",
-              Work in Progress, Internet-Draft, draft-reddy-seat-expat-
-              transport-00, 23 June 2026,
-              <https://datatracker.ietf.org/doc/html/draft-reddy-seat-
-              expat-transport-00>.
 
    [ID-Crisis]
               Sardar, M., Moustafa, M., and T. Aura, "Identity Crisis in
@@ -1075,9 +989,6 @@ Document History
    -03
 
    *  Prohibited session resumption and 0-RTT data.
-
-   *  Added negotiation of attestation capability via the
-      CMW_Attestation TLS flag (Section 3.1)
 
 Authors' Addresses
 
