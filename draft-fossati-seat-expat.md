@@ -61,33 +61,20 @@ normative:
   I-D.ietf-tls-rfc8446bis: tls13
   RFC9261:
   I-D.ietf-rats-msg-wrap:
-  I-D.ietf-tls-tlsflags: tls-flags
+  I-D.ietf-tls-8773bis: 8773bis
 
 informative:
   I-D.ietf-lamps-csr-attestation:
-  RA-TLS:
-    title: "Towards Validation of TLS 1.3 Formal Model and Vulnerabilities in Intel's RA-TLS Protocol"
-    date: 13 November 2024,
-    target: https://ieeexplore.ieee.org/document/10752524
-    author:
-      - ins: M. U. Sardar
-      - ins: A. Niemi
-      - ins: H. Tschofenig
-      - ins: T. Fossati
+  RA-TLS: DOI.10.1109/ACCESS.2024.3497184
   RelayAttacks:
-    title: "Relay Attacks in Intra-handshake Attestation for Confidential Agentic AI Systems"
-    date: November 2025,
-    target: https://mailarchive.ietf.org/arch/msg/seat/x3eQxFjQFJLceae6l4_NgXnmsDY/
+    title: "Intra-handshake.fail (CVE-2026-33697): High-severity CVE in Attested TLS"
+    date: June 2026
+    target: https://www.researchgate.net/publication/408219182_Intra-handshakefail_CVE-2026-33697_High-severity_CVE_in_Attested_TLS
     author:
       - ins: M. U. Sardar
-  ID-Crisis:
-    title: "Identity Crisis in Confidential Computing: Formal Analysis of Attested TLS"
-    date: November 2025,
-    target: https://www.researchgate.net/publication/398839141_Identity_Crisis_in_Confidential_Computing_Formal_Analysis_of_Attested_TLS
-    author:
-      - ins: M. U. Sardar
-      - ins: M. Moustafa
-      - ins: T. Aura
+      - ins: V. Dubeyko
+      - ins: J-M. Jacquet
+  ID-Crisis: DOI.10.1145/3779208.3785387
   RFC9711: rats-eat
   RFC6960: ocsp
   FIDO-REQS:
@@ -157,7 +144,7 @@ cmw_data: Encapsulates the attestation credentials in CMW format {{I-D.ietf-rats
 
 This approach eliminates the need for real-time certificate issuance from a Certificate Authority (CA) and minimizes handshake delays. Typically, CAs require several seconds to minutes to issue a certificate due to verification steps such as validating subject identity, signing the certificate, and distributing it. These delays introduce latency into the TLS handshake, making real-time certificate generation impractical. The cmw_attestation extension circumvents this issue by embedding attestation data within the Certificate message itself, removing reliance on external certificate issuance processes.
 
-## Negotiation of the cmw_attestation Extension
+## Negotiation of the cmw_attestation Extension {#negotiation}
 
 Negotiation of support cmw_attestation extension follows the model defined in {{Section 5.2 of RFC9261}}.
 
@@ -398,34 +385,25 @@ and the overall security level depends on their existence and quality of assuran
 
 These properties may be explicitly promised ("attested") by the platform, or they can be assured in other ways such as by providing source code, reproducible builds, formal verification etc. The exact mechanisms are out of scope of this document.
 
-## Using the TLS Connection
+## Using the TLS Connection {#using-connection}
 
-Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection
-remains valid after this process. Care must be taken when handling this TLS connection, as both the client
-and server must agree that remote attestation was successfully completed before exchanging data with the
-attested party.
+Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection remains valid after this process. Care must be taken when handling this TLS connection, as both the client and server must agree that remote attestation was successfully completed before exchanging data with the attested party.
 
-Session resumption presents special challenges since it happens at the TLS level, which is not aware of the
-application-level Authenticator. The application (or the modified TLS library) must ensure that a resumed
-session has already completed remote attestation before the session can be used normally, and race conditions are possible.
+Session resumption presents special challenges since it happens at the TLS level, which is not aware of the application-level Authenticator: a resumed session could be used before attestation completes, and race conditions between resumption and post-handshake attestation are possible. To avoid this, this document prohibits session resumption and 0-RTT data entirely for TLS connections in scope of this specification:
 
-One possible approach to avoid race conditions is as follows:
+* A TLS server MUST NOT send a `NewSessionTicket` message on any connection for which it requires remote attestation using this specification.
+* A TLS client MUST NOT offer 0-RTT (`early_data`) on such a connection.
+* As defense in depth against a non-conformant server, a TLS client that receives a `NewSessionTicket` message on such a connection MUST discard it and MUST NOT attempt to use it for resumption.
 
-* For any TLS handshake in which remote attestation is required, the TLS client ensures that any `NewSessionTicket` messages received from the TLS server are ignored or discarded.
-
-* The client and server perform remote attestation over the established TLS connection.
-
-* For subsequent TLS connections, the client applies the same policy: if remote attestation is required for a connection before any application traffic is exchanged, PSK-based resumption is prevented.
-
-From a TLS handshake perspective this is possible.
+Because these connections are therefore established via a full handshake or the {{-8773bis}} certificate-with-external-PSK handshake, both of which include a fresh key exchange, the freshness argument in {{binding}} holds.
 
 ## Timing for Remote Attestation
 Remote attestation MUST be completed before sending any application data to the peer.
 For use cases that require only a one-time attestation for the lifetime of a TLS connection, remote attestation can be performed immediately after the TLS handshake completes.
 
-## Evidence Freshness
+## Evidence Freshness {#freshness}
 
-The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in {{binding}}. Because this value is bound to the active TLS connection, the Evidence is guaranteed to be fresh for the connection in which it is generated.
+The Evidence carried in cmw_attestation does not require an additional freshness mechanism (such as a nonce {{RA-TLS}} or a timestamp). Freshness is already ensured by the exporter value derived using the certificate_request_context, as described in {{binding}}. Because this value is bound to the active TLS connection, and because session resumption and 0-RTT data are prohibited for such connections (see {{using-connection}}), the Evidence is guaranteed to be fresh for the connection in which it is generated.
 
 The Evidence presented in this protocol is valid only at the time it is generated and presented. To ensure that the attested peer continues to operate in a secure state, remote attestation may be re-initiated periodically. In this protocol, this can be accomplished by initiating a new Exported-Authenticator–based post-handshake authentication exchange, which results in a new certificate_request_context and therefore a newly derived exporter value to maintain freshness.
 
@@ -466,17 +444,6 @@ IANA is requested to register the following new extension type in the "TLS Exten
 | Value | Extension Name    | TLS 1.3 | DTLS-Only | Recommended | Reference |
 |-------|-------------------|---------|-----------|-------------|-----------|
 | TBD   | cmw_attestation   | CT      | N         | Yes         | {{&SELF}} |
-
-
-## TLS Flags Extension Registry
-
-IANA is requested to add the following entry to the "TLS Flags" extension registry established by {{-tls-flags}}:
-
-- Value: TBD1
-- Flag Name: CMW_Attestation
-- Messages: CH, EE
-- Recommended: Y
-- Reference: {{&SELF}}
 
 --- back
 
@@ -521,3 +488,8 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 * Updated Client as Attester
 * Added Server as Attester
 * Added operational overview
+
+-03
+
+* Prohibited session resumption and 0-RTT data.
+
