@@ -457,10 +457,9 @@ registry within the "Transport Layer Security (TLS) Parameters" registry group
 
 | Value                  | DTLS-OK | Recommended | Reference |
 |------------------------|---------|-------------|-----------|
-| EXPORTER-cmw-attestation | N       | Y           | {{&SELF}} |
+| EXPORTER-cmw-attestation | Y       | N           | {{&SELF}} |
 
-The registration procedure for this registry is Specification Required
-(Section 4 of {{!RFC5705}}). A single label is used for both the derivation in
+A single label is used for both the derivation in
 {{binding}} and the validation step that checks it, because Section 6 of
 {{!RFC5705}} requires that no registered label be a prefix of any other.
 
