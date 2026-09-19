@@ -26,7 +26,11 @@ venue:
 author:
   -
     name: Muhammad Usama Sardar
-    organization: TU Dresden
+    organization: Technical University of Dresden
+    abbrev: TU Dresden
+    city: Dresden
+    country: Germany
+    code: 01187
     email: muhammad_usama.sardar@tu-dresden.de
   -
     name: Thomas Fossati
@@ -511,3 +515,6 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 
 * Prohibited session resumption and 0-RTT data.
 
+-04
+
+* fixed the mismatch of exporter labels in Sec. 4 and 5.1 (see issue#63 and PR#65)
