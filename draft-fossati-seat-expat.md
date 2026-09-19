@@ -63,6 +63,7 @@ normative:
   RFC8174:
   I-D.ietf-tls-rfc8446bis: tls13
   RFC9261:
+  RFC5705:
   I-D.ietf-rats-msg-wrap:
   I-D.ietf-tls-8773bis: 8773bis
 
@@ -204,7 +205,7 @@ Upon receipt of a Certificate message containing the `cmw_attestation` extension
 
 - Background Check Model:
   - Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.
-  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the exporter value in the Evidence matches the exporter value computed using the label "Attestation Binding" and the certificate_request_context as the exporter context. This verification ensures correct connection binding, provides freshness, and prevents replay.
+  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the exporter value in the Evidence matches the exporter value computed using the label "EXPORTER-cmw-attestation" and the certificate_request_context as the exporter context. This verification ensures correct connection binding, provides freshness, and prevents replay.
   - Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
 
 - Passport Model:
@@ -323,12 +324,12 @@ for TLS authentication.
 The attester binds the attestation Evidence to the active TLS connection. To do so, the attester derives a
 binding value using the TLS exporter. The exporter invocation uses:
 
-* the label "Attestation", and
+* the label "EXPORTER-cmw-attestation", and
 * the certificate_request_context from the CertificateRequest message as the context_value (as defined in Section 7.5 of {{-tls13}}). In a Background Check model, this value contains the Verifier-provided nonce; and
 * a key_length set to 256-bit (32 bytes).
 
 ~~~
-   TLS-Exporter("Attestation", certificate_request_context, 32)
+   TLS-Exporter("EXPORTER-cmw-attestation", certificate_request_context, 32)
 ~~~
 
 The binding value is defined as:
@@ -447,6 +448,20 @@ IANA is requested to register the following new extension type in the "TLS Exten
 | Value | Extension Name    | TLS 1.3 | DTLS-Only | Recommended | Reference |
 |-------|-------------------|---------|-----------|-------------|-----------|
 | TBD   | cmw_attestation   | CT      | N         | Yes         | {{&SELF}} |
+
+## TLS Exporter Label Registration
+
+IANA is requested to register the following label in the "TLS Exporter Labels"
+registry within the "Transport Layer Security (TLS) Parameters" registry group
+{{!IANA.tls-parameters}}:
+
+| Value                  | DTLS-OK | Recommended | Reference |
+|------------------------|---------|-------------|-----------|
+| EXPORTER-cmw-attestation | Y       | N           | {{&SELF}} |
+
+A single label is used for both the derivation in
+{{binding}} and the validation step that checks it, because Section 6 of
+{{!RFC5705}} requires that no registered label be a prefix of any other.
 
 --- back
 
