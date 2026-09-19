@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 5 January 2027                                           Linaro
+Expires: 23 March 2027                                            Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 5 January 2027                                           Linaro
                                                                 UniBw M.
                                                              I. Mihalcea
                                                              Arm Limited
-                                                             4 July 2026
+                                                       19 September 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2027.
+   This Internet-Draft will expire on 23 March 2027.
 
 Copyright Notice
 
@@ -112,6 +112,7 @@ Table of Contents
      8.2.  Server as Attester
    9.  IANA Considerations
      9.1.  TLS Extension Type Registration
+     9.2.  TLS Exporter Label Registration
    10. References
      10.1.  Normative References
      10.2.  Informative References
@@ -371,7 +372,7 @@ Table of Contents
       -  Verify Certificate Request Binding and Freshness: The Evidence
          must be bound to the active TLS connection by verifying that
          the exporter value in the Evidence matches the exporter value
-         computed using the label "Attestation Binding" and the
+         computed using the label "EXPORTER-cmw-attestation" and the
          certificate_request_context as the exporter context.  This
          verification ensures correct connection binding, provides
          freshness, and prevents replay.
@@ -519,7 +520,7 @@ Table of Contents
    connection.  To do so, the attester derives a binding value using the
    TLS exporter.  The exporter invocation uses:
 
-   *  the label "Attestation", and
+   *  the label "EXPORTER-cmw-attestation", and
 
    *  the certificate_request_context from the CertificateRequest
       message as the context_value (as defined in Section 7.5 of
@@ -528,7 +529,7 @@ Table of Contents
 
    *  a key_length set to 256-bit (32 bytes).
 
-      TLS-Exporter("Attestation", certificate_request_context, 32)
+   TLS-Exporter("EXPORTER-cmw-attestation", certificate_request_context, 32)
 
    The binding value is defined as:
 
@@ -801,6 +802,24 @@ Table of Contents
 
                                   Table 1
 
+9.2.  TLS Exporter Label Registration
+
+   IANA is requested to register the following label in the "TLS
+   Exporter Labels" registry within the "Transport Layer Security (TLS)
+   Parameters" registry group [IANA.tls-parameters]:
+
+     +==========================+=========+=============+===========+
+     | Value                    | DTLS-OK | Recommended | Reference |
+     +==========================+=========+=============+===========+
+     | EXPORTER-cmw-attestation | Y       | N           | RFCthis   |
+     +--------------------------+---------+-------------+-----------+
+
+                                 Table 2
+
+   A single label is used for both the derivation in Section 5 and the
+   validation step that checks it, because Section 6 of [RFC5705]
+   requires that no registered label be a prefix of any other.
+
 10.  References
 
 10.1.  Normative References
@@ -831,6 +850,10 @@ Table of Contents
               <https://www.iana.org/assignments/tls-extensiontype-
               values>.
 
+   [IANA.tls-parameters]
+              IANA, "Transport Layer Security (TLS) Parameters",
+              <https://www.iana.org/assignments/tls-parameters>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -841,6 +864,10 @@ Table of Contents
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/rfc/rfc5280>.
+
+   [RFC5705]  Rescorla, E., "Keying Material Exporters for Transport
+              Layer Security (TLS)", RFC 5705, DOI 10.17487/RFC5705,
+              March 2010, <https://www.rfc-editor.org/rfc/rfc5705>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -868,17 +895,17 @@ Table of Contents
               Deshpande, Y., Niemi, A., and T. Fossati, "Using
               Attestation in Transport Layer Security (TLS) and Datagram
               Transport Layer Security (DTLS)", Work in Progress,
-              Internet-Draft, draft-fossati-tls-attestation-09, 30 April
-              2025, <https://datatracker.ietf.org/doc/html/draft-
-              fossati-tls-attestation-09>.
+              Internet-Draft, draft-fossati-tls-attestation-10, 23 July
+              2026, <https://datatracker.ietf.org/doc/html/draft-
+              fossati-tls-attestation-10>.
 
    [I-D.ietf-lamps-csr-attestation]
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
               and N. Smith, "Use of Remote Attestation with
               Certification Signing Requests", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-csr-attestation-28, 16
-              June 2026, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-lamps-csr-attestation-28>.
+              Internet-Draft, draft-ietf-lamps-csr-attestation-29, 2
+              September 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-csr-attestation-29>.
 
    [I-D.ietf-oauth-selective-disclosure-jwt]
               Fett, D., Yasuda, K., and B. Campbell, "Selective
