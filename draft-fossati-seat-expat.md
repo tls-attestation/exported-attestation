@@ -487,7 +487,7 @@ A single label is used for both the derivation in
 {:unnumbered}
 
 We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
-We would also like to thank Eric Rescorla, Paul Howard, Nathanael Ritz and Yogesh Deshpande for their input.
+We would also like to thank Eric Rescorla, Imran Siddique, Paul Howard, Nathanael Ritz and Yogesh Deshpande for their input.
 
 # Appendix
 {:unnumbered}
