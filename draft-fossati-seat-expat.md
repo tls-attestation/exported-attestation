@@ -26,7 +26,11 @@ venue:
 author:
   -
     name: Muhammad Usama Sardar
-    organization: TU Dresden
+    organization: Technical University of Dresden
+    abbrev: TU Dresden
+    city: Dresden
+    country: Germany
+    code: 01187
     email: muhammad_usama.sardar@tu-dresden.de
   -
     name: Thomas Fossati
@@ -469,7 +473,7 @@ A single label is used for both the derivation in
 {:unnumbered}
 
 We would like to thank Chris Patton for his proposal to explore RFC 9261 for attested TLS.
-We would also like to thank Eric Rescorla, Paul Howard, and Yogesh Deshpande for their input.
+We would also like to thank Eric Rescorla, Imran Siddique, Paul Howard, and Yogesh Deshpande for their input.
 
 # Appendix
 {:unnumbered}
@@ -511,3 +515,6 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 
 * Prohibited session resumption and 0-RTT data.
 
+-04
+
+* fixed the mismatch of exporter labels in Sec. 4 and 5.1 (see issue#63 and PR#65)
