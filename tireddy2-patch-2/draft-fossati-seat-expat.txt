@@ -5,7 +5,7 @@
 SEAT Working Group                                          M. U. Sardar
 Internet-Draft                                                TU Dresden
 Intended status: Standards Track                              T. Fossati
-Expires: 23 March 2027                                            Linaro
+Expires: 5 May 2027                                               Linaro
                                                                 T. Reddy
                                                                    Nokia
                                                               Y. Sheffer
@@ -14,7 +14,7 @@ Expires: 23 March 2027                                            Linaro
                                                                 UniBw M.
                                                              I. Mihalcea
                                                              Arm Limited
-                                                       19 September 2026
+                                                         1 November 2026
 
 
             Remote Attestation with Exported Authenticators
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 March 2027.
+   This Internet-Draft will expire on 5 May 2027.
 
 Copyright Notice
 
@@ -687,13 +687,20 @@ Table of Contents
    successfully completed before exchanging data with the attested
    party.
 
-   Session resumption presents special challenges since it happens at
-   the TLS level, which is not aware of the application-level
-   Authenticator: a resumed session could be used before attestation
-   completes, and race conditions between resumption and post-handshake
-   attestation are possible.  To avoid this, this document prohibits
-   session resumption and 0-RTT data entirely for TLS connections in
-   scope of this specification:
+   The Evidence carries a binding value derived from the exporter of the
+   TLS connection on which it was generated (see Section 5).  A resumed
+   connection derives a new exporter secret and therefore a different
+   binding value.  If the TLS connection is resumed after the Evidence
+   is generated but before the Authenticator is delivered, the Evidence
+   carries the binding value of the previous connection, while the peer
+   computes the binding value on the resumed connection, and
+   verification fails.  Since the application is typically unaware that
+   the connection was resumed, it cannot distinguish this failure from
+   an invalid Authenticator.  Withholding application data until
+   attestation completes does not help: it addresses ordering, while the
+   problem is a stale binding value.  This document therefore prohibits
+   session resumption and 0-RTT data for TLS connections in scope of
+   this specification:
 
    *  A TLS server MUST NOT send a NewSessionTicket message on any
       connection for which it requires remote attestation using this
@@ -903,9 +910,9 @@ Table of Contents
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
               and N. Smith, "Use of Remote Attestation with
               Certification Signing Requests", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-csr-attestation-29, 2
-              September 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-csr-attestation-29>.
+              Internet-Draft, draft-ietf-lamps-csr-attestation-32, 22
+              October 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-csr-attestation-32>.
 
    [I-D.ietf-oauth-selective-disclosure-jwt]
               Fett, D., Yasuda, K., and B. Campbell, "Selective
