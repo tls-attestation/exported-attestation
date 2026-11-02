@@ -393,7 +393,18 @@ These properties may be explicitly promised ("attested") by the platform, or the
 
 Remote attestation in this document occurs within the context of a TLS handshake, and the TLS connection remains valid after this process. Care must be taken when handling this TLS connection, as both the client and server must agree that remote attestation was successfully completed before exchanging data with the attested party.
 
-Session resumption presents special challenges since it happens at the TLS level, which is not aware of the application-level Authenticator: a resumed session could be used before attestation completes, and race conditions between resumption and post-handshake attestation are possible. To avoid this, this document prohibits session resumption and 0-RTT data entirely for TLS connections in scope of this specification:
+The Evidence carries a binding value derived from the exporter of the TLS
+connection on which it was generated (see {{binding}}). A resumed connection
+derives a new exporter secret and therefore a different binding value. If the
+TLS connection is resumed after the Evidence is generated but before the
+Authenticator is delivered, the Evidence carries the binding value of the
+previous connection, while the peer computes the binding value on the resumed
+connection, and verification fails. Since the application is typically unaware
+that the connection was resumed, it cannot distinguish this failure from an
+invalid Authenticator. Withholding application data until attestation completes
+does not help: it addresses ordering, while the problem is a stale binding
+value. This document therefore prohibits session resumption and 0-RTT data for
+TLS connections in scope of this specification:
 
 * A TLS server MUST NOT send a `NewSessionTicket` message on any connection for which it requires remote attestation using this specification.
 * A TLS client MUST NOT offer 0-RTT (`early_data`) on such a connection.
