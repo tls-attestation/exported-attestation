@@ -204,10 +204,10 @@ However, applications using this mechanism still need to negotiate the encoding 
 Upon receipt of a Certificate message containing the `cmw_attestation` extension, an endpoint MUST take the following steps to validate the attestation credentials:
 
 - Background Check Model:
-  - Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.
-  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the binding value in the Evidence matches the binding value the Relying Party computes as described in {{sec-attestation-binder}}. This verification ensures correct connection binding, provides freshness, and prevents replay.
-  - Verify AIK Binding: The AIK_pub_hash in the Evidence must match the hash of the AIK public key in the end-entity certificate, computed as described in {{sec-binding-aik}}.
-  - Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
+  - Verify Integrity and Authenticity: The Evidence MUST be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.
+  - Verify Certificate Request Binding and Freshness: The Evidence MUST be bound to the active TLS connection by verifying that the binding value in the Evidence matches the binding value the Relying Party computes as described in {{sec-attestation-binder}}. This verification ensures correct connection binding, provides freshness, and prevents replay.
+  - Verify AIK Binding: The AIK_pub_hash in the Evidence MUST match the hash of the AIK public key in the end-entity certificate, computed as described in {{sec-binding-aik}}.
+  - Evaluate Security Policy Compliance: The Evidence MUST be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
 
 - Passport Model:
   - Verify the Attestation Result: The Relying Party MUST check that the Attestation Result is correctly signed by the issuing authority and meets the Relying Party's security requirements. The Attestation Result MUST carry the AIK_pub_hash defined in {{sec-binding-aik}}, and the Relying Party MUST verify that it matches the hash of the public key in the end-entity certificate. The Relying Party MUST compute the binding value as described in {{sec-attestation-binder}} and verify that it matches the value in the Attestation Result.
