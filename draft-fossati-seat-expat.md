@@ -532,3 +532,7 @@ Intra-handshake attestation proposal {{I-D.fossati-tls-attestation}} is vulnerab
 -04
 
 * fixed the mismatch of exporter labels in Sec. 4 and 5.1 (see issue#63 and PR#65)
+
+-05
+
+* makes binding checks explicit rather than keep implicit in policy (see issue#67 and PR#69)
