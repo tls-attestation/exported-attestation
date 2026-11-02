@@ -393,9 +393,7 @@ Table of Contents
          the hash of the public key in the end-entity certificate.  The
          Attestation Result MUST also carry the binding value defined in
          Section 5.1, and the Relying Party MUST verify it as for
-         Evidence; otherwise the Attestation Result is not bound to this
-         connection, and its freshness is limited to its validity
-         period.
+         Evidence.
 
    By integrating cmw_attestation directly into the Certificate message
    during Exported Authenticator-based post-handshake authentication,
