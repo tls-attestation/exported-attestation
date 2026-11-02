@@ -372,16 +372,14 @@ Table of Contents
 
       -  Verify Certificate Request Binding and Freshness: The Evidence
          must be bound to the active TLS connection by verifying that
-         the binding value (Section 5.1) in the Evidence matches the
-         binding value the RP computes using the label "EXPORTER-cmw-
-         attestation" and the certificate_request_context as the
-         exporter context.  This verification ensures correct connection
-         binding, provides freshness, and prevents replay.
+         the binding value in the Evidence matches the binding value the
+         Relying Party computes as described in Section 5.1.  This
+         verification ensures correct connection binding, provides
+         freshness, and prevents replay.
 
-      -  The Relying Party MUST compute the hash of the AIK public key
-         extracted from the TLS end-entity certificate using the same
-         hash algorithm and verify that it matches the AIK_pub_hash
-         included in the Evidence.
+      -  Verify AIK Binding: The AIK_pub_hash in the Evidence must match
+         the hash of the AIK public key in the end-entity certificate,
+         computed as described in Section 5.2.
 
       -  Evaluate Security Policy Compliance: The Evidence must be
          evaluated against the Relying Party's security policies to
@@ -396,9 +394,9 @@ Table of Contents
          The Attestation Result MUST carry the AIK_pub_hash defined in
          Section 5.2, and the Relying Party MUST verify that it matches
          the hash of the public key in the end-entity certificate.  The
-         Attestation Result MUST also carry the binding value defined in
-         Section 5.1, and the Relying Party MUST verify it as for
-         Evidence.
+         Relying Party MUST compute the binding value as described in
+         Section 5.1 and verify that it matches the value in the
+         Attestation Result.
 
    By integrating cmw_attestation directly into the Certificate message
    during Exported Authenticator-based post-handshake authentication,
