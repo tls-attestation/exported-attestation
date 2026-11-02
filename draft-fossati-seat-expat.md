@@ -209,7 +209,7 @@ Upon receipt of a Certificate message containing the `cmw_attestation` extension
   - Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
 
 - Passport Model:
-  - Verify the Attestation Result: The Relying Party MUST check that the Attestation Result is correctly signed by the issuing authority and that it meets the Relying Party’s security requirements.
+  - Verify the Attestation Result: The Relying Party MUST check that the Attestation Result is correctly signed by the issuing authority and meets the Relying Party's security requirements. The Attestation Result MUST carry the AIK_pub_hash defined in {{sec-binding-aik}}, and the Relying Party MUST verify that it matches the hash of the public key in the end-entity certificate. If the Attestation Result also carries the binding value defined in {{sec-attestation-binder}}, the Relying Party MUST verify it as for Evidence; otherwise the Attestation Result is not bound to this connection, and its freshness is limited to its validity period.
 
 By integrating `cmw_attestation` directly into the Certificate message during Exported Authenticator-based post-handshake authentication, this approach reduces latency and complexity while maintaining strong security guarantees.
 
@@ -320,6 +320,7 @@ which ensures that the attested environment controls the AIK private key used
 for TLS authentication.
 
 ## Attestation Binder
+{: #sec-attestation-binder }
 
 The attester binds the attestation Evidence to the active TLS connection. To do so, the attester derives a
 binding value using the TLS exporter. The exporter invocation uses:
@@ -345,6 +346,7 @@ This binding value is included as an attestation challenge (or nonce) in the att
 The TLS endpoint that receives the attestation Evidence computes the binding value using the same exporter and hash function invocation described for the attester. The endpoint either verifies the exporter binding itself or delegates this check to the Verifier. If it performs the check locally and the values do not match, the attestation Evidence is rejected. If the check is delegated, the endpoint conveys the computed binding value to the Verifier so that the comparison can be carried out during attestation validation.
 
 ## Binding the Authenticator Identity Key (AIK) to the TEE
+{: #sec-binding-aik }
 
 This specification assumes that the private key corresponding to the end-entity certificate carried in the exported authenticator referred to as the Authenticator Identity Key (AIK) is generated inside a TEE and never leaves it. A platform could instead generate the AIK private key outside the TEE and compute the CertificateVerify signature using that external key. A Relying Party cannot detect this attack unless additional safeguards are in place.
 
