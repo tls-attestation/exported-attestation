@@ -187,7 +187,7 @@ The Attester may respond with either:
   - The Relying Party grants or denies access, or continues or terminates the TLS connection, based on the Verifier's Attestation Result.
 
 - Attestation Result (Passport Model):
-  - The Attester sends Evidence to a Verifier beforehand.
+  - After receiving the Authenticator Request, the Attester sends Evidence to a Verifier.
   - The Verifier issues an Attestation Result to the Attester.
   - The Attester includes the Attestation Result in the `cmw_attestation` extension to the Authenticator's Certificate message and sends it to the Relying Party.
   - The Relying Party validates the Attestation Result directly without needing to contact an external Verifier.
@@ -209,7 +209,7 @@ Upon receipt of a Certificate message containing the `cmw_attestation` extension
   - Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
 
 - Passport Model:
-  - Verify the Attestation Result: The Relying Party MUST check that the Attestation Result is correctly signed by the issuing authority and meets the Relying Party's security requirements. The Attestation Result MUST carry the AIK_pub_hash defined in {{sec-binding-aik}}, and the Relying Party MUST verify that it matches the hash of the public key in the end-entity certificate. If the Attestation Result also carries the binding value defined in {{sec-attestation-binder}}, the Relying Party MUST verify it as for Evidence; otherwise the Attestation Result is not bound to this connection, and its freshness is limited to its validity period.
+  - Verify the Attestation Result: The Relying Party MUST check that the Attestation Result is correctly signed by the issuing authority and meets the Relying Party's security requirements. The Attestation Result MUST carry the AIK_pub_hash defined in {{sec-binding-aik}}, and the Relying Party MUST verify that it matches the hash of the public key in the end-entity certificate. The Attestation Result MUST also carry the binding value defined in {{sec-attestation-binder}}, and the Relying Party MUST verify it as for Evidence; otherwise the Attestation Result is not bound to this connection, and its freshness is limited to its validity period.
 
 By integrating `cmw_attestation` directly into the Certificate message during Exported Authenticator-based post-handshake authentication, this approach reduces latency and complexity while maintaining strong security guarantees.
 
