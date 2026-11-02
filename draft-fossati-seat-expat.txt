@@ -331,7 +331,8 @@ Table of Contents
 
    *  Attestation Result (Passport Model):
 
-      -  The Attester sends Evidence to a Verifier beforehand.
+      -  After receiving the Authenticator Request, the Attester sends
+         Evidence to a Verifier.
 
       -  The Verifier issues an Attestation Result to the Attester.
 
@@ -365,19 +366,22 @@ Table of Contents
 
    *  Background Check Model:
 
-      -  Verify Integrity and Authenticity: The Evidence must be
+      -  Verify Integrity and Authenticity: The Evidence MUST be
          cryptographically verified against a known trust anchor,
          typically provided by the hardware manufacturer.
 
       -  Verify Certificate Request Binding and Freshness: The Evidence
-         must be bound to the active TLS connection by verifying that
-         the exporter value in the Evidence matches the exporter value
-         computed using the label "EXPORTER-cmw-attestation" and the
-         certificate_request_context as the exporter context.  This
+         MUST be bound to the active TLS connection by verifying that
+         the binding value in the Evidence matches the binding value the
+         Relying Party computes as described in Section 5.1.  This
          verification ensures correct connection binding, provides
          freshness, and prevents replay.
 
-      -  Evaluate Security Policy Compliance: The Evidence must be
+      -  Verify AIK Binding: The AIK_pub_hash in the Evidence MUST match
+         the hash of the AIK public key in the end-entity certificate,
+         computed as described in Section 5.2.
+
+      -  Evaluate Security Policy Compliance: The Evidence MUST be
          evaluated against the Relying Party's security policies to
          determine if the attesting device and the private key storage
          meet the required criteria.
@@ -386,8 +390,13 @@ Table of Contents
 
       -  Verify the Attestation Result: The Relying Party MUST check
          that the Attestation Result is correctly signed by the issuing
-         authority and that it meets the Relying Party’s security
-         requirements.
+         authority and meets the Relying Party's security requirements.
+         The Attestation Result MUST carry the AIK_pub_hash defined in
+         Section 5.2, and the Relying Party MUST verify that it matches
+         the hash of the public key in the end-entity certificate.  The
+         Relying Party MUST compute the binding value as described in
+         Section 5.1 and verify that it matches the value in the
+         Attestation Result.
 
    By integrating cmw_attestation directly into the Certificate message
    during Exported Authenticator-based post-handshake authentication,
@@ -910,9 +919,9 @@ Table of Contents
               Ounsworth, M., Tschofenig, H., Birkholz, H., Wiseman, M.,
               and N. Smith, "Use of Remote Attestation with
               Certification Signing Requests", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-csr-attestation-32, 22
-              October 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-csr-attestation-32>.
+              Internet-Draft, draft-ietf-lamps-csr-attestation-33, 2
+              November 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-csr-attestation-33>.
 
    [I-D.ietf-oauth-selective-disclosure-jwt]
               Fett, D., Yasuda, K., and B. Campbell, "Selective
@@ -967,7 +976,7 @@ Acknowledgements
 
    We would like to thank Chris Patton for his proposal to explore RFC
    9261 for attested TLS.  We would also like to thank Eric Rescorla,
-   Paul Howard, and Yogesh Deshpande for their input.
+   Paul Howard, Nathanael Ritz and Yogesh Deshpande for their input.
 
 Appendix
 
