@@ -331,7 +331,8 @@ Table of Contents
 
    *  Attestation Result (Passport Model):
 
-      -  The Attester sends Evidence to a Verifier beforehand.
+      -  After receiving the Authenticator Request, the Attester sends
+         Evidence to a Verifier.
 
       -  The Verifier issues an Attestation Result to the Attester.
 
@@ -389,9 +390,9 @@ Table of Contents
          authority and meets the Relying Party's security requirements.
          The Attestation Result MUST carry the AIK_pub_hash defined in
          Section 5.2, and the Relying Party MUST verify that it matches
-         the hash of the public key in the end-entity certificate.  If
-         the Attestation Result also carries the binding value defined
-         in Section 5.1, the Relying Party MUST verify it as for
+         the hash of the public key in the end-entity certificate.  The
+         Attestation Result MUST also carry the binding value defined in
+         Section 5.1, and the Relying Party MUST verify it as for
          Evidence; otherwise the Attestation Result is not bound to this
          connection, and its freshness is limited to its validity
          period.
