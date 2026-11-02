@@ -366,22 +366,22 @@ Table of Contents
 
    *  Background Check Model:
 
-      -  Verify Integrity and Authenticity: The Evidence must be
+      -  Verify Integrity and Authenticity: The Evidence MUST be
          cryptographically verified against a known trust anchor,
          typically provided by the hardware manufacturer.
 
       -  Verify Certificate Request Binding and Freshness: The Evidence
-         must be bound to the active TLS connection by verifying that
+         MUST be bound to the active TLS connection by verifying that
          the binding value in the Evidence matches the binding value the
          Relying Party computes as described in Section 5.1.  This
          verification ensures correct connection binding, provides
          freshness, and prevents replay.
 
-      -  Verify AIK Binding: The AIK_pub_hash in the Evidence must match
+      -  Verify AIK Binding: The AIK_pub_hash in the Evidence MUST match
          the hash of the AIK public key in the end-entity certificate,
          computed as described in Section 5.2.
 
-      -  Evaluate Security Policy Compliance: The Evidence must be
+      -  Evaluate Security Policy Compliance: The Evidence MUST be
          evaluated against the Relying Party's security policies to
          determine if the attesting device and the private key storage
          meet the required criteria.

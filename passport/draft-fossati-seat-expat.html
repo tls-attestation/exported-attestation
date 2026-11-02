@@ -1452,16 +1452,16 @@ ClientCertificateRequest MUST ignore it and continue processing the message as i
           <p id="section-4-4.1.1">Background Check Model:<a href="#section-4-4.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-4.1.2.1">
-              <p id="section-4-4.1.2.1.1">Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.<a href="#section-4-4.1.2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.1.1">Verify Integrity and Authenticity: The Evidence MUST be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.<a href="#section-4-4.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4-4.1.2.2">
-              <p id="section-4-4.1.2.2.1">Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the binding value in the Evidence matches the binding value the Relying Party computes as described in <a href="#sec-attestation-binder" class="auto internal xref">Section 5.1</a>. This verification ensures correct connection binding, provides freshness, and prevents replay.<a href="#section-4-4.1.2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.2.1">Verify Certificate Request Binding and Freshness: The Evidence MUST be bound to the active TLS connection by verifying that the binding value in the Evidence matches the binding value the Relying Party computes as described in <a href="#sec-attestation-binder" class="auto internal xref">Section 5.1</a>. This verification ensures correct connection binding, provides freshness, and prevents replay.<a href="#section-4-4.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4-4.1.2.3">
-              <p id="section-4-4.1.2.3.1">Verify AIK Binding: The AIK_pub_hash in the Evidence must match the hash of the AIK public key in the end-entity certificate, computed as described in <a href="#sec-binding-aik" class="auto internal xref">Section 5.2</a>.<a href="#section-4-4.1.2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.3.1">Verify AIK Binding: The AIK_pub_hash in the Evidence MUST match the hash of the AIK public key in the end-entity certificate, computed as described in <a href="#sec-binding-aik" class="auto internal xref">Section 5.2</a>.<a href="#section-4-4.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4-4.1.2.4">
-              <p id="section-4-4.1.2.4.1">Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.<a href="#section-4-4.1.2.4.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.4.1">Evaluate Security Policy Compliance: The Evidence MUST be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.<a href="#section-4-4.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
