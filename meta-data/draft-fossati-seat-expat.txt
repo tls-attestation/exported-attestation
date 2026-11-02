@@ -979,6 +979,9 @@ Acknowledgements
    Imran Siddique, Paul Howard, Nathanael Ritz and Yogesh Deshpande for
    their input.
 
+   Muhammad Usama Sardar is funded by German Research Foundation
+   ("Deutsche Forschungsgemeinschaft.")
+
 Appendix
 
 Post-handshake vs. Intra-handshake Privacy
