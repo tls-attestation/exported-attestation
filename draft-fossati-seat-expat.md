@@ -205,7 +205,8 @@ Upon receipt of a Certificate message containing the `cmw_attestation` extension
 
 - Background Check Model:
   - Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.
-  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the exporter value in the Evidence matches the exporter value computed using the label "EXPORTER-cmw-attestation" and the certificate_request_context as the exporter context. This verification ensures correct connection binding, provides freshness, and prevents replay.
+  - Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the binding value ({{sec-attestation-binder}}) in the Evidence matches the binding value the RP computes using the label "EXPORTER-cmw-attestation" and the certificate_request_context as the exporter context. This verification ensures correct connection binding, provides freshness, and prevents replay.
+  - The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence.
   - Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.
 
 - Passport Model:
