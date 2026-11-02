@@ -1455,10 +1455,13 @@ ClientCertificateRequest MUST ignore it and continue processing the message as i
               <p id="section-4-4.1.2.1.1">Verify Integrity and Authenticity: The Evidence must be cryptographically verified against a known trust anchor, typically provided by the hardware manufacturer.<a href="#section-4-4.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4-4.1.2.2">
-              <p id="section-4-4.1.2.2.1">Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the exporter value in the Evidence matches the exporter value computed using the label "EXPORTER-cmw-attestation" and the certificate_request_context as the exporter context. This verification ensures correct connection binding, provides freshness, and prevents replay.<a href="#section-4-4.1.2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.2.1">Verify Certificate Request Binding and Freshness: The Evidence must be bound to the active TLS connection by verifying that the binding value (<a href="#sec-attestation-binder" class="auto internal xref">Section 5.1</a>) in the Evidence matches the binding value the RP computes using the label "EXPORTER-cmw-attestation" and the certificate_request_context as the exporter context. This verification ensures correct connection binding, provides freshness, and prevents replay.<a href="#section-4-4.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4-4.1.2.3">
-              <p id="section-4-4.1.2.3.1">Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.<a href="#section-4-4.1.2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-4-4.1.2.3.1">The Relying Party MUST compute the hash of the AIK public key extracted from the TLS end-entity certificate using the same hash algorithm and verify that it matches the AIK_pub_hash included in the Evidence.<a href="#section-4-4.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4-4.1.2.4">
+              <p id="section-4-4.1.2.4.1">Evaluate Security Policy Compliance: The Evidence must be evaluated against the Relying Party's security policies to determine if the attesting device and the private key storage meet the required criteria.<a href="#section-4-4.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
